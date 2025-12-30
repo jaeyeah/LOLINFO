@@ -36,6 +36,7 @@ public class StreamerRestController {
 	//전체 조회
 	@GetMapping("/")
 	public List<StreamerListVO> selectList(){
+		System.out.println("----진행중---------");
 		return streamerDao.selectList();
 	}
 

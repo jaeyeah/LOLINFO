@@ -82,10 +82,17 @@
 			<version>4.0.0</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-security</artifactId>
+		<!-- springBoot :: Security 
+			비밀번호 암호화를 위한 보안 라이브러리-->
+		<!--<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>-->
 	</dependencies>
 
 	<build>

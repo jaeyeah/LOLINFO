@@ -16,10 +16,16 @@ public class StreamerListVO {
 	// 가공데이터 (URL)
     // URL은 ‘게터에서’ 계산
     public String getStreamerStation() {
+        if (streamerSoopId == null || streamerSoopId.isBlank()) return null;
         return "https://www.sooplive.co.kr/station/" + streamerSoopId;
     }
     public String getStreamerProfile() {
-        return "https://profile.img.sooplive.co.kr/LOGO/af/" 
-                + streamerSoopId + "/" + streamerSoopId + ".jpg";
+    	if (streamerSoopId == null || streamerSoopId.isBlank()) {
+            return "https://profile.img.sooplive.co.kr/LOGO/af" ;} // 기본이미지
+    	String prefix = streamerSoopId.substring(0, 2);
+    	return "https://profile.img.sooplive.co.kr/LOGO/" 
+        		+ prefix + "/" 
+        		+ streamerSoopId + "/" 
+        		+ streamerSoopId + ".jpg";
 	}
 }
