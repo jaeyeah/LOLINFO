@@ -11,5 +11,4 @@ public class StreamerDto {
 	private int streamerNo;
 	private String streamerSoopId;
 	private String streamerName;
-	private String streamerProfileUrl;
 }

@@ -1,0 +1,25 @@
+package com.lol.lolinfo.vo;
+
+import com.lol.lolinfo.dto.StreamerDto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
+public class StreamerListVO {
+	// DB 데이터
+	private int streamerNo;
+	private String streamerSoopId;
+	private String streamerName;
+	// 가공데이터 (URL)
+    // URL은 ‘게터에서’ 계산
+    public String getStreamerStation() {
+        return "https://www.sooplive.co.kr/station/" + streamerSoopId;
+    }
+    public String getStreamerProfile() {
+        return "https://profile.img.sooplive.co.kr/LOGO/af/" 
+                + streamerSoopId + "/" + streamerSoopId + ".jpg";
+	}
+}

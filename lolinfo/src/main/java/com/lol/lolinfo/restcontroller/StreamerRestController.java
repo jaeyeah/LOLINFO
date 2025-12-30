@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.StreamerDao;
 import com.lol.lolinfo.dto.StreamerDto;
+import com.lol.lolinfo.vo.StreamerListVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +35,7 @@ public class StreamerRestController {
 	
 	//전체 조회
 	@GetMapping("/")
-	public List<StreamerDto> selectList(){
+	public List<StreamerListVO> selectList(){
 		return streamerDao.selectList();
 	}
 

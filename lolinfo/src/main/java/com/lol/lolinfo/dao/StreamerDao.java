@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.StreamerDto;
+import com.lol.lolinfo.vo.StreamerListVO;
 
 @Repository
 public class StreamerDao {
@@ -22,7 +23,7 @@ public class StreamerDao {
 	}
 	
 	//조회
-	public List<StreamerDto> selectList(){
+	public List<StreamerListVO> selectList(){
 		return sqlSession.selectList("streamer.selectList");
 	}
 	

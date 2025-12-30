@@ -10,15 +10,15 @@
 	</select>
 	<insert id="insert">
 		insert into streamer(
-			streamer_no, streamer_soop_id, streamer_name, streamer_profile_url
+			streamer_no, streamer_soop_id, streamer_name
 		)
 		values(
-			#{streamerNo}, #{streamerSoopId}, #{streamerName}, #{streamerProfileUrl}
+			#{streamerNo}, #{streamerSoopId}, #{streamerName}
 		)
 	</insert>
 
 	<!-- 조회 -->
-	<select id="selectList" resultType="streamerDto">
+	<select id="selectList" resultType="streamerlistVO">
 		select * from streamer
 	</select>
 	
