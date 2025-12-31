@@ -23,13 +23,13 @@
 
 	<!-- 조회 -->
 	<select id="selectList" resultType="tournamentDto">
-		select * from tournament order by tournament_year
+		select * from tournament order by tournament_year desc
 	</select>
 	
 	<!-- 상세조회 -->
 	<select id="selectOne" resultType="tournamentDto">
 		select * from tournament
-		where tournament_id = #{tournamentId} order by tournament_year
+		where tournament_id = #{tournamentId} order by tournament_year 
 	</select>
 
 
