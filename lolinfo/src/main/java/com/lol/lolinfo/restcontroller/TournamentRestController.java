@@ -31,7 +31,7 @@ public class TournamentRestController {
 	@PostMapping("/")
 	public void insert(@RequestBody TournamentDto tournamentDto) {
 		tournamentDao.insert(tournamentDto);
-		System.out.println("팀 등록 실행");
+		System.out.println("대회 등록 실행");
 	}
 	
 	// 등록시 check -> 스트리머 이름 조회해서 중복확인 + streamerNo 같이 반환
