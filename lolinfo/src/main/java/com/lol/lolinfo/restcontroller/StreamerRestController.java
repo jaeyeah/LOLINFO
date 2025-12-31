@@ -31,12 +31,12 @@ public class StreamerRestController {
 	@PostMapping("/")
 	public void insert(@RequestBody StreamerDto streamerDto) {
 		streamerDao.insert(streamerDto);
+		System.out.println("스트리머 등록 실행");
 	}
 	
 	//전체 조회
 	@GetMapping("/")
 	public List<StreamerListVO> selectList(){
-		System.out.println("----진행중---------");
 		return streamerDao.selectList();
 	}
 

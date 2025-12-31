@@ -1,5 +1,6 @@
 package com.lol.lolinfo.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lol.lolinfo.dto.StreamerDto;
 
 import lombok.AllArgsConstructor;
@@ -7,10 +8,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class StreamerListVO {
 	// DB 데이터
-	private int streamerNo;
+	private Integer streamerNo;
 	private String streamerSoopId;
 	private String streamerName;
 	// 가공데이터 (URL)

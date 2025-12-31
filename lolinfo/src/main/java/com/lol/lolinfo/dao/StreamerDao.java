@@ -17,7 +17,7 @@ public class StreamerDao {
 	
 	//등록
 	public void insert(StreamerDto streamerDto) {
-		int streamerNo = sqlSession.insert("streamer.sequence");
+		int streamerNo = sqlSession.selectOne("streamer.sequence");
 		streamerDto.setStreamerNo(streamerNo);
 		sqlSession.insert("streamer.insert", streamerDto);
 	}
