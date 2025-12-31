@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tournament">
+	
+	<!-- 등록 -->
+	<select id="sequence" resultType="int">
+		select tournament.nextval from dual
+	</select>
+	<insert id="insert">
+		insert into tournament(
+			tournament_id, tournament_name, tournament_year,
+			tournament_start, tournament_end,
+			tournament_isofficial, tournament_tier_type
+		)
+		values(
+			#{tournamentId},#{tournamentName},#{tournamentYear},
+			#{tournamentStart},#{tournamentEnd},
+			#{tournamentIsofficial},#{tournamentTierType},
+		)
+	</insert>
+
+	<!-- 조회 -->
+	<select id="selectList" resultType="tournamentDto">
+		select * from tournament order by tournament_year
+	</select>
+	
+	<!-- 상세조회 -->
+	<select id="selectOne" resultType="tournamentDto">
+		select * from tournament
+		where tournament_id = #{tournamentId} order by tournament_year
+	</select>
+
+
+</mapper>
