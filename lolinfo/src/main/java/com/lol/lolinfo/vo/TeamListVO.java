@@ -26,5 +26,10 @@ public class TeamListVO {
 	private String midName;
 	private String adName;
 	private String supName;
+	private String topId;
+	private String jugId;
+	private String midId;
+	private String adId;
+	private String supId;
 	
 }

@@ -25,7 +25,8 @@
 	<!-- 대회별 상세조회 -->
 	<select id="selectListByTournamentId" resultType="teamListVO">
 		select * from team_list
-		where tournament_id = #{tournamentId} order by tournament_year 
+		where tournament_id = #{tournamentId}
+		<!-- order by tournament_year  -->
 	</select>
 
 
