@@ -20,6 +20,7 @@ public class TournamentListVO {
 	private LocalDateTime tournamentEnd;
 	private String tournamentIsofficial;
 	private String tournamentTierType;
+	private String teamName;
 	private String topId;
 	private String jugId;
 	private String midId;
