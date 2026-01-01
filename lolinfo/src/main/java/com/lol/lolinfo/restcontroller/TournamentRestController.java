@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.TournamentDao;
-import com.lol.lolinfo.dto.StreamerDto;
 import com.lol.lolinfo.dto.TournamentDto;
-import com.lol.lolinfo.vo.StreamerListVO;
+import com.lol.lolinfo.vo.TournamentListVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,7 +39,7 @@ public class TournamentRestController {
 	
 	//전체 조회
 	@GetMapping("/")
-	public List<TournamentDto> selectList(){
+	public List<TournamentListVO> selectList(){
 		return tournamentDao.selectList();
 	}
 

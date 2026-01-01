@@ -22,14 +22,16 @@
 	</insert>
 
 	<!-- 조회 -->
-	<select id="selectList" resultType="tournamentDto">
-		select * from tournament order by tournament_year desc
+	<select id="selectList" resultType="tournamentListVO">
+		select * from tournament_list
+		order by tournament_year desc, tournament_end desc
 	</select>
 	
 	<!-- 상세조회 -->
 	<select id="selectOne" resultType="tournamentDto">
 		select * from tournament
-		where tournament_id = #{tournamentId} order by tournament_year 
+		where tournament_id = #{tournamentId}
+		order by tournament_year desc, tournament_end asc
 	</select>
 
 
