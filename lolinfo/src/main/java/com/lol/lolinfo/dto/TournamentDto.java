@@ -1,6 +1,6 @@
 package com.lol.lolinfo.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -16,8 +16,8 @@ public class TournamentDto {
 	private Integer tournamentId;
 	private String tournamentName;
 	private Integer tournamentYear;
-	private LocalDateTime tournamentStart;
-	private LocalDateTime tournamentEnd;
+	private LocalDate tournamentStart;
+	private LocalDate tournamentEnd;
 	private String tournamentIsofficial;
 	private String tournamentTierType;
 }
