@@ -22,11 +22,20 @@
 	</insert>
 
 	
-	<!-- 대회별 상세조회 -->
+	<!-- 대회별 팀 상세조회 -->
 	<select id="selectListByTournamentId" resultType="teamListVO">
 		select * from team_list
 		where tournament_id = #{tournamentId}
 		<!-- order by tournament_year  -->
+	</select>
+	
+	<!-- 인원별 팀 상세조회 -->
+	<select id="selectListByStreamerNo" resultType="streamerTeamListVO">
+		select * from streamer_team_list
+		where team_top = #{streamerNo}
+			or team_jug = #{streamerNo} or team_mid = #{streamerNo}
+			or team_ad = #{streamerNo} or team_sup = #{streamerNo}
+		order by tournament_year desc, tournament_id desc
 	</select>
 
 

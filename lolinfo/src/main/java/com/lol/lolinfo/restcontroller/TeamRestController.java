@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.TeamDao;
 import com.lol.lolinfo.dto.TeamDto;
+import com.lol.lolinfo.vo.StreamerTeamListVO;
 import com.lol.lolinfo.vo.TeamListVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,4 +37,12 @@ public class TeamRestController {
 	public List<TeamListVO> selectList(@PathVariable int tournamentId){
 		return teamDao.selectList(tournamentId);
 	}
+
+	//스트리머가 포함된 팀목록
+	@GetMapping("/streamer/{streamerNo}")
+	public List<StreamerTeamListVO> selectListByStreamerNo(@PathVariable int streamerNo){
+		return teamDao.selectListByStreamerNo(streamerNo);
+	}
+
+	
 }
