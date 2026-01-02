@@ -35,7 +35,7 @@
 		where team_top = #{streamerNo}
 			or team_jug = #{streamerNo} or team_mid = #{streamerNo}
 			or team_ad = #{streamerNo} or team_sup = #{streamerNo}
-		order by tournament_year desc, tournament_id desc
+		order by tournament_year desc, tournament_end desc
 	</select>
 
 
