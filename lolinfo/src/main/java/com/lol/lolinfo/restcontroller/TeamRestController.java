@@ -27,11 +27,20 @@ public class TeamRestController {
 	@Autowired
 	private TeamDao teamDao;
 	
+	//등록
 	@PostMapping("/")
 	public void insert(@RequestBody TeamDto teamDto) {
 		teamDao.insert(teamDto);
 		System.out.println("팀 등록 실행");
 	}
+	//등록시 스트리머 중복체크 -> id로 변경
+//	@GetMapping("/check/{streamerName}")
+//	public void check(@PathVariable String streamerName) {
+////		if(streamerName==null) return;
+//		return teamDao.checkAndConvert(streamerName);
+//	}
+//	
+	
 	
 	@GetMapping("/{tournamentId}")
 	public List<TeamListVO> selectList(@PathVariable int tournamentId){
@@ -43,6 +52,8 @@ public class TeamRestController {
 	public List<StreamerTeamListVO> selectListByStreamerNo(@PathVariable int streamerNo){
 		return teamDao.selectListByStreamerNo(streamerNo);
 	}
+	
+
 
 	
 }

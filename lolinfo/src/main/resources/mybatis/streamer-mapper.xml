@@ -27,6 +27,13 @@
 		select * from streamer
 		where streamer_no = #{streamerNo}
 	</select>
+	
+	<!-- 체크용 : 스트리머명으로 조회 -->
+	<select id="selectByStreamerName" resultType="streamerDto">
+		select * from streamer
+		where streamer_name=#{streamerName}
+	</select>
+	
 
 	<!-- 수정 -->
 	<update id="update">
