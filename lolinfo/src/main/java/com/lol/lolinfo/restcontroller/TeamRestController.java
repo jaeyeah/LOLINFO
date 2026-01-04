@@ -15,6 +15,7 @@ import com.lol.lolinfo.dao.TeamDao;
 import com.lol.lolinfo.dto.TeamDto;
 import com.lol.lolinfo.vo.StreamerTeamListVO;
 import com.lol.lolinfo.vo.TeamListVO;
+import com.lol.lolinfo.vo.TeamResponseVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,12 +35,12 @@ public class TeamRestController {
 		System.out.println("팀 등록 실행");
 	}
 	//등록시 스트리머 중복체크 -> id로 변경
-//	@GetMapping("/check/{streamerName}")
-//	public void check(@PathVariable String streamerName) {
-////		if(streamerName==null) return;
-//		return teamDao.checkAndConvert(streamerName);
-//	}
-//	
+	@GetMapping("/check/{streamerName}")
+	public TeamResponseVO check(@PathVariable String streamerName) {
+		//if(streamerName==null) return;
+		return teamDao.checkAndConvert(streamerName);
+	}
+	
 	
 	
 	@GetMapping("/{tournamentId}")
