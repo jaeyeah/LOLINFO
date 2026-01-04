@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class TeamDto {
-	private int teamId;
+	private Integer teamId;
 	private int tournamentId;
 	private String teamName;
 	private String teamRanking;
