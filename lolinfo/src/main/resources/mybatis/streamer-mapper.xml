@@ -19,7 +19,7 @@
 
 	<!-- 조회 -->
 	<select id="selectList" resultType="streamerlistVO">
-		select * from streamer
+		select * from streamer order by streamer_no
 	</select>
 	
 	<!-- 상세조회 -->
