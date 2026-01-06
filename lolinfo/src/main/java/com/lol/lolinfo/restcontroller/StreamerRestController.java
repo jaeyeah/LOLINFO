@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.StreamerDao;
 import com.lol.lolinfo.dto.StreamerDto;
+import com.lol.lolinfo.vo.PageResponseVO;
+import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.StreamerStatVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,12 +39,22 @@ public class StreamerRestController {
 	
 	//전체 조회
 	@GetMapping("/")
-	public List<StreamerStatVO> selectList(){
-		return streamerDao.selectList();
+	public PageResponseVO<StreamerStatVO> selectList(@RequestParam(defaultValue = "1") int page){
+		int totalCount = streamerDao.count();
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(page);
+		pageVO.setTotalCount(totalCount);
+		List<StreamerStatVO> list = streamerDao.selectList(pageVO);
+		return new PageResponseVO<>(list, pageVO);
 	}
 	@GetMapping("/totalList")
-	public List<StreamerStatVO> selectTotalRankingList(){
-		return streamerDao.selectTotalRankingList();
+	public PageResponseVO<StreamerStatVO> selectTotalRankingList(@RequestParam(defaultValue = "1") int page){
+		int totalCount = streamerDao.count();
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(page);
+		pageVO.setTotalCount(totalCount);
+		List<StreamerStatVO> list = streamerDao.selectTotalRankingList(pageVO);
+		return new PageResponseVO<>(list, pageVO);
 	}
 	
 

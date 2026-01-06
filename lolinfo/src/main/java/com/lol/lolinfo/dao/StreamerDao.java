@@ -1,12 +1,15 @@
 package com.lol.lolinfo.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.StreamerDto;
+import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.StreamerStatVO;
 
 @Repository
@@ -23,12 +26,15 @@ public class StreamerDao {
 	}
 	
 	//조회
-	public List<StreamerStatVO> selectList(){
-		return sqlSession.selectList("streamer.selectList");
+	public List<StreamerStatVO> selectList(PageVO pageVO){
+		return sqlSession.selectList("streamer.selectList", pageVO);
 	}
 	//조회(Order by 비공식포함)
-	public List<StreamerStatVO> selectTotalRankingList(){
-		return sqlSession.selectList("streamer.selectTotalRankingList");
+	public List<StreamerStatVO> selectTotalRankingList(PageVO pageVO){
+		return sqlSession.selectList("streamer.selectTotalRankingList",pageVO);
+	}
+	public int count() {
+		return sqlSession.selectOne("streamer.count");
 	}
 	
 	
