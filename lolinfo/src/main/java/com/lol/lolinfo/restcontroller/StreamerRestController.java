@@ -47,7 +47,7 @@ public class StreamerRestController {
 
 	//상세 조회
 	@GetMapping("/{streamerNo}")
-	public StreamerDto selectOne(@PathVariable int streamerNo) {
+	public StreamerStatVO selectOne(@PathVariable int streamerNo) {
 		return streamerDao.selectOne(streamerNo);
 	}
 

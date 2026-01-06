@@ -18,7 +18,7 @@ public class StreamerStatVO {
 	// 공식 기록
 	private int officialRanking1; //우승
 	private int officialRanking2; //준우승
-	private int officailRanking3; //4강
+	private int officialRanking3; //4강
 
 	// 전체 기록
 	private int totalRanking1; // 전체 우승

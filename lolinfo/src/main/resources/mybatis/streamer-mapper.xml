@@ -33,8 +33,8 @@
 	
 	
 	<!-- 상세조회 -->
-	<select id="selectOne" resultType="streamerDto">
-		select * from streamer
+	<select id="selectOne" resultType="StreamerStatVO">
+		select * from streamer_stat_list
 		where streamer_no = #{streamerNo}
 	</select>
 	

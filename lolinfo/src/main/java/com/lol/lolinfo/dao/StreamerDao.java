@@ -33,7 +33,7 @@ public class StreamerDao {
 	
 	
 	//상세조회
-	public StreamerDto selectOne(int streamerNo) {
+	public StreamerStatVO selectOne(int streamerNo) {
 		return sqlSession.selectOne("streamer.selectOne",streamerNo);
 	}
 	
