@@ -18,9 +18,11 @@
 	</insert>
 
 	<!-- 조회 -->
-	<select id="selectList" resultType="streamerlistVO">
-		select * from streamer order by streamer_no
+	<select id="selectList" resultType="StreamerStatVO">
+		select * from streamer_stat_list order by streamer_no
 	</select>
+	
+	
 	
 	<!-- 상세조회 -->
 	<select id="selectOne" resultType="streamerDto">

@@ -1,7 +1,6 @@
 package com.lol.lolinfo.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.lol.lolinfo.dto.StreamerDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,11 +9,22 @@ import lombok.NoArgsConstructor;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class StreamerListVO {
-	// DB 데이터
-	private Integer streamerNo;
+public class StreamerStatVO {
+	
+	private int streamerNo;
 	private String streamerSoopId;
 	private String streamerName;
+
+	// 공식 기록
+	private int officialRanking1; //우승
+	private int officialRanking2; //준우승
+	private int officailRanking3; //4강
+
+	// 전체 기록
+	private int totalRanking1; // 전체 우승
+	private int totalRanking2; // 전체 준우승
+	private int totalRanking3; // 전체 4강
+	
 	// 가공데이터 (URL)
     // URL은 ‘게터에서’ 계산
     public String getStreamerStation() {
