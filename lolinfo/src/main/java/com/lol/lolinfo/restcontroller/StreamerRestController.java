@@ -39,6 +39,11 @@ public class StreamerRestController {
 	public List<StreamerStatVO> selectList(){
 		return streamerDao.selectList();
 	}
+	@GetMapping("/totalList")
+	public List<StreamerStatVO> selectTotalRankingList(){
+		return streamerDao.selectTotalRankingList();
+	}
+	
 
 	//상세 조회
 	@GetMapping("/{streamerNo}")

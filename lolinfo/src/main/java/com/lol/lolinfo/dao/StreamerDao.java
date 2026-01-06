@@ -26,6 +26,11 @@ public class StreamerDao {
 	public List<StreamerStatVO> selectList(){
 		return sqlSession.selectList("streamer.selectList");
 	}
+	//조회(Order by 비공식포함)
+	public List<StreamerStatVO> selectTotalRankingList(){
+		return sqlSession.selectList("streamer.selectTotalRankingList");
+	}
+	
 	
 	//상세조회
 	public StreamerDto selectOne(int streamerNo) {

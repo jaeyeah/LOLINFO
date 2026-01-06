@@ -19,7 +19,15 @@
 
 	<!-- 조회 -->
 	<select id="selectList" resultType="StreamerStatVO">
-		select * from streamer_stat_list order by streamer_no
+		select * from streamer_stat_list
+		order by official_ranking1 desc, official_ranking2 desc,
+				official_ranking1 desc, streamer_name asc
+	</select>
+		<!-- 조회 -->
+	<select id="selectTotalRankingList" resultType="StreamerStatVO">
+		select * from streamer_stat_list
+		order by total_ranking1 desc, total_ranking2 desc,
+				total_ranking1 desc, streamer_name asc
 	</select>
 	
 	
