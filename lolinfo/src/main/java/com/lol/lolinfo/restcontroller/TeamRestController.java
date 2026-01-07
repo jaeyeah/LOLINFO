@@ -28,7 +28,7 @@ public class TeamRestController {
 	@Autowired
 	private TeamDao teamDao;
 	
-	//등록
+	///등록
 	@PostMapping("/")
 	public void insert(@RequestBody TeamDto teamDto) {
 		teamDao.insert(teamDto);
@@ -43,7 +43,14 @@ public class TeamRestController {
 	
 	
 	
-	@GetMapping("/{tournamentId}")
+	// 상세조회 by teamId
+	@GetMapping("/{teamId}")
+	public TeamDto selectOne(@PathVariable int teamId) {
+		return teamDao.selectOne(teamId);
+	}
+	
+	// 목록조회 by 대회ID
+	@GetMapping("/tournament/{tournamentId}")
 	public List<TeamListVO> selectList(@PathVariable int tournamentId){
 		return teamDao.selectList(tournamentId);
 	}
@@ -53,7 +60,6 @@ public class TeamRestController {
 	public List<StreamerTeamListVO> selectListByStreamerNo(@PathVariable int streamerNo){
 		return teamDao.selectListByStreamerNo(streamerNo);
 	}
-	
 
 
 	

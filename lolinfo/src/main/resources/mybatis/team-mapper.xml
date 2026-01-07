@@ -21,15 +21,19 @@
 		)
 	</insert>
 
+	<!-- 상세조회 -->
+	<select id="selectOne" resultType="teamDto">
+		select * from team where teamId = #{teamId}
+	</select>
 	
-	<!-- 대회별 팀 상세조회 -->
+	<!-- 대회별 팀 목록조회 -->
 	<select id="selectListByTournamentId" resultType="teamListVO">
 		select * from team_list
 		where tournament_id = #{tournamentId}
 		<!-- order by tournament_year  -->
 	</select>
 	
-	<!-- 인원별 팀 상세조회 -->
+	<!-- 인원별 팀 목록조회 -->
 	<select id="selectListByStreamerNo" resultType="streamerTeamListVO">
 		select * from streamer_team_list
 		where team_top = #{streamerNo}

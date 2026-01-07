@@ -37,12 +37,18 @@ public class TeamDao {
 	}
 	
 	
-	// 대회별 상세조회
+	// 상세조회
+	public TeamDto selectOne(int teamId) {
+		return sqlSession.selectOne("team.selectOne",teamId);
+	}
+	
+	
+	// 대회별 목록조회
 	public List<TeamListVO> selectList(int tournamentId){
 		return sqlSession.selectList("team.selectListByTournamentId", tournamentId);
 	}
 	
-	// 스트리머별 상세조회
+	// 스트리머별 목록조회
 	public List<StreamerTeamListVO> selectListByStreamerNo(int streamerNo){
 		return sqlSession.selectList("team.selectListByStreamerNo", streamerNo);
 	}
