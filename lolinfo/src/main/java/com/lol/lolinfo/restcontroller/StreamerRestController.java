@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,12 +61,22 @@ public class StreamerRestController {
 
 	//상세 조회
 	@GetMapping("/{streamerNo}")
-	public StreamerStatVO selectOne(@PathVariable int streamerNo) {
+	public StreamerStatVO selectOnePlusStat(@PathVariable int streamerNo) {
+		return streamerDao.selectOnePlusStat(streamerNo);
+	}
+	
+	//상세 조회
+	@GetMapping("/no/{streamerNo}")
+	public StreamerDto selectOne(@PathVariable int streamerNo) {
 		return streamerDao.selectOne(streamerNo);
 	}
 
 	//수정
-	
+	@PutMapping("/")
+	public void update(@RequestBody StreamerDto streamerDto) {
+		streamerDao.update(streamerDto);
+		System.out.println("스트리머 수정 실행");
+	}
 	//삭제
 	@DeleteMapping("/{streamerNo}")
 	public void delete(@PathVariable int streamerNo) {

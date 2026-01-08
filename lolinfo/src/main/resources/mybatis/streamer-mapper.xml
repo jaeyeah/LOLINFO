@@ -43,10 +43,14 @@
 	) where rn between #{begin} and #{end}
 	</select>
 	
-	
+	<!-- 상세조회 -->
+	<select id="selectOne" resultType="StreamerDto">
+		select * from streamer
+		where streamer_no = #{streamerNo}
+	</select>
 	
 	<!-- 상세조회 -->
-	<select id="selectOne" resultType="StreamerStatVO">
+	<select id="selectOnePlusStat" resultType="StreamerStatVO">
 		select * from streamer_stat_list
 		where streamer_no = #{streamerNo}
 	</select>
@@ -62,8 +66,7 @@
 	<update id="update">
 		update streamer 
 		set streamer_soop_id=#{streamerSoopId},
-			streamer_name=#{streamerName},
-			streamer_profile_url=#{streamerProfileUrl}
+			streamer_name=#{streamerName}
 		where streamer_no = #{streamerNo}
 	</update>
 	

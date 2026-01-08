@@ -1,8 +1,6 @@
 package com.lol.lolinfo.dao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +35,20 @@ public class StreamerDao {
 		return sqlSession.selectOne("streamer.count");
 	}
 	
-	
 	//상세조회
-	public StreamerStatVO selectOne(int streamerNo) {
+	public StreamerDto selectOne(int streamerNo) {
 		return sqlSession.selectOne("streamer.selectOne",streamerNo);
 	}
+	//상세조회
+	public StreamerStatVO selectOnePlusStat(int streamerNo) {
+		return sqlSession.selectOne("streamer.selectOnePlusStat",streamerNo);
+	}
+	
+	//수정
+	public void update(StreamerDto streamerDto) {
+		sqlSession.update("streamer.update", streamerDto);
+	}
+	
 	
 	//삭제
 	public boolean delete(int streamerNo) {
