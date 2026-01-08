@@ -30,5 +30,10 @@ public class HostDao {
 		return sqlSession.selectList("host.selectListByStreamerNo",streamerNo);
 	}
 	
+	//삭제
+	public void delete(HostDto hostDto) {
+		sqlSession.delete("host.delete",hostDto);
+	}
+	
 	
 }

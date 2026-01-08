@@ -25,4 +25,10 @@
 		where host_streamer=#{streamerNo}
 	</select>
 
+	<!-- 삭제 -->
+	<delete id="delete">
+		delete tournament_host
+		where host_streamer=#{hostStreamer} and host_tournament=#{hostTournament}
+	</delete>
+	
 </mapper>
