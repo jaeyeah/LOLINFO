@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.TournamentDao;
 import com.lol.lolinfo.dto.TournamentDto;
+import com.lol.lolinfo.service.TournamentService;
 import com.lol.lolinfo.vo.TournamentListVO;
+import com.lol.lolinfo.vo.TournamentRequestVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,11 +28,15 @@ public class TournamentRestController {
 
 	@Autowired
 	private TournamentDao tournamentDao;
+	@Autowired
+	private TournamentService tournamentService;
 	
 	//등록
 	@PostMapping("/")
-	public void insert(@RequestBody TournamentDto tournamentDto) {
-		tournamentDao.insert(tournamentDto);
+	public void insert(@RequestBody TournamentRequestVO tournamentRequestVO) {
+		//tournamentDao.insert(tournamentDto);
+		//hostDao.insert(hostDto);
+		tournamentService.insertTournament(tournamentRequestVO);
 		System.out.println("대회 등록 실행");
 	}
 	
