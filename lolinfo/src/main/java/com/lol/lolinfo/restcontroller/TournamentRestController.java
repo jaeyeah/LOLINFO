@@ -34,8 +34,6 @@ public class TournamentRestController {
 	//등록
 	@PostMapping("/")
 	public void insert(@RequestBody TournamentRequestVO tournamentRequestVO) {
-		//tournamentDao.insert(tournamentDto);
-		//hostDao.insert(hostDto);
 		tournamentService.insertTournament(tournamentRequestVO);
 		System.out.println("대회 등록 실행");
 	}
@@ -55,8 +53,8 @@ public class TournamentRestController {
 
 	//수정
 	@PutMapping("/{tournamentId}")
-	public void update(@RequestBody TournamentDto tournamentDto) {
-		tournamentDao.update(tournamentDto);
+	public void update(@RequestBody TournamentRequestVO tournamentRequestVO) {
+		tournamentService.updateTournament(tournamentRequestVO);
 		System.out.println("대회 수정 실행");
 	}
 	//삭제

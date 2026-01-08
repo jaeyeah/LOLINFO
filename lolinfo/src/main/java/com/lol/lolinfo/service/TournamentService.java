@@ -20,7 +20,6 @@ public class TournamentService {
     @Transactional
     public void insertTournament(TournamentRequestVO request) {
     	// 대회 등록
-    	System.out.println("-------------------"+request);
     	tournamentDao.insert(request.getTournamentDto());
     	// 대회 번호 추출
     	int tournamentId = request.getTournamentDto().getTournamentId();
@@ -30,4 +29,17 @@ public class TournamentService {
     		hostDao.insert(hostDto);		
     	}
     }
+
+    @Transactional
+    public void updateTournament(TournamentRequestVO request) {
+    	// 대회 수정
+    	tournamentDao.update(request.getTournamentDto());
+    	int tournamentId = request.getTournamentDto().getTournamentId();
+    	// 개최자 추가등록
+    	for(HostDto hostDto : request.getHostDto()) {
+    		hostDto.setHostTournament(tournamentId);
+    		hostDao.insert(hostDto);		
+    	}
+    }
+
 }
