@@ -14,4 +14,15 @@
 		)
 	</insert>
 
+	<!-- 대회별 개최자 조회 -->
+	<select id="selectListByTournamentId" resultType="HostListVO">
+		select * from host_list
+		where host_tournament=#{tournamentId}
+	</select>
+	<!-- 스트리머별 개최대회 조회 -->
+	<select id="selectListByStreamerNo" resultType="HostListVO">
+		select * from host_list
+		where host_streamer=#{streamerNo}
+	</select>
+
 </mapper>
