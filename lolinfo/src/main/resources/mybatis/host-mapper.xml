@@ -23,6 +23,7 @@
 	<select id="selectListByStreamerNo" resultType="HostListVO">
 		select * from host_list
 		where host_streamer=#{streamerNo}
+		order by tournament_year desc
 	</select>
 
 	<!-- 삭제 -->

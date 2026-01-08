@@ -36,7 +36,7 @@ public class HostRestController {
 	//목록조회 2
 	@GetMapping("/streamer/{streamerNo}")
 	public List<HostListVO> selectListByStreamerNo(@PathVariable int streamerNo){
-		return hostDao.selectListByTournamentId(streamerNo);
+		return hostDao.selectListByStreamerNo(streamerNo);
 	}
 	
 	//삭제
