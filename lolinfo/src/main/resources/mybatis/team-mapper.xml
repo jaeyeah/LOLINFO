@@ -22,8 +22,8 @@
 	</insert>
 
 	<!-- 상세조회 -->
-	<select id="selectOne" resultType="teamDto">
-		select * from team where teamId = #{teamId}
+	<select id="selectOne" resultType="teamListVO">
+		select * from team_list where team_id = #{teamId}
 	</select>
 	
 	<!-- 대회별 팀 목록조회 -->

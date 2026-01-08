@@ -45,7 +45,7 @@ public class TeamRestController {
 	
 	// 상세조회 by teamId
 	@GetMapping("/{teamId}")
-	public TeamDto selectOne(@PathVariable int teamId) {
+	public TeamListVO selectOne(@PathVariable int teamId) {
 		return teamDao.selectOne(teamId);
 	}
 	

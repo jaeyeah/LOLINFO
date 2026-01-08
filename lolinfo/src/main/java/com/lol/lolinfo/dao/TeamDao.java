@@ -38,7 +38,7 @@ public class TeamDao {
 	
 	
 	// 상세조회
-	public TeamDto selectOne(int teamId) {
+	public TeamListVO selectOne(int teamId) {
 		return sqlSession.selectOne("team.selectOne",teamId);
 	}
 	
