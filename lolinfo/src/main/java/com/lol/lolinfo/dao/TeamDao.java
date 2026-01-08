@@ -52,4 +52,10 @@ public class TeamDao {
 	public List<StreamerTeamListVO> selectListByStreamerNo(int streamerNo){
 		return sqlSession.selectList("team.selectListByStreamerNo", streamerNo);
 	}
+	
+	
+	// 수정
+	public void update(TeamDto teamDto) {
+		sqlSession.update("team.update", teamDto);
+	}
 }
