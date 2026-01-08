@@ -32,4 +32,9 @@ public class TournamentDao {
 		return sqlSession.selectOne("tournament.selectOne",tounnamentId);
 	}
 	
+	//수정
+	public void update(TournamentDto tournamentDto) {
+		sqlSession.update("tournament.update", tournamentDto);
+	}
+	
 }

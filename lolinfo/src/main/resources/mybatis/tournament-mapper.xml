@@ -33,6 +33,19 @@
 		where tournament_id = #{tournamentId}
 		order by tournament_year desc, tournament_end asc
 	</select>
+	
+	<!-- 수정 -->
+	<update id="update">
+	update tournament
+		set
+		tournament_name=#{tournamentName},
+		tournament_year=#{tournamentYear},
+		tournament_start=#{tournamentStart},
+		tournament_end=#{tournamentEnd},
+		tournament_isofficial=#{tournamentIsofficial},
+		tournament_tier_type=#{tournamentTierType}
+	where tournament_id=#{tournamentId}
+	</update>
 
 
 </mapper>
