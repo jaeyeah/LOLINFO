@@ -26,6 +26,7 @@ public class TournamentService {
     	// 개최자 등록
     	for(HostDto hostDto : request.getHostDto()) {
     		hostDto.setHostTournament(tournamentId);
+    		if(hostDto.getHostStreamer() == null) continue; 
     		hostDao.insert(hostDto);		
     	}
     }
@@ -38,6 +39,7 @@ public class TournamentService {
     	// 개최자 추가등록
     	for(HostDto hostDto : request.getHostDto()) {
     		hostDto.setHostTournament(tournamentId);
+    		if(hostDto.getHostStreamer() == null) continue; 
     		hostDao.insert(hostDto);		
     	}
     }
