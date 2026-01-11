@@ -31,5 +31,17 @@ public class TeamService {
     	}
     }
 
+    @Transactional
+    public void updateTeam(TeamRequestVO request) { 
+    	// 팀 수정
+    	teamDao.update(request.getTeamDto());
+    	int teamId = request.getTeamDto().getTeamId();
+    	// 스태프 추가등록
+    	for(StaffDto staffDto : request.getStaffDto()) {
+    		staffDto.setStaffTeam(teamId);
+    		if(staffDto.getStaffStreamer() == null) continue;
+    		staffDao.insert(staffDto);
+    	}
+    }
 
 }

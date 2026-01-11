@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.TeamDao;
-import com.lol.lolinfo.dto.TeamDto;
 import com.lol.lolinfo.service.TeamService;
 import com.lol.lolinfo.vo.StreamerTeamListVO;
 import com.lol.lolinfo.vo.TeamListVO;
@@ -68,8 +67,8 @@ public class TeamRestController {
 	
 	//수정
 	@PutMapping("/")
-	public void edit(@RequestBody TeamDto teamDto) {
-		teamDao.update(teamDto);
+	public void edit(@RequestBody TeamRequestVO teamRequestVO) {
+		teamService.updateTeam(teamRequestVO);
 		System.out.println("팀 수정 실행");
 	}
 
