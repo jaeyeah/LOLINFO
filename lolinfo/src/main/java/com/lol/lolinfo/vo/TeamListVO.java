@@ -31,5 +31,8 @@ public class TeamListVO {
 	private String midId;
 	private String adId;
 	private String supId;
-	
+	// 감독 추가
+	private Integer staffStreamer;
+	private String staffName;
+	private String staffId;
 }
