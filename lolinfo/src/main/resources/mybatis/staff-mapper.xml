@@ -13,6 +13,13 @@
 			#{staffStreamer}, #{staffTeam}, #{staffRole}
 		)
 	</insert>
+	
+	<!-- 목록 - 개인상세 조회용  -->
+	<select id="selectListByStreamerNo" resultType="staffListVO">
+		select * from staff_list
+		where staff_streamer = #{streamerNo}
+		order by tournament_year desc
+	</select>
 
 	
 	
