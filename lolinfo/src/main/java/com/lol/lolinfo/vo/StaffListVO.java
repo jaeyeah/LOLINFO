@@ -15,8 +15,6 @@ public class StaffListVO {
 	private Integer staffStreamer;
 	private Integer staffTeam;
 	private String staffRole;
-	private String streamerName;
-	private String streamerSoopId;
 	private String teamName;
 	private String teamRanking;
 	private Integer tournamentYear;

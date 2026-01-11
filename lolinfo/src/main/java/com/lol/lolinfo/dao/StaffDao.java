@@ -23,4 +23,9 @@ public class StaffDao {
 	public List<StaffListVO> selectListByStreamerNo(int streamerNo){
 		return sqlSession.selectList("staff.selectListByStreamerNo", streamerNo);
 	}
+	
+	//삭제
+	public void delete(StaffDto staffDto) {
+		sqlSession.delete("staff.delete", staffDto);
+	}
 }

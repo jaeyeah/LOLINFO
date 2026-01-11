@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.StaffDao;
+import com.lol.lolinfo.dto.StaffDto;
 import com.lol.lolinfo.vo.StaffListVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +41,9 @@ public class StaffRestController {
 //	}
 	
 //	//삭제
-//	@DeleteMapping("/")
-//	public void delete(@RequestBody HostDto hostDto) {
-//		hostDao.delete(hostDto);
-//		System.out.println("개최자 삭제 실행");
-//	}
+	@DeleteMapping("/")
+	public void delete(@RequestBody StaffDto staffDto) {
+		staffDao.delete(staffDto);
+		System.out.println("감독/코치 삭제 실행");
+	}
 }
