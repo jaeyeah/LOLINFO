@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="staff">
+	
+	<!-- 등록 -->
+	<insert id="insert">
+		insert into team_staff(
+			staff_streamer, staff_team, staff_role
+		)
+		values(
+			#{staffStreamer}, #{staffTeam}, #{staffRole}
+		)
+	</insert>
+
+	
+	
+	<!-- 삭제 -->
+	<delete id="delete">
+		delete team_staff
+		where staff_streamer=#{staffStreamer} and staff_team=#{staffTeam}
+	</delete>
+	
+</mapper>

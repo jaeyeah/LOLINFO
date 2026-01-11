@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.TeamDao;
 import com.lol.lolinfo.dto.TeamDto;
+import com.lol.lolinfo.service.TeamService;
 import com.lol.lolinfo.vo.StreamerTeamListVO;
 import com.lol.lolinfo.vo.TeamListVO;
+import com.lol.lolinfo.vo.TeamRequestVO;
 import com.lol.lolinfo.vo.TeamResponseVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +30,13 @@ public class TeamRestController {
 
 	@Autowired
 	private TeamDao teamDao;
+	@Autowired
+	private TeamService teamService;
 	
 	///등록
 	@PostMapping("/")
-	public void insert(@RequestBody TeamDto teamDto) {
-		teamDao.insert(teamDto);
+	public void insert(@RequestBody TeamRequestVO teamRequestVO) {
+		teamService.insertTeam(teamRequestVO);
 		System.out.println("팀 등록 실행");
 	}
 	//등록시 스트리머 중복체크 -> id로 변경
