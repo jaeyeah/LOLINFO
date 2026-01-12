@@ -12,12 +12,12 @@
 		insert into team(
 			team_id, tournament_id, team_name,
 			team_top, team_jug, team_mid, team_ad, team_sup,
-			team_ranking, team_note
+			team_ranking
 		)
 		values(
 			#{teamId}, #{tournamentId}, #{teamName}, 
 			#{teamTop}, #{teamJug}, #{teamMid}, #{teamAd}, #{teamSup},     
-			#{teamRanking}, #{teamNote}  
+			#{teamRanking} 
 		)
 	</insert>
 
@@ -53,7 +53,6 @@
 		team_ad=#{teamAd},
 		team_sup=#{teamSup},
 		team_ranking=#{teamRanking},
-		team_note=#{teamNote}
 	where team_id=#{teamId}
 	</update>
 

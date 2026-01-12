@@ -15,7 +15,6 @@ public class TeamListVO {
 	private int tournamentId;
 	private String teamName;
 	private String teamRanking;
-	private String teamNote;
 	private int teamTop;
 	private int teamJug;
 	private int teamMid;
