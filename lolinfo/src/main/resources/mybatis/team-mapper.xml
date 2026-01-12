@@ -52,7 +52,7 @@
 		team_mid=#{teamMid},
 		team_ad=#{teamAd},
 		team_sup=#{teamSup},
-		team_ranking=#{teamRanking},
+		team_ranking=#{teamRanking}
 	where team_id=#{teamId}
 	</update>
 
