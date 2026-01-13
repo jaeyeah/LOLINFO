@@ -17,8 +17,8 @@ public class MemberDto {
 	private String memberId;
 	private String memberPw;
 	private String memberNickname;
-	private String memebrEmail;
-	private int memberPoint;
+	private String memberEmail;
+	private Integer memberPoint;
 	private String memberLevel;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private LocalDateTime memberJoin;
