@@ -13,4 +13,20 @@
 		) 
 	</insert>
 	
+	<!-- 조회 -->
+	<select id="selectList" resultType="memberDto">
+		select * from member order by member_join desc
+	</select>
+	
+	<!-- 상세조회 -->
+	<select id="detail" resultType="memberDto">
+		select * from member where member_id = #{memberId}
+	</select> 
+	
+	<!-- 상세조회 by 닉네임 -->
+	<select id="detailByNickname" resultType="memberDto">
+		select * from member where member_nickname = #{memberNickname}
+	</select> 
+	
+	
 </mapper>
