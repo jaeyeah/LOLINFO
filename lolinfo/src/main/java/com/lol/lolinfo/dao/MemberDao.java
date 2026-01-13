@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.MemberDto;
@@ -13,10 +14,15 @@ public class MemberDao {
 
 	@Autowired
 	private SqlSession sqlSession;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	/// 등록(회원가입)
 	public void insert(MemberDto memberDto) {
 		// 비밀번호 암호화
+		String origin = memberDto.getMemberPw();
+		String encoded = passwordEncoder.encode(origin); // 암호화
+		memberDto.setMemberPw(encoded);
 		// 등록
 		sqlSession.insert("member.insert", memberDto);
 	}
