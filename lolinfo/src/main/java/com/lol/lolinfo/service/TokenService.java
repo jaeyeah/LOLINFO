@@ -9,10 +9,10 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.finalproject.dao.MemberTokenDao;
-import com.kh.finalproject.dto.MemberTokenDto;
 import com.lol.lolinfo.configuration.JwtProperties;
+import com.lol.lolinfo.dao.MemberTokenDao;
 import com.lol.lolinfo.dto.MemberDto;
+import com.lol.lolinfo.dto.MemberTokenDto;
 import com.lol.lolinfo.error.UnauthorizationException;
 import com.lol.lolinfo.vo.TokenVO;
 
@@ -79,7 +79,6 @@ public class TokenService {
 				.claim("loginId", memberDto.getMemberId())
 				.claim("loginLevel", memberDto.getMemberLevel())
 				.claim("loginNickname", memberDto.getMemberNickname())
-				//.claim("loginPoint", memberDto.getMemberPoint())
 			.compact();
 		
 		// 같은 아이디로 저장된 발행 내역을 모두 삭제

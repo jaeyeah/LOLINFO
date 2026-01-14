@@ -12,27 +12,11 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
     private TokenRenewalInterceptor tokenRenewalInterceptor;
     @Autowired
     private MemberInterceptor memberInterceptor;
-    @Autowired
-    private TokenParsingInterceptor tokenParsingInterceptor;
+
     
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        
-    	registry.addInterceptor(tokenParsingInterceptor)
-    	.addPathPatterns(
-//    			"/board/**",
-//    			"/board/reply/**",
-//    			"/board/report/**",
-    			"/board/viewUpdate/**")
-//    	.excludePathPatterns(
-//                "/board/",           // 게시글 전체 조회
-//                "/board/page/**",    // 게시글 페이지 조회
-//                "/board/contentsId/**", // 컨텐츠별 게시글 조회
-//                "/board/{boardNo}"   // 게시글 상세 조회 (숫자만 오는 경우)
-//        )
-    	;
-
-    	
+            	
         // 1. 로그인 검사 인터셉터 (회원 전용 기능 보호)
          registry.addInterceptor(memberInterceptor)
             .addPathPatterns(

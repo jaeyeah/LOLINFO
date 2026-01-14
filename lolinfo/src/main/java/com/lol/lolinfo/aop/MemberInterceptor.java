@@ -1,11 +1,11 @@
 package com.lol.lolinfo.aop;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.kh.finalproject.error.UnauthorizationException;
+import com.lol.lolinfo.error.UnauthorizationException;
+import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.TokenVO;
 
 import io.jsonwebtoken.ExpiredJwtException; // ★ 이 임포트 추가 필수!

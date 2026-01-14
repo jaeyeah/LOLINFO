@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.kh.finalproject.vo.TokenVO;
 import com.lol.lolinfo.configuration.JwtProperties;
+import com.lol.lolinfo.service.TokenService;
+import com.lol.lolinfo.vo.TokenVO;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
