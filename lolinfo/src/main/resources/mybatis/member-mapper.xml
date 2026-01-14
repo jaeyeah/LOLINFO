@@ -28,5 +28,10 @@
 		select * from member where member_nickname = #{memberNickname}
 	</select> 
 	
+	<!-- 삭제 -->
+	<delete id="delete">
+		delete member where member_id = #{memberId}
+	</delete>
+	
 	
 </mapper>

@@ -42,8 +42,9 @@ public class MemberDao {
 		return sqlSession.selectOne("member.detailByNickname", memberNickname);
 	}
 	
-	
-	
-	
+	/// 삭제 (회원탈퇴)
+	public boolean delete(String memberId) {
+		return sqlSession.delete("member.delete", memberId) > 0;
+	}
 	
 }

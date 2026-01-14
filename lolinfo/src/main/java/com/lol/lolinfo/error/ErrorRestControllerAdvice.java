@@ -11,15 +11,15 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class ErrorRestControllerAdvice {
 	// catch 블럭처럼 사용할 수 있는 도구
-		@ExceptionHandler(value= {TargetNotfoundException.class, NoResourceFoundException.class})
+		@ExceptionHandler(TargetNotfoundException.class)
 		public ResponseEntity<String> notFound(TargetNotfoundException e) {
-			return ResponseEntity.notFound().build(); // 404
+			return ResponseEntity.status(404).build(); // 404
 		}
 		
-//	    @ExceptionHandler(value= {TargetNotfoundException.class, NoResourceFoundException.class})
-//	    public ResponseEntity<String> notFound(RuntimeException e) { 
-//	        return ResponseEntity.notFound().build(); // 404
-//	    }
+	   @ExceptionHandler(NoResourceFoundException.class)
+	    public ResponseEntity<String> noResource(NoResourceFoundException e) {
+	        return ResponseEntity.notFound().build();
+	    }
 
 		@ExceptionHandler(UnauthorizationException.class)
 		public ResponseEntity<String> unauthorize(UnauthorizationException e) {
