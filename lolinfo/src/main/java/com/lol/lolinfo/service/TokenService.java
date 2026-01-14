@@ -9,12 +9,12 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.finalproject.configuration.JwtProperties;
 import com.kh.finalproject.dao.MemberTokenDao;
-import com.kh.finalproject.dto.MemberDto;
 import com.kh.finalproject.dto.MemberTokenDto;
-import com.kh.finalproject.error.UnauthorizationException;
-import com.kh.finalproject.vo.TokenVO;
+import com.lol.lolinfo.configuration.JwtProperties;
+import com.lol.lolinfo.dto.MemberDto;
+import com.lol.lolinfo.error.UnauthorizationException;
+import com.lol.lolinfo.vo.TokenVO;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
