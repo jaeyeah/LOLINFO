@@ -58,6 +58,20 @@ public class StreamerRestController {
 		return new PageResponseVO<>(list, pageVO);
 	}
 	
+	//검색
+	@GetMapping("/keyword/{keyword}")
+	public PageResponseVO<StreamerStatVO> searchList(@RequestParam(defaultValue = "1") int page,
+												@PathVariable String keyword){
+		int totalCount = streamerDao.searchCount(keyword);
+		PageVO pageVO = new PageVO();
+		pageVO.setKeyword(keyword);
+		pageVO.setPage(page);
+		pageVO.setTotalCount(totalCount);
+		List<StreamerStatVO> list = streamerDao.searchStreamer(pageVO);
+		return new PageResponseVO<>(list, pageVO);
+	}
+	
+	
 
 	//상세 조회
 	@GetMapping("/{streamerNo}")

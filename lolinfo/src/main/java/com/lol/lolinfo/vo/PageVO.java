@@ -25,6 +25,8 @@ public class PageVO {
         return (int) Math.ceil((double) totalCount / size);
     }
 	
+	public String keyword;
+	
 	
 	// 그룹의 시작~끝번호
 	public int getBlockStart() {

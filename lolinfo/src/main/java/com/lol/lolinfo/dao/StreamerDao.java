@@ -34,6 +34,13 @@ public class StreamerDao {
 	public int count() {
 		return sqlSession.selectOne("streamer.count");
 	}
+	//검색
+	public List<StreamerStatVO> searchStreamer(PageVO pageVO) {
+		return sqlSession.selectList("streamer.searchStreamer",pageVO);
+	}
+	public int searchCount(String keyword) {
+		return sqlSession.selectOne("streamer.searchCount",keyword);
+	}
 	
 	//상세조회
 	public StreamerDto selectOne(int streamerNo) {

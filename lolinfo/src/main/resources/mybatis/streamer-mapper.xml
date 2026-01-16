@@ -72,7 +72,25 @@
 	
 	<!-- 삭제 -->
 	<delete id="delete">
-		delete where streamerNo = #{streamerNo}
+		delete streamer where streamerNo = #{streamerNo}
 	</delete>
+	
+	<!-- 검색 -->
+	<select id="searchStreamer" resultType="StreamerStatVO">
+	select * from (
+		select rownum rn, TMP.* from(
+			select * from streamer_stat_list
+			where streamer_name = #{keyword}
+			order by official_ranking1 desc, official_ranking2 desc,
+					official_ranking1 desc, streamer_name asc
+		) TMP
+	) where rn between #{begin} and #{end}
+	</select>
+	<!-- 인원수 Count -->
+	<select id="searchCount" resultType="int">
+		select count(*) from streamer
+		where streamer_name=#{keyword}
+	</select>
+	
 
 </mapper>
