@@ -80,7 +80,7 @@
 	select * from (
 		select rownum rn, TMP.* from(
 			select * from streamer_stat_list
-			where streamer_name = #{keyword}
+			where streamer_name LIKE '%' || #{keyword} || '%'
 			order by official_ranking1 desc, official_ranking2 desc,
 					official_ranking1 desc, streamer_name asc
 		) TMP
@@ -89,7 +89,7 @@
 	<!-- 인원수 Count -->
 	<select id="searchCount" resultType="int">
 		select count(*) from streamer
-		where streamer_name=#{keyword}
+		where streamer_name LIKE '%' || #{keyword} || '%'
 	</select>
 	
 
