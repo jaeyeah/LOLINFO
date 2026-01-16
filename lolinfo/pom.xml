@@ -29,6 +29,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<oracle.jdbc.version>21.9.0.0</oracle.jdbc.version>
 	</properties>
 	<dependencies>
 		<!--<dependency>
@@ -54,6 +55,7 @@
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc11</artifactId>
+			<version>${oracle.jdbc.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -124,7 +126,22 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		
+		  <!-- Wallet(SSO) 키스토어 처리용 -->
+		  <dependency>
+		    <groupId>com.oracle.database.security</groupId>
+		    <artifactId>oraclepki</artifactId>
+		    <version>${oracle.jdbc.version}</version>
+		  </dependency>
+		  <dependency>
+		    <groupId>com.oracle.database.security</groupId>
+		    <artifactId>osdt_core</artifactId>
+		    <version>${oracle.jdbc.version}</version>
+		  </dependency>
+		  <dependency>
+		    <groupId>com.oracle.database.security</groupId>
+		    <artifactId>osdt_cert</artifactId>
+		    <version>${oracle.jdbc.version}</version>
+		  </dependency>
 	</dependencies>
 
 	<build>
