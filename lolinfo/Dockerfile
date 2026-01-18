@@ -1,5 +1,5 @@
 # ---- Build stage ----
-FROM eclipse-temurin:17-jdk AS build
+FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 
 # 의존성 캐시 최적화 (mvnw 사용)
