@@ -10,11 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.TournamentDao;
 import com.lol.lolinfo.dto.TournamentDto;
 import com.lol.lolinfo.service.TournamentService;
+import com.lol.lolinfo.vo.PageResponseVO;
+import com.lol.lolinfo.vo.PageVO;
+import com.lol.lolinfo.vo.StreamerStatVO;
 import com.lol.lolinfo.vo.TournamentListVO;
 import com.lol.lolinfo.vo.TournamentRequestVO;
 
@@ -41,8 +45,13 @@ public class TournamentRestController {
 	
 	//전체 조회
 	@GetMapping("/")
-	public List<TournamentListVO> selectList(){
-		return tournamentDao.selectList();
+	public PageResponseVO<TournamentListVO> selectList(@RequestParam(defaultValue = "1") int page){
+		int totalCount = tournamentDao.count();
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(page);
+		pageVO.setTotalCount(totalCount);
+		List<TournamentListVO> list = tournamentDao.selectList(pageVO);
+		return new PageResponseVO<>(list, pageVO);
 	}
 
 	//상세 조회
