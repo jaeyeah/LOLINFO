@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.TournamentDto;
+import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.TournamentListVO;
 
 @Repository
@@ -23,8 +24,11 @@ public class TournamentDao {
 	}
 	
 	//조회
-	public List<TournamentListVO> selectList(){
-		return sqlSession.selectList("tournament.selectList");
+	public List<TournamentListVO> selectList(PageVO pageVO){
+		return sqlSession.selectList("tournament.selectList",pageVO);
+	}
+	public int count() {
+		return sqlSession.selectOne("tournament.count");
 	}
 	
 	//상세조회
