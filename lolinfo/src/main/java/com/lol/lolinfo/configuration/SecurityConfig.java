@@ -37,7 +37,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:5173",
-                						"https://lolinfo-fe.pages.dev"));
+                						"https://lolinfo-fe.pages.dev",
+                				        "https://www.sooplol.com",
+                				        "https://sooplol.com"
+        		));
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("Authorization"));
