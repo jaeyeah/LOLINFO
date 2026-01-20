@@ -2,8 +2,9 @@
 
 
 # LOLINFO
+https://www.sooplol.com/
 
-Deployment Architecture
+## Deployment Architecture
 Client (Browser)
         ↓
 Cloudflare Pages (React Frontend)
