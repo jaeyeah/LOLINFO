@@ -1,8 +1,9 @@
-<img width="918" height="748" alt="image" src="https://github.com/user-attachments/assets/8486e573-1a5f-48a9-98fd-309fdc9aa0d0" />
+
 
 
 # LOLINFO
 https://www.sooplol.com/
+<img width="918" height="748" alt="image" src="https://github.com/user-attachments/assets/8486e573-1a5f-48a9-98fd-309fdc9aa0d0" />
 
 ## Deployment Architecture
 Client (Browser)
