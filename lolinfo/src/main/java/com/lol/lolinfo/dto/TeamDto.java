@@ -15,9 +15,9 @@ public class TeamDto {
 	private int tournamentId;
 	private String teamName;
 	private String teamRanking;
-	private int teamTop;
-	private int teamJug;
-	private int teamMid;
-	private int teamAd;
-	private int teamSup;
+	private Integer teamTop;
+	private Integer teamJug;
+	private Integer teamMid;
+	private Integer teamAd;
+	private Integer teamSup;
 }
