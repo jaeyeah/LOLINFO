@@ -36,12 +36,10 @@ public class TeamDao {
 				.build();
 	}
 	
-	
 	// 상세조회
 	public TeamListVO selectOne(int teamId) {
 		return sqlSession.selectOne("team.selectOne",teamId);
 	}
-	
 	
 	// 대회별 목록조회
 	public List<TeamListVO> selectList(int tournamentId){
@@ -53,9 +51,15 @@ public class TeamDao {
 		return sqlSession.selectList("team.selectListByStreamerNo", streamerNo);
 	}
 	
-	
 	// 수정
 	public void update(TeamDto teamDto) {
 		sqlSession.update("team.update", teamDto);
 	}
+	
+	// 삭제
+	public void delete(int teamId) {
+		sqlSession.delete("team.delete",teamId);
+	}
+	
+	
 }
