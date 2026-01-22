@@ -56,5 +56,8 @@
 	where team_id=#{teamId}
 	</update>
 
+	<delete id="delete">
+		delete team where team_id=#{teamId}
+	</delete>
 
 </mapper>
