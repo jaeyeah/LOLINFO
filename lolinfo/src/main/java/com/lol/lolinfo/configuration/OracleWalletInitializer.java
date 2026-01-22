@@ -10,9 +10,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import jakarta.annotation.PostConstruct;
 
+@Profile("prod")
 @Configuration
 public class OracleWalletInitializer {
 
