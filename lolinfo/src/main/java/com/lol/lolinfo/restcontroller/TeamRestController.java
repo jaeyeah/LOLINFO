@@ -74,9 +74,9 @@ public class TeamRestController {
 	}
 
 	//삭제
-	@DeleteMapping("/")
+	@DeleteMapping("/{teamId}")
 	public void delete(@PathVariable int teamId) {
 		teamDao.delete(teamId);
-		System.out.println("팀 수정 실행");
+		System.out.println("팀 삭제 실행");
 	}
 }
