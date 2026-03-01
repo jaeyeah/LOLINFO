@@ -27,7 +27,7 @@
 	</select>
 	
 	<!-- 조회 -->
-	<select id="selectlist" resulttype="tournamentlistvo">
+	<select id="selectList" resultType="tournamentlistvo">
 	select tl.*
 		from (
 		  select tournament_id from (
