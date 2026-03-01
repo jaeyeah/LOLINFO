@@ -40,7 +40,6 @@
 	<select id="selectOne" resultType="tournamentDto">
 		select * from tournament
 		where tournament_id = #{tournamentId}
-		order by tournament_year desc, tournament_end asc
 	</select>
 	
 	<!-- 수정 -->
