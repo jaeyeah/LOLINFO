@@ -46,12 +46,26 @@ public class TournamentRestController {
 	//전체 조회
 	@GetMapping("/")
 	public PageResponseVO<TournamentListVO> selectList(@RequestParam(defaultValue = "1") int page){
+		
+		long t0 = System.currentTimeMillis();
 		int totalCount = tournamentDao.count();
+		long t1 = System.currentTimeMillis();
+		
+		
 		PageVO pageVO = new PageVO();
 		pageVO.setPage(page);
 		pageVO.setTotalCount(totalCount);
+		long t2 = System.currentTimeMillis();
 		List<TournamentListVO> list = tournamentDao.selectList(pageVO);
-		return new PageResponseVO<>(list, pageVO);
+		long t3 = System.currentTimeMillis();
+		
+	    PageResponseVO<TournamentListVO> res = new PageResponseVO<>(list, pageVO);
+	    long t4 = System.currentTimeMillis();
+
+	    log.info("tournament list timing: count={}ms, list={}ms, build={}ms, total={}ms",
+	            (t1 - t0), (t3 - t2), (t4 - t3), (t4 - t0));
+
+	    return res;
 	}
 
 	//상세 조회
