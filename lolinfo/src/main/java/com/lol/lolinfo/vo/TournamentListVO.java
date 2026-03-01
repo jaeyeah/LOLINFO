@@ -31,5 +31,6 @@ public class TournamentListVO {
 	private String midName;
 	private String adName;
 	private String supName;
+	private Integer totalCount;
 
 }
