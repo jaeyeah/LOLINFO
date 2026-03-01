@@ -46,26 +46,17 @@ public class TournamentRestController {
 	//전체 조회
 	@GetMapping("/")
 	public PageResponseVO<TournamentListVO> selectList(@RequestParam(defaultValue = "1") int page){
-		
-		long t0 = System.currentTimeMillis();
-		int totalCount = tournamentDao.count();
-		long t1 = System.currentTimeMillis();
-		
-		
+		// DB 중복조회를 방지하고자 totalCount를 한꺼번에 불러오는 것으로 수정
+		//int totalCount = tournamentDao.count();
 		PageVO pageVO = new PageVO();
 		pageVO.setPage(page);
-		pageVO.setTotalCount(totalCount);
-		long t2 = System.currentTimeMillis();
 		List<TournamentListVO> list = tournamentDao.selectList(pageVO);
-		long t3 = System.currentTimeMillis();
-		
-	    PageResponseVO<TournamentListVO> res = new PageResponseVO<>(list, pageVO);
-	    long t4 = System.currentTimeMillis();
-
-	    log.info("tournament list timing: count={}ms, list={}ms, build={}ms, total={}ms",
-	            (t1 - t0), (t3 - t2), (t4 - t3), (t4 - t0));
-
-	    return res;
+		int totalCount = 0;
+	    if(list != null && !list.isEmpty() && list.get(0).getTotalCount() != null) {
+	        totalCount = list.get(0).getTotalCount();
+	    }
+	    pageVO.setTotalCount(totalCount);
+	    return new PageResponseVO<>(list, pageVO);
 	}
 
 	//상세 조회

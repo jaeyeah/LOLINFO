@@ -22,25 +22,23 @@
 	</insert>
 
 	<!-- 인원수 Count -->
-	<select id="count" resultType="int">
+	<!--<select id="count" resultType="int">
 		select count(*) from tournament
-	</select>
+	</select>-->
 	
-	<!-- 조회 -->
+	<!-- 조회 + 인원수 Count-->
 	<select id="selectList" resultType="tournamentlistvo">
-	select tl.*
-		from (
-		  select tournament_id from (
-		    select tournament_id, row_number() over (
-		             order by tournament_year desc, tournament_end desc
-		           ) as rn
-		    from tournament
-		  	)
-		  	where rn between #{begin} and #{end}
-			) ids
-		join tournament_list tl
-	  on tl.tournament_id = ids.tournament_id
-	order by tl.tournament_year desc, tl.tournament_end desc
+	select * from (
+		 select
+		   tl.*,
+		   count(*) over() as total_count,
+		   row_number() over (
+		     order by tl.tournament_year desc, tl.tournament_end desc
+		   ) as rn
+		 from tournament_list tl
+		)
+	where rn between #{begin} and #{end}
+	order by tournament_year desc, tournament_end desc
 	</select>
 	
 	

@@ -27,9 +27,9 @@ public class TournamentDao {
 	public List<TournamentListVO> selectList(PageVO pageVO){
 		return sqlSession.selectList("tournament.selectList",pageVO);
 	}
-	public int count() {
-		return sqlSession.selectOne("tournament.count");
-	}
+//	public int count() {
+//		return sqlSession.selectOne("tournament.count");
+//	}
 	
 	//상세조회
 	public TournamentDto selectOne(int tounnamentId) {
