@@ -27,20 +27,27 @@
 	</select>
 	
 	<!-- 조회 -->
-	<select id="selectList" resultType="tournamentListVO">
-	select * from (
-		select rownum rn, TMP.* from(
-			select * from tournament_list
-			order by tournament_year desc, tournament_end desc
-		) TMP
-	) where rn between #{begin} and #{end}
+	<select id="selectlist" resulttype="tournamentlistvo">
+	select tl.*
+		from (
+		  select tournament_id from (
+		    select tournament_id, row_number() over (
+		             order by tournament_year desc, tournament_end desc
+		           ) as rn
+		    from tournament
+		  	)
+		  	where rn between #{begin} and #{end}
+			) ids
+		join tournament_list tl
+	  on tl.tournament_id = ids.tournament_id
+	order by tl.tournament_year desc, tl.tournament_end desc
 	</select>
+	
 	
 	<!-- 상세조회 -->
 	<select id="selectOne" resultType="tournamentDto">
 		select * from tournament
 		where tournament_id = #{tournamentId}
-		order by tournament_year desc, tournament_end asc
 	</select>
 	
 	<!-- 수정 -->
