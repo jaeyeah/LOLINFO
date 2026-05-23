@@ -16,6 +16,18 @@
 		) 
 	</insert>
 	
+	<!--참여스트리머 등록-->
+	<insert id="insertParticipant">
+		insert into ck_participant(
+			ck_participant_id, ck_id, ck_streamer, ck_side, ck_position
+		) values(
+			ck_participant_seq.nextval,
+			#{ckId}, #{ckStreamer}, #{ckSide}, #{ckPosition}
+		)
+	</insert>
+	
+	
+	
 	<!--삭제-->
 	<delete id="delete">
 		delete ck where ck_id=#{ckId}
