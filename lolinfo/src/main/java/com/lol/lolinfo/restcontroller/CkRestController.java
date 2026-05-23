@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lol.lolinfo.dao.CkDao;
 import com.lol.lolinfo.service.CkService;
+import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.CkVO;
+import com.lol.lolinfo.vo.TokenVO;
 
 @CrossOrigin
 @RestController
@@ -22,10 +24,16 @@ public class CkRestController {
 
 	@Autowired
 	private CkService ckService;
+	@Autowired
+	private TokenService tokenService;
 	
 	//등록
 	@PostMapping("/")
-	public void insert(@RequestBody CkVO ckVO) {
+	public void insert(@RequestBody CkVO ckVO,
+			 @RequestHeader("Authorization") String bearerToken
+			) {
+		TokenVO tokenVO = tokenService.parse(bearerToken);
+		ckVO.setCkCreatedBy(tokenVO.getLoginId());
 		ckService.insert(ckVO);
 		System.out.println("CK 등록 실행");
 	}
