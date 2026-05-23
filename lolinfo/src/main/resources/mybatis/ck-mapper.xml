@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ck">
+	
+	<!-- 등록 -->
+	<select id="sequence" resultType="int">
+		select ck_seq.nextval from dual
+	</select>
+	<insert id="insert">
+		insert into ck(
+			ck_id, ck_date, ck_winner, ck_memo, ck_created_by
+		) values(
+		 #{ckId}, #{ckDate}, #{ckWinner}, #{ckMemo}, #{ckCreatedBy}
+		) 
+	</insert>
+	
+	<!--삭제-->
+	<delete id="delete">
+		delete ck where ck_id=#{ckId}
+	</delete>
+
+	
+	
+</mapper>
