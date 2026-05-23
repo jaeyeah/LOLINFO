@@ -1,6 +1,11 @@
-package com.lol.lolinfo.dto;
+package com.lol.lolinfo.vo;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.lol.lolinfo.dto.CkParticipantDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,13 +14,20 @@ import lombok.NoArgsConstructor;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class CkParticipantDto {
-	private Integer ckParticipantId;
+public class CkListVO {
+
 	private Integer ckId;
+	private Date ckDate;
+	private String ckWinner;
+	private String ckMemo;
+	private Timestamp ckCreatedAt;
+	private String ckCreatedBy;
+	
+	private Integer ckParticipantId;
 	private Integer ckStreamer;
-	private String ckSide; // 레드 vs 블루
+	private String ckSide;
 	private String ckPosition;
 	
-	//조회시 필요
 	private String streamerName;
+	
 }

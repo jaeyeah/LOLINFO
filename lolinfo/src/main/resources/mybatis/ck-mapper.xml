@@ -26,6 +26,15 @@
 		)
 	</insert>
 	
+	<!--참여스트리머 조회-->
+	<select id="selectStreamer" resultType="CklistVO">
+		select * from ck_list
+		where ck_id in (
+			select ck_id from ck_list where ck_streamer = #{streamerNo}
+		)
+		order by ck_date desc, ck_id desc, ck_side desc;
+	</select>
+	
 	
 	
 	<!--삭제-->
