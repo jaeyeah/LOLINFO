@@ -42,6 +42,14 @@
 		delete ck where ck_id=#{ckId}
 	</delete>
 
-	
+	<select id="dbUser" resultType="string">
+    select user from dual
+</select>
+
+<select id="seqCheck" resultType="int">
+    select count(*)
+    from user_sequences
+    where sequence_name = 'CK_SEQ'
+</select>
 	
 </mapper>

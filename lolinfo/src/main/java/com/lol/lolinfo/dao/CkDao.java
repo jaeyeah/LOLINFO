@@ -30,6 +30,8 @@ public class CkDao {
 	///목록 조회
 	// 스트리머가 참여한 CK
 	public List<CkListVO> selectStreamer(int streamerNo){
+		System.out.println("DB USER = " + sqlSession.selectOne("ck.dbUser"));
+		System.out.println("CK_SEQ COUNT = " + sqlSession.selectOne("ck.seqCheck"));
 		return sqlSession.selectList("ck.selectStreamer", streamerNo);
 	}
 	
