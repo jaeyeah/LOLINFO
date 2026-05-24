@@ -32,9 +32,8 @@
 		where ck_id in (
 			select ck_id from ck_list where ck_streamer = #{streamerNo}
 		)
-		order by ck_date desc, ck_id desc, ck_side desc;
+		order by ck_date desc, ck_id desc, ck_side desc
 	</select>
-	
 	
 	
 	<!--삭제-->
@@ -42,14 +41,5 @@
 		delete ck where ck_id=#{ckId}
 	</delete>
 
-	<select id="dbUser" resultType="string">
-    select user from dual
-</select>
-
-<select id="seqCheck" resultType="int">
-    select count(*)
-    from user_sequences
-    where sequence_name = 'CK_SEQ'
-</select>
 	
 </mapper>
