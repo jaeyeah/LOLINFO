@@ -32,7 +32,7 @@ public class CkDao {
 	/// ----- 목록 조회 -----
 	//전체 CK 조회
 	public List<CkDto> selectList(PageVO pageVO){
-		return sqlSession.selectList("ck.selctList",pageVO);
+		return sqlSession.selectList("ck.selectList",pageVO);
 	}
 	public int count() {
 		return sqlSession.selectOne("ck.count");
