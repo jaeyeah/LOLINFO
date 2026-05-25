@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.PageVO;
 
@@ -36,6 +37,11 @@ public class CkDao {
 	}
 	public int count() {
 		return sqlSession.selectOne("ck.count");
+	}
+	
+	// CK별 참여 스트리머 10명 조회
+	public List<CkParticipantVO> selectParticipantList(int ckId){
+		return sqlSession.selectList("ck.selectParticipant", ckId);
 	}
 	
 	
