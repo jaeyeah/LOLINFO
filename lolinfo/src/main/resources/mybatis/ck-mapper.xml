@@ -42,7 +42,16 @@
 		select count(*) from ck
 	</select>
 	
-	
+	<!-- 특정 CK에 참여한 참여 스트리머 조회 -->
+	<select id="selectParticipant" resultType="ckParticipantVO">
+		select ck_streamer, ck_side, ck_position,
+				streamer_soop_id, streamer_name, ck_winner
+			from ck_team
+			where ck_id = #{ckId}
+			order by
+				case ck_side when 'red' then 1 when 'blue'then 2 end,
+				case ck_position when 'TOP' then 1 when 'JUG' then 2 when 'MID' then 3 when 'AD' then 4 when 'SUP' then 5 end
+	</select>
 	
 	
 	<!--참여스트리머 조회-->

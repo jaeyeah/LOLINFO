@@ -17,6 +17,7 @@ import com.lol.lolinfo.dao.CkDao;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
+import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
@@ -57,7 +58,12 @@ public class CkRestController {
 	}
 	
 	// 조회 - ck별 참여 스트리머
-
+	@GetMapping("/{ckId}/participant")
+	public List<CkParticipantVO> selectParticipantList(@PathVariable int ckId){
+		return ckDao.selectParticipantList(ckId);
+	}
+	
+	
 	// 조회 - 스트리머별 CK
 	@GetMapping("/streamer/{streamerNo}")
 	public List<CkVO> selectStreamerList(@PathVariable int streamerNo){
