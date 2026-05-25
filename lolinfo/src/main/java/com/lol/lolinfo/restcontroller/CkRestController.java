@@ -64,11 +64,5 @@ public class CkRestController {
 	}
 	
 	
-	// 조회 - 스트리머별 CK
-	@GetMapping("/streamer/{streamerNo}")
-	public List<CkVO> selectStreamerList(@PathVariable int streamerNo){
-		System.out.println("스트리머 참여 CK 목록 조회");
-		return ckService.selectStreamer(streamerNo);	
-	}
 	
 }
