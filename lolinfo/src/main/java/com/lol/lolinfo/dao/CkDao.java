@@ -46,10 +46,10 @@ public class CkDao {
 	
 	/// 상세 조회
 	public List<CkListVO> selectListByStreamer(PageVO pageVO){
-		return sqlSession.selectList("ck.selectList",pageVO);
+		return sqlSession.selectList("ck.selectListByStreamer",pageVO);
 	}
 	public int countByStreamer(int stremaerNo) {
-		return sqlSession.selectOne("ck.count", stremaerNo);
+		return sqlSession.selectOne("ck.countByStreamer", stremaerNo);
 	}
 	
 	

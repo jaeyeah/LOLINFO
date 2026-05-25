@@ -65,7 +65,7 @@ public class CkRestController {
 	}
 	
 	// 상세조회 - 스트리머별 CK 목록
-	@GetMapping("/{streamerNo}")
+	@GetMapping("/streamer/{streamerNo}")
 	public PageResponseVO<CkListVO> selectListByStreamer (
 			@PathVariable int streamerNo, @RequestParam(defaultValue = "1") int page){
 		return ckService.selectListByStreamer(streamerNo, page);

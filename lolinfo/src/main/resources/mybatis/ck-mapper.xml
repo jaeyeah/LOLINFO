@@ -55,7 +55,7 @@
 	
 	
 	<!--스트리머별 참여CK 조회-->
-	<select id="selectList" resultType="cklistVO">
+	<select id="selectListByStreamer" resultType="cklistVO">
 		select * from (
 			select rownum rn, TMP.* from (
 			 	select 
@@ -68,7 +68,7 @@
 		) where rn between #{begin} and #{end}
 	</select>
 	<!--count-->
-	<select id="count" resultType="int">
+	<select id="countByStreamer" resultType="int">
 		select count(*) from ck_list
 		where ck_streamer = #{streamerNo}
 	</select>
