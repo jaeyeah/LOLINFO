@@ -44,12 +44,15 @@ public class CkDao {
 		return sqlSession.selectList("ck.selectParticipant", ckId);
 	}
 	
-	
-	
-	// 스트리머가 참여한 CK
-	public List<CkListVO> selectStreamer(int streamerNo){
-		return sqlSession.selectList("ck.selectStreamer", streamerNo);
+	/// 상세 조회
+	public List<CkListVO> selectListByStreamer(PageVO pageVO){
+		return sqlSession.selectList("ck.selectListByStreamer",pageVO);
 	}
+	public int countByStreamer(int stremaerNo) {
+		return sqlSession.selectOne("ck.countByStreamer", stremaerNo);
+	}
+	
+	
 	
 
 }
