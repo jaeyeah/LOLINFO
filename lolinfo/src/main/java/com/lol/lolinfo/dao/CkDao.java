@@ -58,5 +58,12 @@ public class CkDao {
 		return sqlSession.selectList("ck.selectVsList", streamerNo);
 	}
 	
+	/// ----- 수정 -----
+	
 
+	
+	/// ----- 삭제 -----
+	public void delete(int ckId) {
+		sqlSession.delete("ck.delete", ckId);
+	}
 }
