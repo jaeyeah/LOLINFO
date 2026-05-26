@@ -10,6 +10,7 @@ import com.lol.lolinfo.dao.CkDao;
 import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkVO;
+import com.lol.lolinfo.vo.CkVsVO;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
 
@@ -43,5 +44,8 @@ public class CkService {
 		return new PageResponseVO<>(list, pageVO);
 	}
 	
+	public List<CkVsVO> selectVsList(int streamerNo){
+		return ckDao.selectVsList(streamerNo);
+	}
 
 }
