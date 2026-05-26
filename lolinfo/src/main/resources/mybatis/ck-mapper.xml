@@ -74,6 +74,20 @@
 	</select>
 	
 	
+	<!-- 조회 - 맞라인 전적 -->
+	<select id="selectVsList" resultType="CkVsVO">
+		select vs_streamer_no, vs_streamer_name, ck_position,
+			sum (case when ck_result = '승리' then 1 else 0 end) as winCount,
+			sum (case when ck_result = '패배' then 1 else 0 end) as loseCount
+		from ck_list
+			where ck_streamer = #{streamerNo}
+		group by vs_streamer_no, vs_streamer_name, ck_position
+		order by vs_streamer_name, case ck_position when 'TOP' then 1
+				when 'JUG' then 2 when 'MID' then 3 when 'AD' then 4 when 'SUP' then 5
+				else 6 end
+	</select>
+	
+	
 	<!--삭제-->
 	<delete id="delete">
 		delete ck where ck_id=#{ckId}

@@ -20,6 +20,7 @@ import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkVO;
+import com.lol.lolinfo.vo.CkVsVO;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.TokenVO;
@@ -71,17 +72,12 @@ public class CkRestController {
 		return ckService.selectListByStreamer(streamerNo, page);
 	}
 	
-	// 상세조회 - 스트리머별 맞라인 상대전적
-//	@GetMapping("/{streamerNo}/vs")
-//	public List<CkListVO> selectVsList (@PathVariable int streamerNo){
-//		return ckDao.selectVsList(null)
-//	}
+	// 상세조회 - 스트리머별 맞라인 상대전적 (+포지션별 전적)
+	@GetMapping("/{streamerNo}/vs")
+	public List<CkVsVO> selectVsList (@PathVariable int streamerNo){
+		return ckService.selectVsList(streamerNo);
+	}
 	
-	// 상세조회 - 스트리머별 포지션 전적
-//	@GetMapping("/{streamerNo}/position")
-//	public List<CkListVO> selectPosition (@PathVariable int streamerNo){
-//		return ckDao.selectPosition(null)
-//	}
 	
 	
 }

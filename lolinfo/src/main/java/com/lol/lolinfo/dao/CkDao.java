@@ -11,6 +11,7 @@ import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkVO;
+import com.lol.lolinfo.vo.CkVsVO;
 import com.lol.lolinfo.vo.PageVO;
 
 @Repository
@@ -52,7 +53,10 @@ public class CkDao {
 		return sqlSession.selectOne("ck.countByStreamer", stremaerNo);
 	}
 	
-	
+	// 조회 맞라인 상대 전적
+	public List<CkVsVO> selectVsList(int streamerNo){
+		return sqlSession.selectList("ck.selectVsList", streamerNo);
+	}
 	
 
 }
