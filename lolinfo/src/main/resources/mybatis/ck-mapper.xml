@@ -28,6 +28,11 @@
 	
 	
 	<!-- 조회 -->
+	<!-- 확인용 조회 -->
+	<select id="selectOne" resultType="ckDto">
+		select * from ck where ck_id=#{ckId}
+	</select>
+	
 	<!-- CK 전체 조회(페이지네이션) -->
 	<select id="selectList" resultType="ckDto">
 		select * from (
@@ -86,6 +91,22 @@
 				when 'JUG' then 2 when 'MID' then 3 when 'AD' then 4 when 'SUP' then 5
 				else 6 end
 	</select>
+	
+	
+	<!--부분 수정(Patch)-->
+	<update id="updateUnit">
+		update ck
+		<set>
+			<if test="ckDate != null">
+				ck_date=#{ckDate},
+			</if>
+			<if test="ckMemo != null">
+				ck_memo=#{ckMemo},
+			</if>
+		</set>
+		where ck_id=#{ckId}
+	</update>
+	
 	
 	
 	<!--삭제-->

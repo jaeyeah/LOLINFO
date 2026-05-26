@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ public class CkRestController {
 	@Autowired
 	private TokenService tokenService;
 	
-	//등록
+	/// --- 등록 ---
 	@PostMapping("/")
 	public void insert(@RequestBody CkVO ckVO,
 			 @RequestHeader("Authorization") String bearerToken
@@ -49,6 +50,7 @@ public class CkRestController {
 		System.out.println("CK 등록 실행");
 	}
 	
+	/// --- 조회 ---
 	// 조회 - 전체 CK (페이지네이션)
 	@GetMapping("/")
 	public PageResponseVO<CkDto> selectList(@RequestParam(defaultValue = "1") int page){
@@ -79,6 +81,17 @@ public class CkRestController {
 		return ckService.selectVsList(streamerNo);
 	}
 	
+	/// --- 수정 ---
+	// 부분수정
+	@PatchMapping("/{ckId}")
+	public void updateUnit(@PathVariable int ckId,
+					@RequestBody CkDto ckDto) {
+		ckService.updateUnit(ckId, ckDto);
+	}
+	
+	
+	
+	/// --- 삭제 ---
 	// 삭제
 	@DeleteMapping("/{ckId}")
 	public void delete(@PathVariable int ckId) {

@@ -32,6 +32,11 @@ public class CkDao {
 	}
 	
 	/// ----- 목록 조회 -----
+	// 확인용 단건 조회
+	public CkDto selectOne(int ckId) {
+		return sqlSession.selectOne("ck.selectOne");
+	}
+	
 	//전체 CK 조회
 	public List<CkDto> selectList(PageVO pageVO){
 		return sqlSession.selectList("ck.selectList",pageVO);
@@ -59,7 +64,10 @@ public class CkDao {
 	}
 	
 	/// ----- 수정 -----
-	
+	// 부분수정
+	public boolean updateUnit(CkDto ckDto) {
+		return sqlSession.update("ck.updateUnit", ckDto)>0;
+	}
 
 	
 	/// ----- 삭제 -----
