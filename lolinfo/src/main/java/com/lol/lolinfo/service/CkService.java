@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lol.lolinfo.dao.CkDao;
+import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
+import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
@@ -46,6 +48,20 @@ public class CkService {
 	
 	public List<CkVsVO> selectVsList(int streamerNo){
 		return ckDao.selectVsList(streamerNo);
+	}
+	
+	// Patch - 날짜와 메모(CK이름)만 수정
+	public void updateUnit(int ckId, CkDto ckDto) {
+		CkDto originDto = ckDao.selectOne(ckId);
+		if(originDto == null) throw new TargetNotfoundException();
+		// 개별 항목 확인
+		if(ckDto.getCkDate() != null) {
+			originDto.setCkDate(ckDto.getCkDate());
+		}
+		if(ckDto.getCkMemo() != null) {
+			originDto.setCkMemo(ckDto.getCkMemo());
+		}
+		ckDao.updateUnit(originDto);
 	}
 
 }
