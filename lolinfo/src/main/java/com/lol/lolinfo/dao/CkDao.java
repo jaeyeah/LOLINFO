@@ -34,7 +34,7 @@ public class CkDao {
 	/// ----- 목록 조회 -----
 	// 확인용 단건 조회
 	public CkDto selectOne(int ckId) {
-		return sqlSession.selectOne("ck.selectOne");
+		return sqlSession.selectOne("ck.selectOne",ckId);
 	}
 	
 	//전체 CK 조회
