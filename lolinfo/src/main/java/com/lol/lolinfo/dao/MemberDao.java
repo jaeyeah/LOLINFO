@@ -1,6 +1,8 @@
 package com.lol.lolinfo.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.MemberDto;
+import com.lol.lolinfo.vo.PageVO;
 
 @Repository
 public class MemberDao {
@@ -32,6 +35,26 @@ public class MemberDao {
 	public List<MemberDto> selectList(){
 		return sqlSession.selectOne("member.selectList");
 	}
+	public List<MemberDto> selectListWithPaging(PageVO pageVO){
+		return sqlSession.selectList("member.selectListWithPaging");
+	}
+	public int countMember() {
+		return sqlSession.selectOne("member.count");
+	}
+	// - 검색조회
+	public List<MemberDto> selectSearchList(String type, String keyword, PageVO pageVO) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("pageVO", pageVO);
+		params.put("type", type);
+		params.put("keyword", keyword);
+		return sqlSession.selectList("member.selectSearchList", params);
+	}
+	public int countSearchMember(String type, String keyword) {
+		return sqlSession.selectOne("member.count");
+	}
+	
+	
+	
 	// 상세조회 (+아이디 중복 검사)
 	public MemberDto selectOne(String memberId) {
 		return sqlSession.selectOne("member.detail", memberId);

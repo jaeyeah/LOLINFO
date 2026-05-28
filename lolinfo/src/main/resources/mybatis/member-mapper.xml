@@ -18,6 +18,18 @@
 		select * from member order by member_join desc
 	</select>
 	
+	<select id="selectListWithPaging" resultType="memberDto">
+		select * from (
+			select rownum rn, TMP.* from(
+				select * from member
+				order by member_join desc
+			) TMP
+		) where rn between #{begin} and #{end}
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from member
+	</select>
+	
 	<!-- 상세조회 -->
 	<select id="detail" resultType="memberDto">
 		select * from member where member_id = #{memberId}
@@ -28,6 +40,52 @@
 		select * from member where member_nickname = #{memberNickname}
 	</select> 
 	
+	<!-- 검색 (관리자 제외)-->
+	<select id="selectAdminList" parameterType="map" resultType="MemberDto">
+		select * from (
+		select rownum rn, TMP.* from(
+		select * from member
+		<where>
+			<if test="keyword != null and keyword != ''">
+				<choose>
+					<when test="type == 'memberId'">
+						and member_id LIKE '%' || #{keyword} || '%'
+					</when>
+					
+					<when test="type == 'memberNickname'">
+						and member_nickname LIKE '%' || #{keyword} || '%'
+					</when>
+					
+					<when test="type == 'memberLevel'">
+						and member_level = #{keyword}
+					</when>
+				</choose>
+			</if>
+		</where>
+		order by member_join desc
+				) TMP
+		) where rn between #{pageVO.begin} and #{pageVO.end}
+	</select>
+	<select id="countSearchMember" resultType="int">
+	    select count(*) from member
+    	<where>
+			<if test="keyword != null and keyword != ''">
+				<choose>
+					<when test="type == 'memberId'">
+						and member_id LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'memberNickname'">
+						and member_nickname LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'memberLevel'">
+						and member_level = #{keyword}
+					</when>
+				</choose>
+			</if>
+		</where>
+	</select>
+	
+
 	<!-- 삭제 -->
 	<delete id="delete">
 		delete member where member_id = #{memberId}
