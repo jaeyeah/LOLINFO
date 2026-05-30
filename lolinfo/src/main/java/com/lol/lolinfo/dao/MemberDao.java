@@ -50,7 +50,7 @@ public class MemberDao {
 		return sqlSession.selectList("member.selectSearchList", params);
 	}
 	public int countSearchMember(String type, String keyword) {
-		return sqlSession.selectOne("member.count");
+		return sqlSession.selectOne("member.countSearchMember");
 	}
 	
 	

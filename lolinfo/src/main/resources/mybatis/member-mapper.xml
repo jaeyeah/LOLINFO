@@ -41,7 +41,7 @@
 	</select> 
 	
 	<!-- 검색 (관리자 제외)-->
-	<select id="selectAdminList" parameterType="map" resultType="MemberDto">
+	<select id="selectSearchList" parameterType="map" resultType="MemberDto">
 		select * from (
 		select rownum rn, TMP.* from(
 		select * from member
