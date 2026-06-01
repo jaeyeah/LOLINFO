@@ -70,4 +70,10 @@ public class MemberDao {
 		return sqlSession.delete("member.delete", memberId) > 0;
 	}
 	
+	/// 수정
+	// 회원등급 수정
+	public boolean updateMemberLevel(MemberDto memberDto) {
+		return sqlSession.update("member.updateMemberLevel", memberDto) > 0 ;
+	}
+	
 }

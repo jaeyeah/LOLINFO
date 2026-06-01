@@ -47,5 +47,12 @@ public class MemberService {
 //		memberTokenDao.deleteByTarget(tokenVO.getLoginId());
 	}
 	
+	public void changeLevel(String memberId, String memberLevel) {
+		MemberDto memberDto = memberDao.selectOne(memberId);
+		if(memberDto == null) throw new TargetNotfoundException("존재하지 않는 회원입니다");
+		memberDto.setMemberLevel(memberLevel);
+		memberDao.updateMemberLevel(memberDto);
+	}
+	
 	
 }
