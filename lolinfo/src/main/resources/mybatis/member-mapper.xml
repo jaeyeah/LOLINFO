@@ -85,6 +85,12 @@
 		</where>
 	</select>
 	
+	<!-- 수정 : 회원등급 수정 -->
+	<update id="updateMemberLevel">
+		update member set member_level = #{memberLevel}
+		where member_id = #{memberId}
+	</update>
+
 
 	<!-- 삭제 -->
 	<delete id="delete">
