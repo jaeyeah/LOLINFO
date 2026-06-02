@@ -57,6 +57,13 @@ public class CkDao {
 	public int countByStreamer(int stremaerNo) {
 		return sqlSession.selectOne("ck.countByStreamer", stremaerNo);
 	}
+	/// 검색
+//	public List<CkListVO> selectSearchListByStreamer(PageVO pageVO){
+//		return sqlSession.selectList("ck.selectSearchListByStreamer",pageVO);
+//	}
+//	public int countSearchByStreamer(int stremaerNo) {
+//		return sqlSession.selectOne("ck.countSearchByStreamer", stremaerNo);
+//	}
 	
 	// 조회 맞라인 상대 전적
 	public List<CkVsVO> selectVsList(int streamerNo){
