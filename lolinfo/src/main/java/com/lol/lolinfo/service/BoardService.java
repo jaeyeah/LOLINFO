@@ -21,6 +21,7 @@ public class BoardService {
 	public void insert(BoardDto boardDto, String bearerToken) {
 		TokenVO tokenVO = tokenService.parse(bearerToken);
 		if(tokenVO == null) throw new TargetNotfoundException();
+		boardDto.setBoardWriter(tokenVO.getLoginId());
 		int boardId = boardDao.sequence();
 		boardDto.setBoardId(boardId);
 		boardDao.insert(boardDto);

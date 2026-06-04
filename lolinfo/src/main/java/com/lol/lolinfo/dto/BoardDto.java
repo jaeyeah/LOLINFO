@@ -15,7 +15,7 @@ public class BoardDto {
 
 	private Integer boardId;
 	private String boardCategory;
-	private Integer boardWriter;
+	private String boardWriter;
 	private String boardTitle;
 	private String boardContent;
 	private Timestamp boardWtime;
