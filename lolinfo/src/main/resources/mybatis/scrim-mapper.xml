@@ -34,7 +34,7 @@
 		select * from scrim_vs_record
 		where scrim_tournament = #{scrimTournament}
 			and scrim_team = #{scrimTeam}
-			order by scrim_win_count desc
+			order by vs_win_count desc
 	</select>
 	
 	
