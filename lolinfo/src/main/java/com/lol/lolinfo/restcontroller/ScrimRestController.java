@@ -18,6 +18,7 @@ import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.ScrimListVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
+import com.lol.lolinfo.vo.ScrimVsRecordVO;
 import com.lol.lolinfo.vo.TokenVO;
 
 @CrossOrigin
@@ -50,5 +51,13 @@ public class ScrimRestController {
 	@GetMapping("/record/{scrimTournament}")
 	public List<ScrimRecordVO> selectRecordList(@PathVariable int scrimTournament){
 		return scrimDao.selectRecordList(scrimTournament);
+	}
+	// 팀별 상대전적
+	@GetMapping("/{scrimTournament}/{scrimTeam}")
+	public List<ScrimVsRecordVO> selectVsRecordList(
+	        @PathVariable int scrimTournament,
+	        @PathVariable int scrimTeam
+	) {
+	    return scrimDao.selectVsList(scrimTournament, scrimTeam);
 	}
 }
