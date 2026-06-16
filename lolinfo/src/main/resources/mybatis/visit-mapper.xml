@@ -19,6 +19,12 @@
 		where visit_date = trunc(sysdate)
 			and visitor_id = #{visitorId}
 	</update>
+	
+	<!-- 관리자용 방문통계 확인 -->
+	<select id="selectList" resultType="VisitListVO">
+		select * from visit_daily
+		order by visit_date desc
+	</select>
 
 
 </mapper>
