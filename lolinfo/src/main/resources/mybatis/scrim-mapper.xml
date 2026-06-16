@@ -29,6 +29,14 @@
 		order by scrim_win_count desc
 	</select>
 	
+	<!-- 팀별 상대전적 조회 -->
+	<select id="selectVsRecordList" resultType="scrimVsRecordVO">
+		select * from scrim_vs_record
+		where scrim_tournament = #{scrimTournament}
+			and scrim_team = #{scrimTeam}
+			order by scrim_win_count desc
+	</select>
+	
 	
 
 
