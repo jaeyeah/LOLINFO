@@ -15,6 +15,19 @@
 		) 
 	</insert>
 	
+	<!-- 목록 조회 -->
+	<select id="selectList" resultType="scrimListVO">
+		select * from scrim_list
+		where scrim_tournament = #{scrimTournament}
+		order by scrim_date desc, scrim_id desc
+	</select>
+	
+	<!-- 스크림결과 조회 -->
+	<select id="selectRecordList" resultType="scrimRecordVO">
+		select * from scrim_record
+		where scrim_tournament = #{scrimTournament}
+		order by scrim_win_count desc
+	</select>
 	
 	
 
