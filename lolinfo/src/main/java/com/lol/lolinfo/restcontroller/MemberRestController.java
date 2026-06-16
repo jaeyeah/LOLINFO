@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.MemberDao;
 import com.lol.lolinfo.dao.MemberTokenDao;
+import com.lol.lolinfo.dao.VisitDao;
 import com.lol.lolinfo.dto.MemberDto;
 import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.error.UnauthorizationException;
@@ -37,6 +38,8 @@ public class MemberRestController {
 	private TokenService tokenService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private VisitDao visitDao;
 	
 	
 	
@@ -66,7 +69,9 @@ public class MemberRestController {
 	
 	//로그인
 		@PostMapping("/login")
-		public MemberLoginResponseVO login(@RequestBody MemberDto memberDto) {
+		public MemberLoginResponseVO login(@RequestBody MemberDto memberDto,
+				 @RequestHeader(value = "VisitorId", required = false) String visitorId
+				) {
 			MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
 			if(findDto == null) throw new TargetNotfoundException("로그인 오류 - 존재하지 않는 계정");
 			//비밀번호 검사
@@ -75,6 +80,9 @@ public class MemberRestController {
 					throw new TargetNotfoundException("비밀번호 불일치");
 				}
 				
+			//로그인 성공시 방문통계 업데이트
+			if(visitorId != null) {visitDao.updateLogin(visitorId);}
+			
 			//로그인 성공
 				return MemberLoginResponseVO.builder()
 						.loginId(findDto.getMemberId())

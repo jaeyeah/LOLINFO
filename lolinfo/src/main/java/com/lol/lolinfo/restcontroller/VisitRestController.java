@@ -35,7 +35,7 @@ public class VisitRestController {
 		visitService.insert(visitDto);
 	}
 	
-	//로그인시 변경
+	//로그인시 상태변경 ->member컨트롤러에서 진행
 	
 	
 	//조회

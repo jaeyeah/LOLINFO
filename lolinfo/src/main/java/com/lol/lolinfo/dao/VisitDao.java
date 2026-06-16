@@ -20,8 +20,8 @@ public class VisitDao {
 		sqlSession.insert("visit.insert",visitDto);
 	}
 	//수정 - 로그인시 변경
-	public boolean updateLogin(VisitDto visitDto) {
-		return sqlSession.update("visit.updateLogin",visitDto) > 0;	
+	public boolean updateLogin(String visitorId) {
+		return sqlSession.update("visit.updateLogin",visitorId) > 0;	
 	}
 	//조회
 	public List<VisitListVO> selectList(){
