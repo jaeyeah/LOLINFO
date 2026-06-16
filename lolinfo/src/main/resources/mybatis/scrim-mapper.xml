@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="scrim">
+	
+	<!-- 등록 -->
+	<insert id="insert">
+		insert into scrim(
+			scrim_id, scrim_tournament, scrim_red_team, scrim_red_score,
+			scrim_blue_team, scrim_blue_score, scrim_date, scrim_created_by
+		) values(
+		 scrim_seq.nextval, #{scrimTournament}, #{scrimRedTeam},#{scrimRedScore},
+		 #{scrimBlueTeam},#{scrimBlueScore},#{scrimDate},#{scrimCreatedBy}
+		) 
+	</insert>
+	
+	
+	
+
+
+	
+</mapper>
