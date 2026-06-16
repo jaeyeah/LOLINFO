@@ -21,7 +21,7 @@ public class ScrimRecordVO {
 
     private int scrimWinCount;
     private int scrimLoseCount;
-    private double getScrimWinRate() {
+    public double getScrimWinRate() {
     	int total = scrimWinCount +scrimLoseCount;
     	if(total==0) return 0;
     	return Math.round((scrimWinCount * 1000.0 / total)) / 10.0;
