@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class ScrimDto {
 
-	private int scrimId;
+	private Integer scrimId;
 	private int scrimTournament;
 	private int scrimRedTeam;
 	private int scrimRedScore;
