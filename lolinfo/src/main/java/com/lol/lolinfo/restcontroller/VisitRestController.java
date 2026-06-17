@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.VisitDao;
@@ -39,9 +40,15 @@ public class VisitRestController {
 	
 	
 	//조회
-	@GetMapping("/")
-	public List<VisitListVO> selectList(){
-		return visitDao.selectList();
+	@GetMapping("/month")
+	public List<VisitListVO> selectMonth(@RequestParam String month){
+		System.out.println("실행 : 월간통계");
+		return visitDao.selectMonth(month);
+	}
+	@GetMapping("/year")
+	public List<VisitListVO> selectYear(@RequestParam String year){
+		System.out.println("실행 : 연간통계");
+		return visitDao.selectYear(year);
 	}
 	
 }

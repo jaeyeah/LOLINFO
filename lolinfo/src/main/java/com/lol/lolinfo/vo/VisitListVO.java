@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class VisitListVO {
 
-	private Date visitDate; 
+	private String visitDate;
 	private int visitCount; // 하루에 접속한 실인원
 	private int visitLogin; // 실인원 중 로그인 인원
 	
