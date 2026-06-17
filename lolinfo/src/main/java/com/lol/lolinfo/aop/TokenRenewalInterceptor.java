@@ -33,8 +33,6 @@ public class TokenRenewalInterceptor implements HandlerInterceptor{
 		String bearerToken = request.getHeader("Authorization");
 		if(bearerToken == null) return true;
 		
-		
-		System.out.println("1,2통과");
 		// 3) 토큰의 남은 시간이 충분한 경우
 		try { // Plan A
 			long ms = tokenService.getRemain(bearerToken);

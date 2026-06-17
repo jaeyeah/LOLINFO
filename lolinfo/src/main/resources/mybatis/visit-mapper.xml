@@ -44,7 +44,7 @@
 
 	<!-- 기능별 이용횟수 증가 -->
 	<update id="increaseUse">
-		merge into visit use v
+		merge into visit_use v
 		using dual on (
 			v.use_date = TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul' AS DATE))
 			and v.use_type = #{value}
