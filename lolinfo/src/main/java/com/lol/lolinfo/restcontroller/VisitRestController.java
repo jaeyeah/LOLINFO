@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.VisitDao;
+import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.VisitDto;
+import com.lol.lolinfo.dto.VisitUseDto;
 import com.lol.lolinfo.service.VisitService;
 import com.lol.lolinfo.vo.VisitListVO;
 
@@ -28,6 +30,8 @@ public class VisitRestController {
 	private VisitService visitService;
 	@Autowired
 	private VisitDao visitDao;
+	@Autowired
+	private VisitUseDao visitUseDao;
 	
 	
 	//등록
@@ -51,4 +55,9 @@ public class VisitRestController {
 		return visitDao.selectYear(year);
 	}
 	
+	//
+	@GetMapping("/use")
+	public List<VisitUseDto> selectUse(){
+		return visitUseDao.selectList();
+	}
 }
