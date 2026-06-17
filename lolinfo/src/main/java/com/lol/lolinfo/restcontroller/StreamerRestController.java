@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.StreamerDao;
+import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.StreamerDto;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
@@ -30,6 +31,8 @@ public class StreamerRestController {
 
 	@Autowired
 	private StreamerDao streamerDao;
+	@Autowired
+	private VisitUseDao visitUseDao;	
 	
 	//등록
 	@PostMapping("/")
@@ -46,6 +49,7 @@ public class StreamerRestController {
 		pageVO.setPage(page);
 		pageVO.setTotalCount(totalCount);
 		List<StreamerStatVO> list = streamerDao.selectList(pageVO);
+		visitUseDao.increase("streamer_list");
 		return new PageResponseVO<>(list, pageVO);
 	}
 	@GetMapping("/totalList")
@@ -55,6 +59,7 @@ public class StreamerRestController {
 		pageVO.setPage(page);
 		pageVO.setTotalCount(totalCount);
 		List<StreamerStatVO> list = streamerDao.selectTotalRankingList(pageVO);
+		visitUseDao.increase("streamer_list");
 		return new PageResponseVO<>(list, pageVO);
 	}
 	
@@ -82,6 +87,7 @@ public class StreamerRestController {
 	//상세 조회
 	@GetMapping("/no/{streamerNo}")
 	public StreamerDto selectOne(@PathVariable int streamerNo) {
+		visitUseDao.increase("streamer_detail");
 		return streamerDao.selectOne(streamerNo);
 	}
 

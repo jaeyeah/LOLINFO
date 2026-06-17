@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.CkVO;
@@ -26,6 +27,8 @@ public class CkRestController {
 	private CkService ckService;
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private VisitUseDao visitUseDao;
 	
 	//등록
 	@PostMapping("/")
@@ -42,6 +45,7 @@ public class CkRestController {
 	@GetMapping("/streamer/{streamerNo}")
 	public List<CkVO> selectList(@PathVariable int streamerNo){
 		System.out.println("스트리머 참여 CK 목록 조회");
+		visitUseDao.increase("streamer_ck");
 		return ckService.selectStreamer(streamerNo);	
 	}
 	
