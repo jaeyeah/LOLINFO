@@ -1,18 +1,20 @@
 package com.lol.lolinfo.service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lol.lolinfo.dao.CkDao;
+import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
+import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkVO;
+import com.lol.lolinfo.vo.CkVsVO;
+import com.lol.lolinfo.vo.PageResponseVO;
+import com.lol.lolinfo.vo.PageVO;
 
 @Service
 public class CkService {
@@ -34,38 +36,32 @@ public class CkService {
 		}
 	}
 	
-	// ck 참여자 그루핑
-	public List<CkVO> selectStreamer(int streamerNo){
-		List<CkListVO> ckStreamers = ckDao.selectStreamer(streamerNo);
-		
-		Map<Integer, CkVO> map = new LinkedHashMap<>();
-		
-		for(CkListVO row : ckStreamers) {
-			CkVO ck = map.get(row.getCkId());
-			
-			if(ck==null) {
-				ck = CkVO.builder()
-						.ckId(row.getCkId())
-	                    .ckDate(row.getCkDate())
-	                    .ckWinner(row.getCkWinner())
-	                    .ckMemo(row.getCkMemo())
-	                    .ckCreatedAt(row.getCkCreatedAt())
-	                    .ckCreatedBy(row.getCkCreatedBy())
-	                    .participants(new ArrayList<>())
-	                    .build();
-				map.put(row.getCkId(), ck);
-			}
-			CkParticipantDto participant = CkParticipantDto.builder()
-	                .ckParticipantId(row.getCkParticipantId())
-	                .ckId(row.getCkId())
-	                .ckStreamer(row.getCkStreamer())
-	                .ckSide(row.getCkSide())
-	                .ckPosition(row.getCkPosition())
-	                .streamerName(row.getStreamerName())
-	                .build();
-
-	        ck.getParticipants().add(participant);
-		}
-		return new ArrayList<>(map.values());
+	public PageResponseVO<CkListVO> selectListByStreamer(int streamerNo, int page){
+		int totalCount = ckDao.countByStreamer(streamerNo);
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(page);
+		pageVO.setTotalCount(totalCount);
+		pageVO.setKeyword(String.valueOf(streamerNo));
+		List<CkListVO> list = ckDao.selectListByStreamer(pageVO);
+		return new PageResponseVO<>(list, pageVO);
 	}
+	
+	public List<CkVsVO> selectVsList(int streamerNo){
+		return ckDao.selectVsList(streamerNo);
+	}
+	
+	// Patch - 날짜와 메모(CK이름)만 수정
+	public void updateUnit(int ckId, CkDto ckDto) {
+		CkDto originDto = ckDao.selectOne(ckId);
+		if(originDto == null) throw new TargetNotfoundException();
+		// 개별 항목 확인
+		if(ckDto.getCkDate() != null) {
+			originDto.setCkDate(ckDto.getCkDate());
+		}
+		if(ckDto.getCkMemo() != null) {
+			originDto.setCkMemo(ckDto.getCkMemo());
+		}
+		ckDao.updateUnit(originDto);
+	}
+
 }

@@ -26,14 +26,108 @@
 		)
 	</insert>
 	
-	<!--참여스트리머 조회-->
-	<select id="selectStreamer" resultType="CklistVO">
-		select * from ck_list
-		where ck_id in (
-			select ck_id from ck_list where ck_streamer = #{streamerNo}
-		)
-		order by ck_date desc, ck_id desc, ck_side desc
+	
+	<!-- 조회 -->
+	<!-- 확인용 조회 -->
+	<select id="selectOne" resultType="ckDto">
+		select * from ck where ck_id=#{ckId}
 	</select>
+	
+	<!-- CK 전체 조회(페이지네이션) -->
+	<select id="selectList" resultType="ckDto">
+		select * from (
+			select rownum rn, TMP.* from (
+			 	select ck_id, ck_date, ck_memo from ck
+			 	order by ck_date desc, ck_id desc
+			) TMP
+		) where rn between #{begin} and #{end}
+	</select>
+	<!--count-->
+	<select id="count" resultType="int">
+		select count(*) from ck
+	</select>
+	
+	<!-- 특정 CK에 참여한 참여 스트리머 조회 -->
+	<select id="selectParticipant" resultType="ckParticipantVO">
+		select ck_streamer, ck_side, ck_position,
+				streamer_soop_id, streamer_name, ck_winner
+			from ck_team
+			where ck_id = #{ckId}
+			order by
+				case ck_side when 'red' then 1 when 'blue'then 2 end,
+				case ck_position when 'TOP' then 1 when 'JUG' then 2 when 'MID' then 3 when 'AD' then 4 when 'SUP' then 5 end
+	</select>
+	
+	
+	<!--스트리머별 참여CK 조회-->
+	<select id="selectListByStreamer" resultType="cklistVO">
+		select * from (
+			select rownum rn, TMP.* from (
+			 	select 
+			 		ck_id, ck_date, ck_memo, ck_created_by,
+			 		ck_result, vs_streamer_no, vs_streamer_name
+			 	 	from ck_list
+			 	where ck_streamer = #{keyword}
+			 	order by ck_date desc, ck_id desc
+			) TMP
+		) where rn between #{begin} and #{end}
+	</select>
+	<!--count-->
+	<select id="countByStreamer" resultType="int">
+		select count(*) from ck_list
+		where ck_streamer = #{streamerNo}
+	</select>
+
+	
+	<!--스트리머별 참여CK 검색-->
+	  <!--<select id="selectSearchListByStreamer" resultType="cklistVO">
+		select * from (
+			select rownum rn, TMP.* from (
+			 	select 
+			 		ck_id, ck_date, ck_memo, ck_created_by,
+			 		ck_result, vs_streamer_no, vs_streamer_name
+			 	 	from ck_list
+			 	where ck_streamer = #{keyword}
+			 	order by ck_date desc, ck_id desc
+			) TMP
+		) where rn between #{begin} and #{end} and vs_streamer_name=#{streamerName}
+	</select>-->
+	<!--count-->
+	<!--<select id="countSearchByStreamer" resultType="int">
+		select count(*) from ck_list
+		where ck_streamer = #{streamerNo} and vs_streamer_name=#{streamerName}
+	</select>
+	-->
+	
+	
+	<!-- 조회 - 맞라인 전적 -->
+	<select id="selectVsList" resultType="CkVsVO">
+		select vs_streamer_no, vs_streamer_name, ck_position,
+			sum (case when ck_result = '승리' then 1 else 0 end) as winCount,
+			sum (case when ck_result = '패배' then 1 else 0 end) as loseCount
+		from ck_list
+			where ck_streamer = #{streamerNo}
+		group by vs_streamer_no, vs_streamer_name, ck_position
+		order by vs_streamer_name, case ck_position when 'TOP' then 1
+				when 'JUG' then 2 when 'MID' then 3 when 'AD' then 4 when 'SUP' then 5
+				else 6 end
+	</select>
+	
+	
+	<!--부분 수정(Patch)-->
+	<update id="updateUnit">
+		update ck
+		<set>
+			<if test="ckDate != null">
+				ck_date=#{ckDate},
+			</if>
+			<if test="ckMemo != null">
+				ck_memo=#{ckMemo},
+			</if>
+		</set>
+		where ck_id=#{ckId}
+	</update>
+	
 	
 	
 	<!--삭제-->

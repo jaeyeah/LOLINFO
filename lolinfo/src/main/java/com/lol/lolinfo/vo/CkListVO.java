@@ -18,16 +18,11 @@ public class CkListVO {
 
 	private Integer ckId;
 	private Date ckDate;
-	private String ckWinner;
 	private String ckMemo;
-	private Timestamp ckCreatedAt;
 	private String ckCreatedBy;
+	private String ckResult;
 	
-	private Integer ckParticipantId;
-	private Integer ckStreamer;
-	private String ckSide;
-	private String ckPosition;
-	
-	private String streamerName;
+	private Integer vsStreamerNo;
+	private String vsStreamerName;
 	
 }
