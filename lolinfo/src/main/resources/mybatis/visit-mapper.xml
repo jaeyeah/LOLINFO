@@ -22,9 +22,24 @@
 	</update>
 	
 	<!-- 관리자용 방문통계 확인 -->
-	<select id="selectList" resultType="VisitListVO">
+	<!-- 월간 -->
+	<select id="selectMonth" resultType="VisitListVO">
 		select * from visit_daily
+		where visit_date >= to_date(#{month},'YYYY-MM')
+			and visit_date &lt; add_months(to_date(#{month},'YYYY-MM'),1)
 		order by visit_date desc
+	</select>
+	<!-- 연간 -->
+	<select id="selectYear" resultType="VisitListVO">
+	    select
+	        to_char(visit_date, 'YYYY-MM') as visit_date,
+	        sum(visit_count) as visit_count,
+	        sum(visit_login) as visit_login
+	    from visit_daily
+	    where visit_date >= to_date(#{year}, 'YYYY')
+	      and visit_date &lt; add_months(to_date(#{year}, 'YYYY'), 12)
+	    group by to_char(visit_date, 'YYYY-MM')
+	    order by visit_date desc
 	</select>
 
 
