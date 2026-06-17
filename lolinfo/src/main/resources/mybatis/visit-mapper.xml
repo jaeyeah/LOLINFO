@@ -9,14 +9,15 @@
 		insert into visitor(
 			visit_date, visitor_id
 		) values (
-			trunc(sysdate), #{visitorId}
+			TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul' AS DATE)),
+			#{visitorId}
 		)
 	</insert>
 
 	<!-- 로그인 성공시 로그인상태 수정 -->
 	<update id="updateLogin">
 		update visitor set is_login = 'Y'
-		where visit_date = trunc(sysdate)
+		where visit_date = TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul' AS DATE))
 			and visitor_id = #{visitorId}
 	</update>
 	
