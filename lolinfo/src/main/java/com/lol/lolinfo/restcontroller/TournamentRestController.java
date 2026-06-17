@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.TournamentDao;
+import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.TournamentDto;
 import com.lol.lolinfo.service.TournamentService;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
-import com.lol.lolinfo.vo.StreamerStatVO;
 import com.lol.lolinfo.vo.TournamentListVO;
 import com.lol.lolinfo.vo.TournamentRequestVO;
 
@@ -34,6 +34,8 @@ public class TournamentRestController {
 	private TournamentDao tournamentDao;
 	@Autowired
 	private TournamentService tournamentService;
+	@Autowired
+	private VisitUseDao visitUseDao;
 	
 	//등록
 	@PostMapping("/")
@@ -56,12 +58,14 @@ public class TournamentRestController {
 	        totalCount = list.get(0).getTotalCount();
 	    }
 	    pageVO.setTotalCount(totalCount);
+	    visitUseDao.increase("tournament_list");
 	    return new PageResponseVO<>(list, pageVO);
 	}
 
 	//상세 조회
 	@GetMapping("/{tournamentId}")
 	public TournamentDto selectOne(@PathVariable int tournamentId) {
+		visitUseDao.increase("tournament_detail");
 		return tournamentDao.selectOne(tournamentId);
 	}
 

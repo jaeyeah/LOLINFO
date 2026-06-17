@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.CkDao;
+import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
@@ -38,6 +39,8 @@ public class CkRestController {
 	private CkService ckService;
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private VisitUseDao visitUseDao;
 	
 	/// --- 등록 ---
 	@PostMapping("/")
@@ -59,6 +62,7 @@ public class CkRestController {
 		pageVO.setPage(page);
 		pageVO.setTotalCount(totalCount);
 		List<CkDto> list = ckDao.selectList(pageVO);
+		visitUseDao.increase("ck_list");
 		return new PageResponseVO<>(list, pageVO);
 	}
 	
@@ -72,6 +76,7 @@ public class CkRestController {
 	@GetMapping("/streamer/{streamerNo}")
 	public PageResponseVO<CkListVO> selectListByStreamer (
 			@PathVariable int streamerNo, @RequestParam(defaultValue = "1") int page){
+			visitUseDao.increase("ck_streamer");
 		return ckService.selectListByStreamer(streamerNo, page);
 	}
 	

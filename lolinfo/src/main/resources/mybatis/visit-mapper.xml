@@ -42,5 +42,25 @@
 	    order by visit_date desc
 	</select>
 
+	<!-- 기능별 이용횟수 증가 -->
+	<update id="increaseUse">
+		merge into visit use v
+		using dual on (
+			v.use_date = TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul' AS DATE))
+			and v.use_type = #{value}
+		)
+		when matched then
+			update set v.use_count = v.use_count + 1
+		when not matched then
+			insert(use_date, use_type, use_count)
+			values(TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul' AS DATE)),#{value},1)
+	</update>
+	
+	<!-- 관리자용 기능별 통계 조회 -->
+    <select id="selectUseList" resultType="VisitUseDto">
+        select *
+        from visit_use
+        order by use_date desc, use_count desc
+    </select>
 
 </mapper>
