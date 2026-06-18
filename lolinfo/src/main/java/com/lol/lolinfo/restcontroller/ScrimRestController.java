@@ -20,6 +20,7 @@ import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.ScrimListVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
+import com.lol.lolinfo.vo.ScrimUpdateVO;
 import com.lol.lolinfo.vo.ScrimVsRecordVO;
 import com.lol.lolinfo.vo.TokenVO;
 
@@ -67,13 +68,15 @@ public class ScrimRestController {
 	//부분수정
 	@PatchMapping("/")
 	public void updateUnit(
-	        @RequestBody ScrimDto scrimDto) {
-	    scrimDao.updateUnit(scrimDto);
+	        @RequestBody ScrimUpdateVO scrimUpdateVO) {
+	    scrimDao.updateUnit(scrimUpdateVO);
+	    System.out.println("스크림 수정 실행");
 	}
 	//삭제
 	@DeleteMapping("/{scrimId}")
 	public void delete(@PathVariable int scrimId) {
 		scrimDao.delete(scrimId);
+		System.out.println("스크림 삭제 실행");
 	}
 	
 	
