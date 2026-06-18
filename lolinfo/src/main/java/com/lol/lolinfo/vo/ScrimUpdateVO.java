@@ -19,4 +19,5 @@ public class ScrimUpdateVO {
 	private Integer scrimRedScore;
 	private Integer scrimBlueScore;
 	private Date scrimDate;
+	private Integer scrimHour;
 }

@@ -8,10 +8,11 @@
 	<insert id="insert">
 		insert into scrim(
 			scrim_id, scrim_tournament, scrim_red_team, scrim_red_score,
-			scrim_blue_team, scrim_blue_score, scrim_date, scrim_created_by
+			scrim_blue_team, scrim_blue_score, scrim_date, scrim_created_by,
+			scrim_hour, scrim_match_type
 		) values(
 		 scrim_seq.nextval, #{scrimTournament}, #{scrimRedTeam},#{scrimRedScore},
-		 #{scrimBlueTeam},#{scrimBlueScore},#{scrimDate},#{scrimCreatedBy}
+		 #{scrimBlueTeam},#{scrimBlueScore},#{scrimDate},#{scrimCreatedBy},#{scrimHour},#{scrimMatchType}
 		) 
 	</insert>
 	
@@ -19,7 +20,7 @@
 	<select id="selectList" resultType="scrimListVO">
 		select * from scrim_list
 		where scrim_tournament = #{scrimTournament}
-		order by scrim_date desc, scrim_id desc
+		order by scrim_date desc, scrim_hour desc, scrim_id desc
 	</select>
 	
 	<!-- 스크림결과 조회 -->
@@ -50,6 +51,9 @@
 			</if>
 			<if test="scrimBlueScore != null">
 				scrim_blue_score=#{scrimBlueScore},
+			</if>
+			<if test="scrimHour != null">
+				scrim_hour=#{scrimHour},
 			</if>
 		</set>
 		where scrim_id=#{scrimId}

@@ -21,4 +21,6 @@ public class ScrimDto {
 	private Integer scrimBlueScore;
 	private Date scrimDate;
 	private String scrimCreatedBy;
+	private Integer scrimHour;
+	private String scrimMatchType;
 }
