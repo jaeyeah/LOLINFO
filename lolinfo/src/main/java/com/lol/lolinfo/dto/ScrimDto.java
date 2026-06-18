@@ -16,9 +16,9 @@ public class ScrimDto {
 	private Integer scrimId;
 	private int scrimTournament;
 	private int scrimRedTeam;
-	private int scrimRedScore;
+	private Integer scrimRedScore;
 	private int scrimBlueTeam;
-	private int scrimBlueScore;
+	private Integer scrimBlueScore;
 	private Date scrimDate;
 	private String scrimCreatedBy;
 }

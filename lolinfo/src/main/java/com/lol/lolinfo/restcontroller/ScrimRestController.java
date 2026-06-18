@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,4 +61,15 @@ public class ScrimRestController {
 	) {
 	    return scrimDao.selectVsList(scrimTournament, scrimTeam);
 	}
+	
+	
+	//부분수정
+	@PatchMapping("/")
+	public void updateUnit(
+	        @RequestBody ScrimDto scrimDto) {
+	    scrimDao.updateUnit(scrimDto);
+	}
+	
+	
+	
 }

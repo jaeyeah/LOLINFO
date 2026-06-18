@@ -38,6 +38,24 @@
 	</select>
 	
 	
+	<!-- 부분 수정 -->
+	<update id="updateUnit">
+		update scrim
+		<set>
+			<if test="scrimDate != null">
+				scrim_date=#{scrimDate},
+			</if>
+			<if test="scrimRedScore != null">
+				scrim_red_score=#{scrimRedScore},
+			</if>
+			<if test="scrimBlueScore != null">
+				scrim_blue_score=#{scrimBlueScore},
+			</if>
+		</set>
+		where scrim_id=#{scrimId}
+	</update>
+	
+	
 
 
 	

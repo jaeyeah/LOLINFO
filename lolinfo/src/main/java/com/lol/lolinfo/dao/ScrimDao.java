@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.ScrimDto;
 import com.lol.lolinfo.vo.ScrimListVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
@@ -38,6 +39,11 @@ public class ScrimDao {
 	    param.put("scrimTournament", scrimTournament);
 	    param.put("scrimTeam", scrimTeam);
 	    return sqlSession.selectList("scrim.selectVsRecordList", param);
+	}
+	/// ----- 수정 -----
+	// 부분수정
+	public boolean updateUnit(ScrimDto scrimDto) {
+		return sqlSession.update("scrim.updateUnit", scrimDto)>0;
 	}
 
 }
