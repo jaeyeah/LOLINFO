@@ -1,8 +1,11 @@
-package com.lol.lolinfo.dto;
+package com.lol.lolinfo.vo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.lol.lolinfo.dto.CkParticipantDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +14,9 @@ import lombok.NoArgsConstructor;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class ScrimDto {
-
+public class ScrimUpdateVO {
 	private Integer scrimId;
-	private int scrimTournament;
-	private int scrimRedTeam;
 	private Integer scrimRedScore;
-	private int scrimBlueTeam;
 	private Integer scrimBlueScore;
 	private Date scrimDate;
-	private String scrimCreatedBy;
 }

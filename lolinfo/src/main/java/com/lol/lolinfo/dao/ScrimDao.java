@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.lol.lolinfo.dto.ScrimDto;
 import com.lol.lolinfo.vo.ScrimListVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
+import com.lol.lolinfo.vo.ScrimUpdateVO;
 import com.lol.lolinfo.vo.ScrimVsRecordVO;
 
 @Repository
@@ -39,6 +40,14 @@ public class ScrimDao {
 	    param.put("scrimTeam", scrimTeam);
 	    return sqlSession.selectList("scrim.selectVsRecordList", param);
 	}
-
+	/// ----- 수정 -----
+	// 부분수정
+	public boolean updateUnit(ScrimUpdateVO scrimUpdateVO) {
+		return sqlSession.update("scrim.updateUnit", scrimUpdateVO)>0;
+	}
+	// 삭제
+	public boolean delete(int scrimId) {
+		return sqlSession.delete("scrim.delete", scrimId)>0;
+	}
 }
 

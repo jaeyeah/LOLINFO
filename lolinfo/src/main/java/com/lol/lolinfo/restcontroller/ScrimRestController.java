@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.ScrimListVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
+import com.lol.lolinfo.vo.ScrimUpdateVO;
 import com.lol.lolinfo.vo.ScrimVsRecordVO;
 import com.lol.lolinfo.vo.TokenVO;
 
@@ -60,4 +63,22 @@ public class ScrimRestController {
 	) {
 	    return scrimDao.selectVsList(scrimTournament, scrimTeam);
 	}
+	
+	
+	//부분수정
+	@PatchMapping("/")
+	public void updateUnit(
+	        @RequestBody ScrimUpdateVO scrimUpdateVO) {
+	    scrimDao.updateUnit(scrimUpdateVO);
+	    System.out.println("스크림 수정 실행");
+	}
+	//삭제
+	@DeleteMapping("/{scrimId}")
+	public void delete(@PathVariable int scrimId) {
+		scrimDao.delete(scrimId);
+		System.out.println("스크림 삭제 실행");
+	}
+	
+	
+	
 }
