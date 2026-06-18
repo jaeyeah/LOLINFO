@@ -45,6 +45,9 @@ public class ScrimDao {
 	public boolean updateUnit(ScrimDto scrimDto) {
 		return sqlSession.update("scrim.updateUnit", scrimDto)>0;
 	}
-
+	// 삭제
+	public boolean delete(int scrimId) {
+		return sqlSession.delete("scrim.delete", scrimId)>0;
+	}
 }
 

@@ -55,6 +55,10 @@
 		where scrim_id=#{scrimId}
 	</update>
 	
+	<!--삭제 -->
+	<delete id="delete">
+		 delete scrim where scrim_id = #{scrimId}
+	</delete>
 	
 
 
