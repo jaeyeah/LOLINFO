@@ -27,7 +27,9 @@ public class ScrimListVO {
     private int scrimBlueScore;
 
     private Date scrimDate;
+    private Integer scrimHour;
     private String scrimCreatedBy;
+    private String scrimMatchType;
 
     private Integer scrimWinner;
     private String scrimWinnerName;
