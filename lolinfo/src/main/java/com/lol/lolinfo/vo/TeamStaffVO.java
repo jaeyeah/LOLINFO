@@ -17,14 +17,5 @@ public class TeamStaffVO {
 	
 	private String streamerSoopId;
 	private String streamerName;
-	
-	public String getStreamerProfile() {
-    	if (streamerSoopId == null || streamerSoopId.isBlank()) {
-            return "https://profile.img.sooplive.co.kr/LOGO/af" ;} // 기본이미지
-    	String prefix = streamerSoopId.substring(0, 2);
-    	return "https://profile.img.sooplive.co.kr/LOGO/" 
-        		+ prefix + "/" 
-        		+ streamerSoopId + "/" 
-        		+ streamerSoopId + ".jpg";
-	}
+
 }
