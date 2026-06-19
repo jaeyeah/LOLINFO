@@ -14,14 +14,22 @@
 		)
 	</insert>
 	
-	<!-- 목록 - 개인상세 조회용  -->
+	<!-- 목록 : 개인상세 조회용  -->
 	<select id="selectListByStreamerNo" resultType="staffListVO">
 		select * from staff_list
 		where staff_streamer = #{streamerNo}
 		order by tournament_year desc
 	</select>
 
-	
+	<!-- 목록 : 팀별 전체 감독/코치목록-->
+	<select id="selectStaffList" resultType="TeamStaffVO">
+		select * from team_staff_list
+		where staff_team = #{teamId}
+		order by case staff_role
+			when '감독' then 1
+			when '코치' then 2
+			else 99 end
+	</select>
 	
 	<!-- 삭제 -->
 	<delete id="delete">
