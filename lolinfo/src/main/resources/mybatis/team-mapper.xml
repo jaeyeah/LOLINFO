@@ -30,7 +30,13 @@
 	<select id="selectListByTournamentId" resultType="teamListVO">
 		select * from team_list
 		where tournament_id = #{tournamentId}
-		<!-- order by tournament_year  -->
+		<!-- order by 순서 직접부여 -->
+		order by case team_ranking
+			when '우승' then 1
+			when '준우승' then 2
+			when '4강' then 3
+			when '본선진출' then 4
+			else 99 end
 	</select>
 	
 	<!-- 인원별 팀 목록조회 -->
