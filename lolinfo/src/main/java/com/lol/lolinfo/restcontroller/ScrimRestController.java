@@ -42,6 +42,7 @@ public class ScrimRestController {
 		TokenVO tokenVO = tokenService.parse(bearerToken);
 		if(tokenVO == null) throw new TargetNotfoundException();
 		scrimDto.setScrimCreatedBy(tokenVO.getLoginId());
+		System.out.println(scrimDto);
 		scrimDao.insert(scrimDto);
 	}
 	

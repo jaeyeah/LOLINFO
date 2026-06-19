@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.StaffDto;
 import com.lol.lolinfo.vo.StaffListVO;
+import com.lol.lolinfo.vo.TeamStaffVO;
 
 @Repository
 public class StaffDao {
@@ -22,6 +23,10 @@ public class StaffDao {
 	//조회1
 	public List<StaffListVO> selectListByStreamerNo(int streamerNo){
 		return sqlSession.selectList("staff.selectListByStreamerNo", streamerNo);
+	}
+	//조회2 : 팀별 소속 감독/코치 조회
+	public List<TeamStaffVO> selectStaffList(int teamId){
+		return sqlSession.selectList("staff.selectStaffList", teamId);		
 	}
 	
 	//삭제

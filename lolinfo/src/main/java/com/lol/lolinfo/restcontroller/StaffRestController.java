@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lol.lolinfo.dao.StaffDao;
 import com.lol.lolinfo.dto.StaffDto;
 import com.lol.lolinfo.vo.StaffListVO;
+import com.lol.lolinfo.vo.TeamStaffVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,11 +35,11 @@ public class StaffRestController {
 		return staffDao.selectListByStreamerNo(streamerNo);
 	}
 
-	//목록조회 2
-//	@GetMapping("/tournament/{tournamentId}")
-//	public List<HostListVO> selectListByTournamenId(@PathVariable int tournamentId){
-//		return hostDao.selectListByTournamentId(tournamentId);
-//	}
+	//목록조회 2 : 팀별 감독/코치 조회
+	@GetMapping("/team/{teamId}")
+	public List<TeamStaffVO> selectStaffList(@PathVariable int teamId){
+		return staffDao.selectStaffList(teamId);
+	}
 	
 //	//삭제
 	@DeleteMapping("/")
