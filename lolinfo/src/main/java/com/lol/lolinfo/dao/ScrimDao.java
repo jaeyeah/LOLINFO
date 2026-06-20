@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.ScrimDto;
+import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.ScrimListVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
 import com.lol.lolinfo.vo.ScrimUpdateVO;
@@ -26,8 +27,12 @@ public class ScrimDao {
 	}
 	
 	// 목록 조회
-	public List<ScrimListVO> selectList(int scrimTournament){
-	    return sqlSession.selectList("scrim.selectList", scrimTournament);
+	public int count(int scrimTournament) {
+		return sqlSession.selectOne("scrim.count", scrimTournament);
+	}
+	
+	public List<ScrimListVO> selectList(PageVO pageVO){
+	    return sqlSession.selectList("scrim.selectList", pageVO);
 	}
 
 	public List<ScrimRecordVO> selectRecordList(int scrimTournament){

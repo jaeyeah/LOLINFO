@@ -12,12 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.ScrimDao;
+import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.ScrimDto;
 import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.service.TokenService;
+import com.lol.lolinfo.vo.PageResponseVO;
+import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.ScrimListVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
 import com.lol.lolinfo.vo.ScrimUpdateVO;
@@ -48,9 +52,16 @@ public class ScrimRestController {
 	
 	//특정 대회의 스크림 목록 조회
 	@GetMapping("/{scrimTournament}")
-	public List<ScrimListVO> selectList(@PathVariable int scrimTournament){
-		return scrimDao.selectList(scrimTournament);
+	public PageResponseVO<ScrimListVO> selectList(@PathVariable int scrimTournament, @RequestParam(defaultValue = "1") int page){
+		int totalCount = scrimDao.count(scrimTournament);
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(page);
+		pageVO.setTotalCount(totalCount);
+		pageVO.setKeyword(String.valueOf(scrimTournament));
+		List<ScrimListVO> list = scrimDao.selectList(pageVO);
+		return new PageResponseVO<>(list, pageVO);
 	}
+	
 	// 특정 대회의 팀별 스크림 승률 조회
 	@GetMapping("/record/{scrimTournament}")
 	public List<ScrimRecordVO> selectRecordList(@PathVariable int scrimTournament){
