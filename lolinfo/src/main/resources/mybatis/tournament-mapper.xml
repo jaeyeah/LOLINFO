@@ -21,11 +21,6 @@
 		)
 	</insert>
 
-	<!-- 인원수 Count -->
-	<!--<select id="count" resultType="int">
-		select count(*) from tournament
-	</select>-->
-	
 	<!-- 조회 + 인원수 Count-->
 	<select id="selectList" resultType="tournamentlistvo">
 	select * from (
@@ -36,6 +31,22 @@
 		     order by tl.tournament_year desc, tl.tournament_end desc
 		   ) as rn
 		 from tournament_list tl
+		)
+	where rn between #{begin} and #{end}
+	order by tournament_year desc, tournament_end desc
+	</select>
+	
+	<!-- 검색 + 인원수 Count-->
+	<select id="searchList" resultType="tournamentlistvo">
+	select * from (
+		 select
+		   tl.*,
+		   count(*) over() as total_count,
+		   row_number() over (
+		     order by tl.tournament_year desc, tl.tournament_end desc
+		   ) as rn
+		 from tournament_list tl
+		 where upper(tournament_name) like '%' || upper(#{keyword}) || '%'
 		)
 	where rn between #{begin} and #{end}
 	order by tournament_year desc, tournament_end desc

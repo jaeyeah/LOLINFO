@@ -1,5 +1,7 @@
 package com.lol.lolinfo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lol.lolinfo.dao.HostDao;
 import com.lol.lolinfo.dao.TournamentDao;
 import com.lol.lolinfo.dto.HostDto;
+import com.lol.lolinfo.vo.PageVO;
+import com.lol.lolinfo.vo.TournamentListVO;
 import com.lol.lolinfo.vo.TournamentRequestVO;
 
 @Service
@@ -43,5 +47,30 @@ public class TournamentService {
     		hostDao.insert(hostDto);		
     	}
     }
+    
+    // 전체 조회
+    public List<TournamentListVO> selectList(PageVO pageVO){
+    	List<TournamentListVO> list = tournamentDao.selectList(pageVO);
+    	setTotalCount(pageVO, list);
+    	return list;
+    }
+    
+    // 검색 조회
+    public List<TournamentListVO> searchList(PageVO pageVO){
+    	List<TournamentListVO> list = tournamentDao.searchList(pageVO);
+    	setTotalCount(pageVO, list);
+    	return list;
+    }
+    
+ // totalCount 세팅 공통 처리
+    private void setTotalCount(PageVO pageVO, List<TournamentListVO> list) {
+        int totalCount = 0;
+        if(list != null && !list.isEmpty() && list.get(0).getTotalCount() != null) {
+            totalCount = list.get(0).getTotalCount();
+        }
+        pageVO.setTotalCount(totalCount);
+    }
+    
+    
 
 }
