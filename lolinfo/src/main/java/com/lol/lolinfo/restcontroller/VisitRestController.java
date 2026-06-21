@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lol.lolinfo.dao.VisitDao;
 import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.VisitDto;
-import com.lol.lolinfo.dto.VisitUseDto;
 import com.lol.lolinfo.service.VisitService;
 import com.lol.lolinfo.vo.VisitListVO;
+import com.lol.lolinfo.vo.VisitUseListVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,8 +56,14 @@ public class VisitRestController {
 	}
 	
 	//
-	@GetMapping("/use")
-	public List<VisitUseDto> selectUse(){
-		return visitUseDao.selectList();
+	@GetMapping("/use/month")
+	public List<VisitUseListVO> selectUseMonth(@RequestParam String month){
+		System.out.println("실행 : 월간기능통계");
+		return visitUseDao.selectMonth(month);
+	}
+	@GetMapping("/use/year")
+	public List<VisitUseListVO> selectUseYear(@RequestParam String year){
+		System.out.println("실행 : 연간기능통계");
+		return visitUseDao.selectYear(year);
 	}
 }
