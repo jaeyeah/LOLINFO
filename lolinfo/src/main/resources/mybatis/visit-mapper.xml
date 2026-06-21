@@ -57,10 +57,35 @@
 	</update>
 	
 	<!-- 관리자용 기능별 통계 조회 -->
-    <select id="selectUseList" resultType="VisitUseDto">
-        select *
+    <select id="selectUseMonth" resultType="VisitUseListVO">
+        select 
+        	use_date as useDate,
+        	sum(case when use_type = 'tournament_list' then use_count else 0 end) as tournamentList,
+	        sum(case when use_type = 'tournament_detail' then use_count else 0 end) as tournamentDetail,
+	        sum(case when use_type = 'streamer_list' then use_count else 0 end) as streamerList,
+	        sum(case when use_type = 'streamer_detail' then use_count else 0 end) as streamerDetail,
+	        sum(case when use_type = 'ck_streamer' then use_count else 0 end) as ckStreamer,
+	        sum(case when use_type = 'ck_list' then use_count else 0 end) as ckList
         from visit_use
-        order by use_date desc, use_count desc
+		where use_date >= to_date(#{month},'YYYY-MM')
+			and use_date &lt; add_months(to_date(#{month},'YYYY-MM'),1)
+		group by use_date
+		order by use_date asc
     </select>
+    <select id="selectUseYear" resultType="VisitUseListVO">
+	    select 
+	        to_char(use_date, 'YYYY-MM') as useDate,
+	        sum(case when use_type = 'tournament_list' then use_count else 0 end) as tournamentList,
+	        sum(case when use_type = 'tournament_detail' then use_count else 0 end) as tournamentDetail,
+	        sum(case when use_type = 'streamer_list' then use_count else 0 end) as streamerList,
+	        sum(case when use_type = 'streamer_detail' then use_count else 0 end) as streamerDetail,
+	        sum(case when use_type = 'ck_streamer' then use_count else 0 end) as ckStreamer,
+	        sum(case when use_type = 'ck_list' then use_count else 0 end) as ckList
+	    from visit_use
+	    where use_date >= to_date(#{year}, 'YYYY')
+	      and use_date &lt; add_months(to_date(#{year}, 'YYYY'), 12)
+	    group by to_char(use_date, 'YYYY-MM')
+	    order by useDate asc
+	</select>
 
 </mapper>
