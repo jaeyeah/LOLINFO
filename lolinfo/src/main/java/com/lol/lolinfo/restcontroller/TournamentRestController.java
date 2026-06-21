@@ -45,19 +45,22 @@ public class TournamentRestController {
 	}
 	
 	
-	//전체 조회
+	//전체 조회 + 검색
 	@GetMapping("/")
-	public PageResponseVO<TournamentListVO> selectList(@RequestParam(defaultValue = "1") int page){
+	public PageResponseVO<TournamentListVO> selectList(
+				@RequestParam(defaultValue = "1") int page,
+				@RequestParam(required=false) String keyword){
 		// DB 중복조회를 방지하고자 totalCount를 한꺼번에 불러오는 것으로 수정
-		//int totalCount = tournamentDao.count();
 		PageVO pageVO = new PageVO();
 		pageVO.setPage(page);
-		List<TournamentListVO> list = tournamentDao.selectList(pageVO);
-		int totalCount = 0;
-	    if(list != null && !list.isEmpty() && list.get(0).getTotalCount() != null) {
-	        totalCount = list.get(0).getTotalCount();
-	    }
-	    pageVO.setTotalCount(totalCount);
+		pageVO.setKeyword(keyword);
+		
+		List<TournamentListVO> list;
+		if(keyword != null && !keyword.isBlank()) {
+			list = tournamentService.searchList(pageVO);
+		} else {
+			list = tournamentService.selectList(pageVO);
+		}
 	    visitUseDao.increase("tournament_list");
 	    return new PageResponseVO<>(list, pageVO);
 	}
