@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="streamerWith">
+	
+	<!-- 같이 CK 참여했던 스트리머 -->
+	<select id="withCk" resultType="streamerWithCkVO">
+	   select
+	       p2.ck_streamer as partner_no,
+	       s.streamer_name as partner_name,
+	       s.streamer_soop_id as partner_soop_id,
+		count(*) as play_count,
+	       sum(case when c.ck_winner = p1.ck_side then 1
+	           else 0 end) as win_count,
+		sum(case when c.ck_winner != p1.ck_side then 1
+	           else 0 end) as lose_count
+	   from ck_participant p1
+	   join ck_participant p2
+	       on p1.ck_id = p2.ck_id
+	      and p1.ck_side = p2.ck_side
+	      and p1.ck_streamer != p2.ck_streamer
+	   join ck c
+	       on p1.ck_id = c.ck_id
+	   join streamer s
+	       on p2.ck_streamer = s.streamer_no
+	   where p1.ck_streamer = #{streamerNo}
+	   group by
+	       p2.ck_streamer,
+	       s.streamer_name,
+	       s.streamer_soop_id
+	   order by play_count desc, win_count desc, partner_name asc
+	</select>
+	
+	<!-- 같이 대회 참여했던 스트리머 -->
+	<!-- 멸망전, 우승 여부추가 -->
+	<select id="withTournament" resultType="StreamerWithTournamentVO">
+		select
+			tm2.streamer_no as partner_no,
+			s.streamer_name as partner_name,
+			s.streamer_soop_id as partner_soop_id,
+			count(*) as play_count,
+			
+			max(case when tr.tournament_name like '%멸망전%' then 'Y' else 'N' end) as withOfficial,
+			max(case when t.team_ranking like '우승' then 'Y' else 'N' end) as withChampion,
+			max(case when t.team_ranking like '준우승' then 'Y' else 'N' end) as withFinal
+		from team_member tm1
+		join team_member tm2
+			on tm1.team_id = tm2.team_id
+			and tm1.streamer_no != tm2.streamer_no
+		join streamer s
+			on tm2.streamer_no = s.streamer_no
+		join team t
+        	on tm1.team_id = t.team_id
+	   	join tournament tr
+	       on t.tournament_id = tr.tournament_id
+		where tm1.streamer_no = #{streamerNo}
+		group by
+			tm2.streamer_no,
+			s.streamer_name,
+			s.streamer_soop_id
+		order by
+			play_count desc,
+			partner_name asc
+	</select>
+
+	
+
+</mapper>
