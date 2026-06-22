@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="streamerWith">
+	
+	<select id="withCk" resultType="streamerWithCkVO">
+    select
+        p2.ck_streamer as partner_no,
+        s.streamer_name as partner_name,
+        s.streamer_soop_id as partner_soop_id,
+		count(*) as play_count,
+        sum(case when c.ck_winner = p1.ck_side then 1
+            else 0 end) as win_count,
+		sum(case when c.ck_winner != p1.ck_side then 1
+            else 0 end) as lose_count
+    from ck_participant p1
+    join ck_participant p2
+        on p1.ck_id = p2.ck_id
+       and p1.ck_side = p2.ck_side
+       and p1.ck_streamer != p2.ck_streamer
+    join ck c
+        on p1.ck_id = c.ck_id
+    join streamer s
+        on p2.ck_streamer = s.streamer_no
+    where p1.ck_streamer = #{streamerNo}
+    group by
+        p2.ck_streamer,
+        s.streamer_name,
+        s.streamer_soop_id
+    order by play_count desc, win_count desc, partner_name asc
+</select>
+	
+
+</mapper>

@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lol.lolinfo.dao.StreamerDao;
 import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.StreamerDto;
+import com.lol.lolinfo.service.StreamerService;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.StreamerStatVO;
+import com.lol.lolinfo.vo.StreamerWithCkVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,6 +33,8 @@ public class StreamerRestController {
 
 	@Autowired
 	private StreamerDao streamerDao;
+	@Autowired
+	private StreamerService streamerService;
 	@Autowired
 	private VisitUseDao visitUseDao;	
 	
@@ -108,5 +112,24 @@ public class StreamerRestController {
 	public void delete(@PathVariable int streamerNo) {
 		streamerDao.delete(streamerNo);
 	}
+	
+	
+	// 같이 한 동료
+	@GetMapping("/withCk")
+	public List<StreamerWithCkVO> withCk(@RequestParam int streamerId){
+		return streamerService.withCk(streamerId);
+	}
+	
+	
+//	@GetMapping("/withTournament")
+//	public List<???> withTournament(@RequestParam int streamerId){
+//		return StreamerService.withTournament(streamerId);
+//	}
+//	
+//	@GetMapping("/withTournament/{partnerNo}")
+//	public List<???> TournamentDetail(@RequestParam int streamerId,
+//			@PathVariable partnerNo){
+//		return StreamerService.TournamentDetail(streamerId, partnerNo);
+//	}
 	
 }
