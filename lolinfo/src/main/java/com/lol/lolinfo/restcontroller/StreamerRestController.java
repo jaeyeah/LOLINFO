@@ -76,6 +76,12 @@ public class StreamerRestController {
 		return new PageResponseVO<>(list, pageVO);
 	}
 	
+	//검색 시 자동완성
+	@GetMapping("/autoSearch")
+	public List<StreamerDto> autoSearch(@RequestParam String keyword){
+		return streamerDao.autoSearch(keyword);
+	}
+	
 	
 
 	//상세 조회

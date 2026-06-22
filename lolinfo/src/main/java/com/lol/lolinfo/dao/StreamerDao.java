@@ -41,6 +41,11 @@ public class StreamerDao {
 	public int searchCount(String keyword) {
 		return sqlSession.selectOne("streamer.searchCount",keyword);
 	}
+	// 검색용 자동완성 조회
+	public List<StreamerDto> autoSearch(String keyword){
+		return sqlSession.selectList("streamer.autoSearch",keyword);
+	}
+	
 	
 	//상세조회
 	public StreamerDto selectOne(int streamerNo) {

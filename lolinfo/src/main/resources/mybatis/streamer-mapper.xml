@@ -92,5 +92,11 @@
 		where streamer_name LIKE '%' || #{keyword} || '%'
 	</select>
 	
+	<!-- 자동완성 조회-->
+	<select id="autoSearch" resultType="StreamerDto">
+		select * from streamer
+		where lower(streamer_name) like '%' || lower(#{keyword}) || '%'
+	</select>
+	
 
 </mapper>

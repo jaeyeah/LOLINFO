@@ -39,7 +39,7 @@ public class AdminController {
 	}
 	
 	// 회원 등급수정
-	@PatchMapping("/members/{memberId}/memberlevel")
+	@PatchMapping("/members/{memberId}/memberLevel")
 	public void chageLevel(@PathVariable String memberId,
 							@RequestParam String memberLevel) {
 		memberService.changeLevel(memberId,memberLevel);
