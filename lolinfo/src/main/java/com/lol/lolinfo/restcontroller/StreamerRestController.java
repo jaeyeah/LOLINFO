@@ -22,6 +22,7 @@ import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.StreamerStatVO;
 import com.lol.lolinfo.vo.StreamerWithCkVO;
+import com.lol.lolinfo.vo.StreamerWithTournamentVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -121,15 +122,15 @@ public class StreamerRestController {
 	}
 	
 	
-//	@GetMapping("/withTournament")
-//	public List<???> withTournament(@RequestParam int streamerId){
-//		return StreamerService.withTournament(streamerId);
-//	}
-//	
+	@GetMapping("/withTournament")
+	public List<StreamerWithTournamentVO> withTournament(@RequestParam int streamerId){
+		return streamerService.withTournament(streamerId);
+	}
+	
 //	@GetMapping("/withTournament/{partnerNo}")
 //	public List<???> TournamentDetail(@RequestParam int streamerId,
 //			@PathVariable partnerNo){
-//		return StreamerService.TournamentDetail(streamerId, partnerNo);
+//		return streamerService.TournamentDetail(streamerId, partnerNo);
 //	}
 	
 }
