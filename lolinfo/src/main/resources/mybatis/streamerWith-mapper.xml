@@ -63,6 +63,26 @@
 			play_count desc,
 			partner_name asc
 	</select>
+	
+	
+	<select id="withTournamentDetail" resultType="streamerWithTournamentDetailVO">
+	    select
+	        t.team_name as teamName,
+	        tl.tournament_id as tournamentId,
+	        tl.tournament_year as tournamentYear,
+	        tl.tournament_name as tournamentName,
+	        t.team_ranking as teamRanking
+	    from team_member tm1
+	        join team_member tm2
+	            on tm1.team_id = tm2.team_id
+	        join team t
+	            on tm1.team_id = t.team_id
+	        left outer join tournament_list tl
+	            on t.tournament_id = tl.tournament_id
+	    where tm1.streamer_no = #{streamerNo}
+	      and tm2.streamer_no = #{partnerNo}
+	    order by tournamentYear desc
+	</select>
 
 	
 

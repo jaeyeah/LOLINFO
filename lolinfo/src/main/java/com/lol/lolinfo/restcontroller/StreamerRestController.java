@@ -22,6 +22,7 @@ import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.StreamerStatVO;
 import com.lol.lolinfo.vo.StreamerWithCkVO;
+import com.lol.lolinfo.vo.StreamerWithTournamentDetailVO;
 import com.lol.lolinfo.vo.StreamerWithTournamentVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -127,10 +128,10 @@ public class StreamerRestController {
 		return streamerService.withTournament(streamerId);
 	}
 	
-//	@GetMapping("/withTournament/{partnerNo}")
-//	public List<???> TournamentDetail(@RequestParam int streamerId,
-//			@PathVariable partnerNo){
-//		return streamerService.TournamentDetail(streamerId, partnerNo);
-//	}
+	@GetMapping("/withTournament/{partnerNo}")
+	public List<StreamerWithTournamentDetailVO> withTournamentDetail(@RequestParam int streamerId,
+									   @PathVariable int partnerNo){
+		return streamerService.withTournamentDetail(streamerId, partnerNo);
+	}
 	
 }
