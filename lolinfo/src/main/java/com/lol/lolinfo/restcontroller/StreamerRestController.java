@@ -119,15 +119,15 @@ public class StreamerRestController {
 	// 팀메이트 - CK
 	@GetMapping("/withCk")
 	public PageResponseVO<StreamerWithCkVO> withCk(@RequestParam int streamerId,
-			@RequestParam(defaultValue = "1") int page){
-		return streamerService.withCk(streamerId,page);
+			@RequestParam(defaultValue = "1") int page, @RequestParam(required=false) String keyword){
+		return streamerService.withCk(streamerId,page,keyword);
 	}
 	
 	// 팀메이트 - 대회
 	@GetMapping("/withTournament")
 	public PageResponseVO<StreamerWithTournamentVO> withTournament(@RequestParam int streamerId,
-			@RequestParam(defaultValue = "1") int page){
-		return streamerService.withTournament(streamerId,page);
+			@RequestParam(defaultValue = "1") int page, @RequestParam(required=false) String keyword){
+		return streamerService.withTournament(streamerId,page,keyword);
 	}
 	
 	// 팀메이트 - 대회상세

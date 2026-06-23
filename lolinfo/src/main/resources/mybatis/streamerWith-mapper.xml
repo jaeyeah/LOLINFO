@@ -32,6 +32,9 @@
 			   join streamer s
 			       on p2.ck_streamer = s.streamer_no
 			   where p1.ck_streamer = #{keyword}
+			   <if test="searchKeyword != null and searchKeyword != ''">
+				    and lower(s.streamer_name) like '%' || lower(#{searchKeyword}) || '%'
+				</if>
 			   group by
 			       p2.ck_streamer,
 			       s.streamer_name,
@@ -70,6 +73,9 @@
 			   	join tournament tr
 			       on t.tournament_id = tr.tournament_id
 				where tm1.streamer_no = #{keyword}
+				<if test="searchKeyword != null and searchKeyword != ''">
+				    and lower(s.streamer_name) like '%' || lower(#{searchKeyword}) || '%'
+				</if>
 				group by
 					tm2.streamer_no,
 					s.streamer_name,

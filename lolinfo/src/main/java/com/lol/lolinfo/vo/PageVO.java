@@ -26,7 +26,7 @@ public class PageVO {
     }
 	
 	public String keyword;
-	
+	public String searchKeyword;
 	
 	// 그룹의 시작~끝번호
 	public int getBlockStart() {
