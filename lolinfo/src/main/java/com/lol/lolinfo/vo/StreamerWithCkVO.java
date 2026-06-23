@@ -18,8 +18,11 @@ public class StreamerWithCkVO {
 	private int playCount;
     private int winCount;
     private int loseCount;
+
     public double getWinRate() {
     	if(playCount==0) return 0;
     	return Math.round((winCount * 1000.0/playCount)/ 10.0);
     }
+    
+    private Integer totalCount;
 }
