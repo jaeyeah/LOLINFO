@@ -18,4 +18,6 @@ public class StreamerWithTournamentVO {
 	private String withOfficial; // 같이 멸망전 참가이력 여부
 	private String withChampion; // 같이 우승이력 여부
 	private String withFinal; // 같이 준우승이력 여부
+	
+	private Integer totalCount;
 }

@@ -116,21 +116,24 @@ public class StreamerRestController {
 	}
 	
 	
-	// 같이 한 동료
+	// 팀메이트 - CK
 	@GetMapping("/withCk")
-	public List<StreamerWithCkVO> withCk(@RequestParam int streamerId){
-		return streamerService.withCk(streamerId);
+	public PageResponseVO<StreamerWithCkVO> withCk(@RequestParam int streamerId,
+			@RequestParam(defaultValue = "1") int page){
+		return streamerService.withCk(streamerId,page);
 	}
 	
-	
+	// 팀메이트 - 대회
 	@GetMapping("/withTournament")
-	public List<StreamerWithTournamentVO> withTournament(@RequestParam int streamerId){
-		return streamerService.withTournament(streamerId);
+	public PageResponseVO<StreamerWithTournamentVO> withTournament(@RequestParam int streamerId,
+			@RequestParam(defaultValue = "1") int page){
+		return streamerService.withTournament(streamerId,page);
 	}
 	
+	// 팀메이트 - 대회상세
 	@GetMapping("/withTournament/{partnerNo}")
-	public List<StreamerWithTournamentDetailVO> withTournamentDetail(@RequestParam int streamerId,
-									   @PathVariable int partnerNo){
+	public List<StreamerWithTournamentDetailVO> withTournamentDetail(
+		@RequestParam int streamerId, @PathVariable int partnerNo){
 		return streamerService.withTournamentDetail(streamerId, partnerNo);
 	}
 	
