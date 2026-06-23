@@ -18,4 +18,6 @@ public class VisitUseListVO {
     private int streamerList;
     private int ckStreamer;
     private int ckList;
+    private int teammate;
+    
 }

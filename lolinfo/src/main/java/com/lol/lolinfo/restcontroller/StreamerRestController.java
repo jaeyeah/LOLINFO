@@ -137,4 +137,11 @@ public class StreamerRestController {
 		return streamerService.withTournamentDetail(streamerId, partnerNo);
 	}
 	
+	//사용내역 추가
+	@PostMapping("/teammateVisit")
+	public void teammateVisit() {
+		visitUseDao.increase("teammate");
+	}
+	
+	
 }
