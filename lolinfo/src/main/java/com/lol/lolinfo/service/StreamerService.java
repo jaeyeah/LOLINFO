@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.lol.lolinfo.dao.StreamerWithDao;
 import com.lol.lolinfo.vo.StreamerWithCkVO;
+import com.lol.lolinfo.vo.StreamerWithTournamentDetailVO;
 import com.lol.lolinfo.vo.StreamerWithTournamentVO;
 
 @Service
@@ -21,5 +22,11 @@ public class StreamerService {
 	public List<StreamerWithTournamentVO> withTournament(int streamerNo){
 		return streamerWithDao.withTournament(streamerNo);
 	}
+	public List<StreamerWithTournamentDetailVO> withTournamentDetail(int streamerNo, int partnerNo){
+		return streamerWithDao.withTournamentDetail(streamerNo, partnerNo);
+	}
+	
+	
+	
 	
 }
