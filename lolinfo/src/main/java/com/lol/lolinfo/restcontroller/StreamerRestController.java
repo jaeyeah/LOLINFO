@@ -90,16 +90,16 @@ public class StreamerRestController {
 	
 	
 
-	//상세 조회
+	//상세 조회 (스트리머 상세조회)
 	@GetMapping("/{streamerNo}")
 	public StreamerStatVO selectOnePlusStat(@PathVariable int streamerNo) {
+		visitUseDao.increase("streamer_detail"); 
 		return streamerDao.selectOnePlusStat(streamerNo);
 	}
 	
-	//상세 조회
+	//상세 조회 (수정시 데이터 불러오기)
 	@GetMapping("/no/{streamerNo}")
 	public StreamerDto selectOne(@PathVariable int streamerNo) {
-		visitUseDao.increase("streamer_detail");
 		return streamerDao.selectOne(streamerNo);
 	}
 
