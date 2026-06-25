@@ -1,18 +1,25 @@
 package com.lol.lolinfo.restcontroller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.MemberDao;
-import com.lol.lolinfo.dto.MemberDto;
+import com.lol.lolinfo.dao.ScrimDao;
 import com.lol.lolinfo.service.MemberService;
 import com.lol.lolinfo.service.TokenService;
+import com.lol.lolinfo.vo.MemberVO;
+import com.lol.lolinfo.vo.PageResponseVO;
+import com.lol.lolinfo.vo.PageVO;
+import com.lol.lolinfo.vo.ScrimListVO;
+import com.lol.lolinfo.vo.ScrimMyPageVO;
 import com.lol.lolinfo.vo.TokenVO;
 
 @CrossOrigin
@@ -26,14 +33,31 @@ public class MyPageRestController {
 	private MemberDao memberDao;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ScrimDao scrimDao;
 	
-	
+	// 기본페이지
 	@GetMapping("/")
-	public MemberDto selectMember(@RequestHeader("Authorization") String bearerToken){
+	public MemberVO selectMember(@RequestHeader("Authorization") String bearerToken){
 		TokenVO tokenVO = tokenService.parse(bearerToken);
 		String memberId = tokenVO.getLoginId();
-		return memberDao.selectOne(memberId);
+		return memberDao.selectMypage(memberId);
 	}
+	// 등록한 스크림 목록
+	@GetMapping("/scrim")
+	public PageResponseVO<ScrimMyPageVO> selectScrim(@RequestHeader("Authorization") String bearerToken, @RequestParam(defaultValue = "1") int page){
+		TokenVO tokenVO = tokenService.parse(bearerToken);
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(page);
+		pageVO.setKeyword(tokenVO.getLoginId());
+		List<ScrimMyPageVO> list = scrimDao.selectMyPage(pageVO);
+		int totalCount = list.isEmpty() ? 0 : list.get(0).getTotalCount();
+		pageVO.setTotalCount(totalCount);
+		return new PageResponseVO<>(list, pageVO);
+	}
+	
+	
+	
 	
 	@DeleteMapping("/")
 	public void delete(@RequestHeader("Authorization") String bearerToken) {

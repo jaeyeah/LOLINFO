@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.MemberDto;
+import com.lol.lolinfo.vo.MemberVO;
 import com.lol.lolinfo.vo.PageVO;
 
 @Repository
@@ -58,6 +59,10 @@ public class MemberDao {
 	// 상세조회 (+아이디 중복 검사)
 	public MemberDto selectOne(String memberId) {
 		return sqlSession.selectOne("member.detail", memberId);
+	}
+	// 상세조회 (+마이페이지용 : 비밀번호 제거)
+	public MemberVO selectMypage(String memberId) {
+		return sqlSession.selectOne("member.mypage", memberId);
 	}
 	
 	// 닉네임 중복 검사용 조회

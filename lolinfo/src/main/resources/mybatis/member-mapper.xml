@@ -34,6 +34,14 @@
 	<select id="detail" resultType="memberDto">
 		select * from member where member_id = #{memberId}
 	</select> 
+	<!-- 상세조회 (MYPAGE 용)-->
+	<select id="mypage" resultType="memberVO">
+		select 
+			member_id, member_nickname, member_email,
+			member_point, member_level, member_join
+		 from member where member_id = #{memberId}
+	</select> 
+	
 	
 	<!-- 상세조회 by 닉네임 -->
 	<select id="detailByNickname" resultType="memberDto">
