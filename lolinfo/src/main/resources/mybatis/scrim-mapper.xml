@@ -72,6 +72,20 @@
 		 delete scrim where scrim_id = #{scrimId}
 	</delete>
 	
+	
+	<!-- 마이페이지용 스크림 조회 -->
+	<select id="mypage" resultType="scrimMyPageVO">
+    select * from (
+        select TMP.*,  rownum rn
+        from (
+            select sm.*, count(*) over() as total_count
+            	from scrim_mypage sm
+            	where sm.scrim_created_by = #{keyword}
+            	order by sm.scrim_date desc, sm.scrim_hour desc, sm.scrim_id desc
+        ) TMP
+	) where rn between #{begin} and #{end}
+	</select>
+	
 
 
 	

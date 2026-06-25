@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.lol.lolinfo.dto.ScrimDto;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.ScrimListVO;
+import com.lol.lolinfo.vo.ScrimMyPageVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
 import com.lol.lolinfo.vo.ScrimUpdateVO;
 import com.lol.lolinfo.vo.ScrimVsRecordVO;
@@ -53,6 +54,11 @@ public class ScrimDao {
 	// 삭제
 	public boolean delete(int scrimId) {
 		return sqlSession.delete("scrim.delete", scrimId)>0;
+	}
+	
+	//--- 마이페이지용 조회
+	public List<ScrimMyPageVO> selectMyPage(PageVO pageVO){
+	    return sqlSession.selectList("scrim.mypage", pageVO);
 	}
 }
 
