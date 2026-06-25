@@ -4,15 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.MemberDao;
-import com.lol.lolinfo.dto.MemberDto;
 import com.lol.lolinfo.service.MemberService;
 import com.lol.lolinfo.service.TokenService;
+import com.lol.lolinfo.vo.MemberVO;
 import com.lol.lolinfo.vo.TokenVO;
 
 @CrossOrigin
@@ -29,10 +28,10 @@ public class MyPageRestController {
 	
 	
 	@GetMapping("/")
-	public MemberDto selectMember(@RequestHeader("Authorization") String bearerToken){
+	public MemberVO selectMember(@RequestHeader("Authorization") String bearerToken){
 		TokenVO tokenVO = tokenService.parse(bearerToken);
 		String memberId = tokenVO.getLoginId();
-		return memberDao.selectOne(memberId);
+		return memberDao.selectMypage(memberId);
 	}
 	
 	@DeleteMapping("/")
