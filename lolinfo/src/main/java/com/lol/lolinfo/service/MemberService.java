@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lol.lolinfo.dao.MemberDao;
+import com.lol.lolinfo.dao.MemberTokenDao;
 import com.lol.lolinfo.dto.MemberDto;
 import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.vo.PageResponseVO;
@@ -19,6 +20,8 @@ public class MemberService {
 	private MemberDao memberDao;
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private MemberTokenDao memberTokenDao;
 	
 	public PageResponseVO<MemberDto> selectList(int page, String type, String keyword){
 		PageVO pageVO = new PageVO();
@@ -42,9 +45,9 @@ public class MemberService {
 		MemberDto memberDto = memberDao.selectOne(memberId);
 		if(memberDto ==null) throw new TargetNotfoundException("존재하지 않는 회원입니다");
 		memberDao.delete(memberId);
-//		//토큰 삭제
-//		TokenVO tokenVO = tokenService.parse(bearerToken);
-//		memberTokenDao.deleteByTarget(tokenVO.getLoginId());
+		//토큰 삭제
+		TokenVO tokenVO = tokenService.parse(bearerToken);
+		memberTokenDao.deleteByTarget(tokenVO.getLoginId());
 	}
 	
 	public void changeLevel(String memberId, String memberLevel) {

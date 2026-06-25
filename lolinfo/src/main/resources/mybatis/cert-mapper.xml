@@ -6,8 +6,8 @@
 
 	<!-- 등록 -->
 	<insert id="insert">
-		insert into cert(cert_email, cert_number)
-		values(#{certEmail}, #{certNumber})
+		insert into cert(cert_email, cert_number, cert_time)
+		values(#{certEmail}, #{certNumber}, CAST(CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul' AS TIMESTAMP))
 	</insert>
 	
 	<!-- 상세조회 -->
@@ -17,7 +17,7 @@
 	
 	<!-- 수정 -->
 	<update id="update">
-		update cert set cert_number=#{certNumber}, cert_time=systimestamp
+		update cert set cert_number=#{certNumber}, cert_time = CAST(CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul' AS TIMESTAMP)
 		where cert_email = #{certEmail}
 	</update>
 	
