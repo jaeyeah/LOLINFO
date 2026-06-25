@@ -2,6 +2,7 @@ package com.lol.lolinfo.restcontroller;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,14 +43,17 @@ public class CertRestController {
 											.message("인증 내역이 존재하지 않습니다")
 											.build();
 		// [2] 유효시간 검사
-			LocalDateTime current = LocalDateTime.now();
+			LocalDateTime current = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 			LocalDateTime sent = findDto.getCertTime().toLocalDateTime();
 			Duration duration = Duration.between(sent, current);
+			
 			if(duration.toSeconds()>600) return CertResultVO.builder()
 											.result(false)
 											.message("인증 시간이 만료되었습니다")
 											.build(); 
-		// [3] 인증번호 검사
+			
+
+			// [3] 인증번호 검사
 			boolean isValid = certDto.getCertNumber().equals(findDto.getCertNumber());
 			if(isValid==false) return CertResultVO.builder()
 											.result(false)

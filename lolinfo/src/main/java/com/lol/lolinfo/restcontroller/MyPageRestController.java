@@ -1,16 +1,17 @@
 package com.lol.lolinfo.restcontroller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.MemberDao;
 import com.lol.lolinfo.dto.MemberDto;
+import com.lol.lolinfo.service.MemberService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.TokenVO;
 
@@ -23,6 +24,8 @@ public class MyPageRestController {
 	private TokenService tokenService;
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private MemberService memberService;
 	
 	
 	@GetMapping("/")
@@ -32,4 +35,10 @@ public class MyPageRestController {
 		return memberDao.selectOne(memberId);
 	}
 	
+	@DeleteMapping("/")
+	public void delete(@RequestHeader("Authorization") String bearerToken) {
+		TokenVO tokenVO = tokenService.parse(bearerToken);
+		String memberId = tokenVO.getLoginId();
+		memberService.delete(memberId, bearerToken);
+	}
 }
