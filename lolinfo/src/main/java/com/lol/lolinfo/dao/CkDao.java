@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkMyPageVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
@@ -80,5 +81,10 @@ public class CkDao {
 	/// ----- 삭제 -----
 	public void delete(int ckId) {
 		sqlSession.delete("ck.delete", ckId);
+	}
+	
+	// 마이페이지용 조회
+	public List<CkMyPageVO> selectMyPage(PageVO pageVO){
+		return sqlSession.selectList("ck.mypage",pageVO);
 	}
 }

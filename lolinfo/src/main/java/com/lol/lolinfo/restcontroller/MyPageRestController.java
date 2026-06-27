@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lol.lolinfo.dao.CkDao;
 import com.lol.lolinfo.dao.MemberDao;
 import com.lol.lolinfo.dao.ScrimDao;
 import com.lol.lolinfo.service.MemberService;
 import com.lol.lolinfo.service.TokenService;
+import com.lol.lolinfo.vo.CkMyPageVO;
 import com.lol.lolinfo.vo.MemberVO;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
-import com.lol.lolinfo.vo.ScrimListVO;
 import com.lol.lolinfo.vo.ScrimMyPageVO;
 import com.lol.lolinfo.vo.TokenVO;
 
@@ -35,6 +36,8 @@ public class MyPageRestController {
 	private MemberService memberService;
 	@Autowired
 	private ScrimDao scrimDao;
+	@Autowired
+	private CkDao ckDao;
 	
 	// 기본페이지
 	@GetMapping("/")
@@ -56,9 +59,24 @@ public class MyPageRestController {
 		return new PageResponseVO<>(list, pageVO);
 	}
 	
+	// 등록한 CK 목록
+	@GetMapping("/ck")
+	public PageResponseVO<CkMyPageVO> selectCk(@RequestHeader("Authorization") String bearerToken, @RequestParam(defaultValue = "1") int page){
+		TokenVO tokenVO = tokenService.parse(bearerToken);
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(page);
+		pageVO.setKeyword(tokenVO.getLoginId());
+		List<CkMyPageVO> list = ckDao.selectMyPage(pageVO);
+		int totalCount = list.isEmpty() ? 0 : list.get(0).getTotalCount();
+		pageVO.setTotalCount(totalCount);
+		return new PageResponseVO<>(list, pageVO);
+	}
 	
 	
 	
+	
+	
+	// 회원탈퇴
 	@DeleteMapping("/")
 	public void delete(@RequestHeader("Authorization") String bearerToken) {
 		TokenVO tokenVO = tokenService.parse(bearerToken);
