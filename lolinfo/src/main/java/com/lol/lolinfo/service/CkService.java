@@ -61,6 +61,9 @@ public class CkService {
 		if(ckDto.getCkMemo() != null) {
 			originDto.setCkMemo(ckDto.getCkMemo());
 		}
+		if (ckDto.getCkWinner() != null) {
+	        originDto.setCkWinner(ckDto.getCkWinner());
+	    }
 		ckDao.updateUnit(originDto);
 	}
 
