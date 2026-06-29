@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bookmark">
+	
+	<!-- 등록 -->
+	<insert id="insert">
+		insert into bookmark(bookmark_member, bookmark_type, bookmark_target)
+		values (#{bookmarkMember}, #{bookmarkType}, #{bookmarkTarget})
+	</insert>
+
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="BookmarkDto">
+	    delete from bookmark
+	    where bookmark_member = #{bookmarkMember}
+	      and bookmark_type = #{bookmarkType}
+	      and bookmark_target = #{bookmarkTarget}
+	</delete>
+
+	
+</mapper>
