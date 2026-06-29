@@ -17,6 +17,13 @@
 	      and bookmark_type = #{bookmarkType}
 	      and bookmark_target = #{bookmarkTarget}
 	</delete>
+	
+	
+	<!--  임시 목록 조회 -->
+	<select id="selectList" resultType="bookmarkDto">
+		select * from bookmark
+		where bookmark_member=#{memberId}
+	</select>
 
 	
 </mapper>
