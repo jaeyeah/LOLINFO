@@ -19,8 +19,14 @@ public class BookmarkRestController {
 	private BookmarkService bookmarkService;
 	
 	@PostMapping("/streamer")
-	public boolean InsertStreamer(@RequestHeader("Authorization") String bearerToken,
+	public boolean toggleStreamer(@RequestHeader("Authorization") String bearerToken,
 			@RequestParam int streamerId) {
 		return bookmarkService.toggleStreamerBookmark(bearerToken, streamerId);
+	}
+	
+	@PostMapping("/tournament")
+	public boolean toggleTournament(@RequestHeader("Authorization") String bearerToken,
+			@RequestParam int tournamentId) {
+		return bookmarkService.toggleTournamentBookmark(bearerToken, tournamentId);
 	}
 }
