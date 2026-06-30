@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.BookmarkDto;
+import com.lol.lolinfo.vo.BookmarkStreamerVO;
 
 @Repository
 public class BookmarkDao {
@@ -23,9 +24,9 @@ public class BookmarkDao {
 		return sqlSession.delete("bookmark.delete",bookmarkDto) > 0;
 	}
 	
-	//즐겨찾기 목록 임시
-	public List<BookmarkDto> selectList(String memberId){
-		return sqlSession.selectList("bookmark.selectList",memberId);
+	//스트리머 즐겨찾기 목록 
+	public List<BookmarkStreamerVO> selectStreamerList(String memberId){
+		return sqlSession.selectList("bookmark.selectStreamerList",memberId);
 	}
 	
 }

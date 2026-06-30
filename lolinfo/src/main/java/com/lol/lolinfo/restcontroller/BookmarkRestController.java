@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.BookmarkDao;
-import com.lol.lolinfo.dto.BookmarkDto;
 import com.lol.lolinfo.service.BookmarkService;
 import com.lol.lolinfo.service.TokenService;
+import com.lol.lolinfo.vo.BookmarkStreamerVO;
 import com.lol.lolinfo.vo.TokenVO;
 
 @CrossOrigin
@@ -40,10 +40,10 @@ public class BookmarkRestController {
 		return bookmarkService.toggleTournamentBookmark(bearerToken, tournamentId);
 	}
 	
-	@GetMapping("/")
-	public List<BookmarkDto> selectList(@RequestHeader("Authorization") String bearerToken) {
+	@GetMapping("/streamer")
+	public List<BookmarkStreamerVO> selectList(@RequestHeader("Authorization") String bearerToken) {
 		TokenVO tokenVO = tokenService.parse(bearerToken);
         String memberId = tokenVO.getLoginId();
-		return bookmarkDao.selectList(memberId);
+		return bookmarkDao.selectStreamerList(memberId);
 	}
 }

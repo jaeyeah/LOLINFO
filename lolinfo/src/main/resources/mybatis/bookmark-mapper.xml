@@ -25,5 +25,32 @@
 		where bookmark_member=#{memberId}
 	</select>
 
+	<!-- 스트리머 즐찾목록 조회 -->
+	<select id="selectStreamerList" resultType="BookmarkStreamerVO">
+		select 
+			b.bookmark_target as streamer_no,
+			bs.streamer_name,
+			bs.streamer_soop_id,
+			ssl.official_ranking1, ssl.official_ranking2, ssl.official_ranking3,
+			NVL(ck.play_count, 0) AS ck_play_count,
+	        NVL(ck.win_count, 0) AS ck_win_count,
+	        NVL(ck.lose_count, 0) AS ck_lose_count
+		from bookmark b
+		left outer join streamer bs on bs.streamer_no = b.bookmark_target
+		left outer join streamer_stat_list ssl on ssl.streamer_no =  b.bookmark_target
+		left outer join(
+			select ck_streamer, count(*) as play_count,
+				sum(case when ck_result='승리' then 1 else 0 end) as win_count,
+				sum(case when ck_result='패배' then 1 else 0 end) as lose_count
+			from ck_list
+			group by ck_streamer		
+		) ck on ck.ck_streamer = b.bookmark_target
+		where b.bookmark_member=#{memberId}
+			and b.bookmark_type='streamer'
+		order by b.bookmark_time desc
+	</select>
+	
+	
+	
 	
 </mapper>
