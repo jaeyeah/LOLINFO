@@ -16,6 +16,7 @@ import com.lol.lolinfo.service.BookmarkService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.BookmarkStreamerVO;
 import com.lol.lolinfo.vo.TokenVO;
+import com.lol.lolinfo.vo.TournamentListVO;
 
 @CrossOrigin
 @RequestMapping("/api/bookmark")
@@ -41,9 +42,16 @@ public class BookmarkRestController {
 	}
 	
 	@GetMapping("/streamer")
-	public List<BookmarkStreamerVO> selectList(@RequestHeader("Authorization") String bearerToken) {
+	public List<BookmarkStreamerVO> selectStreamerList(@RequestHeader("Authorization") String bearerToken) {
 		TokenVO tokenVO = tokenService.parse(bearerToken);
         String memberId = tokenVO.getLoginId();
 		return bookmarkDao.selectStreamerList(memberId);
 	}
+	@GetMapping("/tournament")
+	public List<TournamentListVO> selectTournamentList(@RequestHeader("Authorization") String bearerToken) {
+		TokenVO tokenVO = tokenService.parse(bearerToken);
+        String memberId = tokenVO.getLoginId();
+		return bookmarkDao.selectTournamentList(memberId);
+	}
+
 }

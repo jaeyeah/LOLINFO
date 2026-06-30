@@ -25,7 +25,7 @@
 		where bookmark_member=#{memberId}
 	</select>
 
-	<!-- 스트리머 즐찾목록 조회 -->
+	<!-- 스트리머 즐겨찾기 목록 조회 -->
 	<select id="selectStreamerList" resultType="BookmarkStreamerVO">
 		select 
 			b.bookmark_target as streamer_no,
@@ -48,6 +48,17 @@
 		where b.bookmark_member=#{memberId}
 			and b.bookmark_type='streamer'
 		order by b.bookmark_time desc
+	</select>
+	
+	<!-- 대회 즐겨찾기 목록 조회 -->
+	<select id="selectTournamentList" resultType="tournamentlistVO">
+		select tl.*
+		 from bookmark b
+		left outer join tournament_list tl
+			on tl.tournament_id = b.bookmark_target
+		where b.bookmark_member=#{memberId}
+			and b.bookmark_type='tournament'
+		order by b.bookmark_time desc, tournament_year desc
 	</select>
 	
 	
