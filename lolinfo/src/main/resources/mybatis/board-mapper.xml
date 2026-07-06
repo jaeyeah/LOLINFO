@@ -19,6 +19,10 @@
 	</insert>
 	<select id="selectList" resultType="boardDto">
 		select * from board
+	</select>
+	<select id="selectOne" resultType="boardDto">
+		select * from board
+		where board_id = #{boardId}
 	</select>	
 	
 </mapper>

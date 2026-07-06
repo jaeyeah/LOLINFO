@@ -25,5 +25,8 @@ public class BoardDao {
 	public List<BoardDto> selectList(){
 		return sqlSession.selectList("board.selectList");
 	}
-
+	// 상세
+	public BoardDto selectOne(int boardId) {
+		return sqlSession.selectOne("board.selectOne",boardId);
+	}
 }
