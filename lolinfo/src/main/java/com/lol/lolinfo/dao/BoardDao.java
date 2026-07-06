@@ -1,12 +1,12 @@
 package com.lol.lolinfo.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.BoardDto;
-import com.lol.lolinfo.dto.CkParticipantDto;
-import com.lol.lolinfo.vo.CkVO;
 
 @Repository
 public class BoardDao {
@@ -19,8 +19,11 @@ public class BoardDao {
 		return sqlSession.selectOne("board.sequence");
 	}
 	public void insert(BoardDto boardDto) {
-		sqlSession.insert("board.insert");
+		sqlSession.insert("board.insert",boardDto);
 	}
-
+	//목록
+	public List<BoardDto> selectList(){
+		return sqlSession.selectList("board.selectList");
+	}
 
 }

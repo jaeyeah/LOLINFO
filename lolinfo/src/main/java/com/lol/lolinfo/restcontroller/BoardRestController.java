@@ -1,13 +1,17 @@
 package com.lol.lolinfo.restcontroller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lol.lolinfo.dao.BoardDao;
 import com.lol.lolinfo.dto.BoardDto;
 import com.lol.lolinfo.service.BoardService;
 
@@ -18,6 +22,8 @@ public class BoardRestController {
 
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private BoardDao boardDao;
 	
 	//등록
 	@PostMapping("/")
@@ -26,5 +32,9 @@ public class BoardRestController {
 		boardService.insert(boardDto, bearerToken);
 	}
 	
-
+	//목록
+	@GetMapping("/")
+	public List<BoardDto> list() {
+	    return boardDao.selectList();
+	}
 }
