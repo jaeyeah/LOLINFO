@@ -21,7 +21,6 @@ import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.CkListVO;
-import com.lol.lolinfo.vo.CkMyPageVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;

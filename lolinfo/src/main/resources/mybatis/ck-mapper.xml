@@ -37,7 +37,7 @@
 	<select id="selectList" resultType="ckDto">
 		select * from (
 			select rownum rn, TMP.* from (
-			 	select ck_id, ck_date, ck_memo from ck
+			 	select ck_id, ck_date, ck_memo, ck_created_by from ck
 			 	order by ck_date desc, ck_id desc
 			) TMP
 		) where rn between #{begin} and #{end}
