@@ -22,6 +22,7 @@ import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
+import com.lol.lolinfo.vo.CkRankingVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
 import com.lol.lolinfo.vo.PageResponseVO;
@@ -101,6 +102,13 @@ public class CkRestController {
 	@DeleteMapping("/{ckId}")
 	public void delete(@PathVariable int ckId) {
 		ckDao.delete(ckId);
+	}
+	
+	
+	// 월별 조회
+	@GetMapping("/rank/{month}")
+	public List<CkRankingVO> selectMonthRank(@PathVariable String month){
+		return ckDao.selectRanking(month);
 	}
 	
 	
