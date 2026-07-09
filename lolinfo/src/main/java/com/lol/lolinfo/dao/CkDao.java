@@ -11,6 +11,7 @@ import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkMyPageVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
+import com.lol.lolinfo.vo.CkRankingVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
 import com.lol.lolinfo.vo.PageVO;
@@ -86,5 +87,10 @@ public class CkDao {
 	// 마이페이지용 조회
 	public List<CkMyPageVO> selectMyPage(PageVO pageVO){
 		return sqlSession.selectList("ck.mypage",pageVO);
+	}
+	
+	// 월별 랭킹용 조회
+	public List<CkRankingVO> selectRanking(String month){
+		return sqlSession.selectList("ck.selectMonthRanking",month);
 	}
 }
