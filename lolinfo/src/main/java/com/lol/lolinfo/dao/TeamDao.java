@@ -53,6 +53,7 @@ public class TeamDao {
 	
 	// 수정
 	public void update(TeamDto teamDto) {
+		System.out.println("---------"+teamDto);
 		sqlSession.update("team.update", teamDto);
 	}
 	
