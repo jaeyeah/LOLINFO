@@ -34,4 +34,10 @@ public class TeamListVO {
 	private Integer staffStreamer;
 	private String staffName;
 	private String staffId;
+	// 티어 추가
+	private String topTier;
+	private String jugTier;
+	private String midTier;
+	private String adTier;
+	private String supTier;
 }

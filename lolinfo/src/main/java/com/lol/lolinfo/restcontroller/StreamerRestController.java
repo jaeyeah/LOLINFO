@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lol.lolinfo.dao.StreamerDao;
 import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.StreamerDto;
+import com.lol.lolinfo.dto.StreamerTierDto;
 import com.lol.lolinfo.service.StreamerService;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.StreamerStatVO;
+import com.lol.lolinfo.vo.StreamerTierVO;
 import com.lol.lolinfo.vo.StreamerWithCkVO;
 import com.lol.lolinfo.vo.StreamerWithTournamentDetailVO;
 import com.lol.lolinfo.vo.StreamerWithTournamentVO;
@@ -143,5 +145,17 @@ public class StreamerRestController {
 		visitUseDao.increase("teammate");
 	}
 	
+	///------- 스트리머 티어표 관련
+	// 등록
+	@PostMapping("/tier")
+	public void insertTier(@RequestBody StreamerTierDto streamerTierDto) {
+		streamerDao.insertTier(streamerTierDto);
+	}
+	
+	// 목록
+	@GetMapping("/tier/{tournamentId}")
+	public List<StreamerTierVO> selectTierList(@PathVariable int tournamentId){
+		return streamerDao.selectTierList(tournamentId);
+	}
 	
 }

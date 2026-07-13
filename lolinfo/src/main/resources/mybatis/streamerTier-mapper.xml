@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="streamerTier">
+	
+	<insert id="insert">
+		insert into streamer_tier
+			(tournament_no, streamer_no, tier_position, tier_name)
+		values(#{tournamentNo},#{streamerNo},#{tierPosition},#{tierName})
+	</insert>
+	
+	<select id="selectList" resultType="StreamerTierVO">
+		select st.*,
+			s.streamer_name
+		from streamer_tier st
+		join streamer s on st.streamer_no = s.streamer_no
+		join tier_grade tg on st.tier_name = tg.tier_name
+		where st.tournament_no = #{tournamentId}
+		order by tg.tier_order asc, st.streamer_no asc
+	</select>
+
+	
+
+</mapper>
