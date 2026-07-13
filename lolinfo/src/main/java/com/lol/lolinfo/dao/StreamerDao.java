@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.StreamerDto;
+import com.lol.lolinfo.dto.StreamerTierDto;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.StreamerStatVO;
+import com.lol.lolinfo.vo.StreamerTierVO;
 
 @Repository
 public class StreamerDao {
@@ -65,5 +67,15 @@ public class StreamerDao {
 	//삭제
 	public boolean delete(int streamerNo) {
 		return sqlSession.delete("streamer.delete",streamerNo)>0;
+	}
+	
+	///-- 스트리머 티어표--------------------------
+	// 티어 등록
+	public void insertTier(StreamerTierDto streamerTierDto) {
+		sqlSession.insert("streamerTier.insert", streamerTierDto);
+	}
+	// 티어 목록
+	public List<StreamerTierVO> selectTierList(int tournamentId) {
+		return sqlSession.selectList("streamerTier.selectList", tournamentId);
 	}
 }
