@@ -57,7 +57,7 @@ public class TeamRestController {
 	// 목록조회 by 대회ID
 	@GetMapping("/tournament/{tournamentId}")
 	public List<TeamListVO> selectList(@PathVariable int tournamentId){
-		return teamDao.selectList(tournamentId);
+		return teamService.selectList(tournamentId);
 	}
 
 	//스트리머가 포함된 팀목록
