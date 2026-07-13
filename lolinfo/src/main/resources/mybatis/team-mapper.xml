@@ -28,15 +28,51 @@
 	
 	<!-- 대회별 팀 목록조회 -->
 	<select id="selectListByTournamentId" resultType="teamListVO">
-		select * from team_list
-		where tournament_id = #{tournamentId}
-		<!-- order by 순서 직접부여 -->
-		order by case team_ranking
-			when '우승' then 1
-			when '준우승' then 2
-			when '4강' then 3
-			when '본선진출' then 4
-			else 99 end
+	    SELECT
+	        tl.*,
+	
+	        top_tier.tier_name AS top_tier,
+	        jug_tier.tier_name AS jug_tier,
+	        mid_tier.tier_name AS mid_tier,
+	        ad_tier.tier_name AS ad_tier,
+	        sup_tier.tier_name AS sup_tier
+	
+	    FROM team_list tl
+	
+	    LEFT OUTER JOIN streamer_tier top_tier
+	        ON top_tier.tournament_no = tl.tournament_id
+	        AND top_tier.streamer_no = tl.team_top
+	        AND top_tier.tier_position = 'TOP'
+	
+	    LEFT OUTER JOIN streamer_tier jug_tier
+	        ON jug_tier.tournament_no = tl.tournament_id
+	        AND jug_tier.streamer_no = tl.team_jug
+	        AND jug_tier.tier_position = 'JUG'
+	
+	    LEFT OUTER JOIN streamer_tier mid_tier
+	        ON mid_tier.tournament_no = tl.tournament_id
+	        AND mid_tier.streamer_no = tl.team_mid
+	        AND mid_tier.tier_position = 'MID'
+	
+	    LEFT OUTER JOIN streamer_tier ad_tier
+	        ON ad_tier.tournament_no = tl.tournament_id
+	        AND ad_tier.streamer_no = tl.team_ad
+	        AND ad_tier.tier_position = 'AD'
+	
+	    LEFT OUTER JOIN streamer_tier sup_tier
+	        ON sup_tier.tournament_no = tl.tournament_id
+	        AND sup_tier.streamer_no = tl.team_sup
+	        AND sup_tier.tier_position = 'SUP'
+	
+	    WHERE tl.tournament_id = #{tournamentId}
+	
+	    ORDER BY CASE tl.team_ranking
+	        WHEN '우승' THEN 1
+	        WHEN '준우승' THEN 2
+	        WHEN '4강' THEN 3
+	        WHEN '본선진출' THEN 4
+	        ELSE 99
+	    END
 	</select>
 	
 	<!-- 인원별 팀 목록조회 -->
