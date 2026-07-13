@@ -20,6 +20,14 @@
 		order by tg.tier_order asc, st.streamer_no asc
 	</select>
 
+	<!-- 티어 수정 -->
+	<update id="updateTier">
+	update streamer_tier set
+		tier_name = #{tierName}
+	where tournament_no=#{tournamentNo}
+		and streamer_no=#{streamerNo}
+		and tier_position=#{tierPosition}
+	</update>
 	
-
+	
 </mapper>

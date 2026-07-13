@@ -78,4 +78,8 @@ public class StreamerDao {
 	public List<StreamerTierVO> selectTierList(int tournamentId) {
 		return sqlSession.selectList("streamerTier.selectList", tournamentId);
 	}
+	// 티어 수정
+	public void updateTier(StreamerTierDto streamerTierDto) {
+		sqlSession.update("streamerTier.updateTier", streamerTierDto);
+	}
 }
