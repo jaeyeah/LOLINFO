@@ -43,11 +43,13 @@ public class FeedbackRestcontroller {
 		List<FeedbackDto> list = feedbackDao.selectList(pageVO);
 		return new PageResponseVO<>(list, pageVO);
     }
-	
+	// 상태수정
     @PatchMapping("/")
     public void updateStatus(@RequestBody FeedbackRequestVO feedbackRequestVO) {
     	feedbackDao.updateStatus(feedbackRequestVO);
     }
+    
+    // 피드백은 삭제가 필요한가? -> NO
     
 	
 }

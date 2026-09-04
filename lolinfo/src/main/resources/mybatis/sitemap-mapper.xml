@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sitemap">
+
+	<select id="selectStreamerList"
+            resultType="com.lol.lolinfo.vo.SitemapVO">
+        SELECT
+            streamer_no AS target_no
+        FROM streamer
+        ORDER BY streamer_no
+
+    </select>
+
+
+    <select id="selectTournamentList"
+            resultType="com.lol.lolinfo.vo.SitemapVO">
+        SELECT
+            tournament_no AS target_no
+        FROM tournament
+        ORDER BY tournament_no
+
+    </select>
+
+	
+	
+</mapper>
