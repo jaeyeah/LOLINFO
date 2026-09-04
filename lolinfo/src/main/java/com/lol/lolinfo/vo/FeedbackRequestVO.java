@@ -1,7 +1,5 @@
 package com.lol.lolinfo.vo;
 
-import java.sql.Timestamp;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
