@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="feedback">
+
+	<!-- 등록 -->
+	<insert id="insert">
+	    <selectKey keyProperty="feedbackId" resultType="int" order="BEFORE">
+	        select seq_feedback.nextval FROM dual
+	    </selectKey>
+	
+	    insert into feedback (
+	        feedback_id, feedback_visitor_id,
+	        feedback_target_type,  feedback_target_id,
+	        feedback_type,feedback_content,feedback_url
+	    )
+	    values (
+	        #{feedbackId},#{feedbackVisitorId},
+	        #{feedbackTargetType},#{feedbackTargetId},
+	        #{feedbackType},#{feedbackContent},#{feedbackUrl}
+	    )
+	</insert>
+	
+	
+</mapper>
