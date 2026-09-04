@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lol.lolinfo.dao.BoardDao;
 import com.lol.lolinfo.dto.BoardDto;
 import com.lol.lolinfo.service.BoardService;
+import com.lol.lolinfo.vo.BoardListVO;
 
 @CrossOrigin
 @RestController
@@ -35,8 +36,8 @@ public class BoardRestController {
 	
 	//목록
 	@GetMapping("/")
-	public List<BoardDto> list() {
-	    return boardDao.selectList();
+	public List<BoardListVO> list() {
+	    return boardDao.selectBoardList();
 	}
 	@GetMapping("/{boardId}")
 	public BoardDto list(@PathVariable int boardId) {
