@@ -17,9 +17,9 @@
     <select id="selectTournamentList"
             resultType="com.lol.lolinfo.vo.SitemapVO">
         SELECT
-            tournament_no AS target_no
+            tournament_id AS target_no
         FROM tournament
-        ORDER BY tournament_no
+        ORDER BY tournament_id
 
     </select>
 
