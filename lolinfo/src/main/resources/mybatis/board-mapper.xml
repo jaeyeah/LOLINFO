@@ -20,6 +20,16 @@
 	<select id="selectList" resultType="boardDto">
 		select * from board
 	</select>
+	
+	<select id="selectboardList" resultType="boardVO">
+		select 
+			b.board_id, b.board_category, b.board_writer, b.boare_title, b.board_wtime, b.board_admin_check,
+			m.member_nickname
+			from board b
+		left outer join member m on board_writer = member_id
+	</select>
+	
+	
 	<select id="selectOne" resultType="boardDto">
 		select * from board
 		where board_id = #{boardId}

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.BoardDto;
+import com.lol.lolinfo.vo.BoardListVO;
 
 @Repository
 public class BoardDao {
@@ -25,6 +26,10 @@ public class BoardDao {
 	public List<BoardDto> selectList(){
 		return sqlSession.selectList("board.selectList");
 	}
+	public List<BoardListVO> selectBoardList(){
+		return sqlSession.selectList("board.selectBoardList");
+	}
+	
 	// 상세
 	public BoardDto selectOne(int boardId) {
 		return sqlSession.selectOne("board.selectOne",boardId);
