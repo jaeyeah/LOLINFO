@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.FeedbackDto;
+import com.lol.lolinfo.vo.FeedbackRequestVO;
 import com.lol.lolinfo.vo.PageVO;
 
 @Repository
@@ -27,6 +28,11 @@ public class FeedbackDao {
 	}
 	public int count() {
 		return sqlSession.selectOne("feedback.count");
+	}
+	
+	//관리자 - 피드백상태 수정
+	public void updateStatus(FeedbackRequestVO feedbackRequestVO) {
+		sqlSession.update("feedback.updateStatus",feedbackRequestVO);
 	}
 	
 	
