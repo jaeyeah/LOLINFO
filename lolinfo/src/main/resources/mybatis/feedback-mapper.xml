@@ -36,6 +36,12 @@
 		select count(*) from feedback
 	</select>
 	
+	<!-- 상태변경 -->
+	<update id="updateStatus">
+		update feedback set feedback_status=#{feedbackStatus}
+		where feedback_id=#{feedbackId}
+	</update>
+	
 	
 	
 </mapper>

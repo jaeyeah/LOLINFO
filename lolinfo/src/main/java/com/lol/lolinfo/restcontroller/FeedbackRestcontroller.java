@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.FeedbackDao;
 import com.lol.lolinfo.dto.FeedbackDto;
+import com.lol.lolinfo.vo.FeedbackRequestVO;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
 
@@ -42,5 +44,10 @@ public class FeedbackRestcontroller {
 		return new PageResponseVO<>(list, pageVO);
     }
 	
+    @PatchMapping("/")
+    public void updateStatus(@RequestBody FeedbackRequestVO feedbackRequestVO) {
+    	feedbackDao.updateStatus(feedbackRequestVO);
+    }
+    
 	
 }
