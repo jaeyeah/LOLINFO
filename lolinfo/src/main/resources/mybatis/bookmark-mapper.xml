@@ -62,6 +62,89 @@
 	</select>
 	
 	
+	<!-- 메인: 즐겨찾기 스트리머 10명 전체 CK 전적 -->
+	<select id="selectHomeBookmarkStreamerList"
+	        resultType="HomeBookmarkStreamerVO">
 	
+	    WITH favorite_streamer AS (
+	        SELECT bookmark_target
+	        FROM (
+	            SELECT bookmark_target
+	            FROM bookmark
+	            WHERE bookmark_member = #{memberId}
+	              AND bookmark_type = 'streamer'
+	            ORDER BY bookmark_time DESC
+	        )
+	        WHERE ROWNUM &lt;= 5
+	    ),
+	    ck_summary AS (
+	        SELECT
+	            cl.ck_streamer,
+	            COUNT(*) AS play_count,
+	            SUM(CASE WHEN cl.ck_result = '승리' THEN 1 ELSE 0 END) AS win_count,
+	            SUM(CASE WHEN cl.ck_result = '패배' THEN 1 ELSE 0 END) AS lose_count
+	        FROM ck_list cl
+	        JOIN favorite_streamer fs
+	            ON fs.bookmark_target = cl.ck_streamer
+	        GROUP BY cl.ck_streamer
+	    )
+	    SELECT
+		    fs.bookmark_target AS streamerNo,
+		    s.streamer_name AS streamerName,
+		    s.streamer_soop_id AS streamerSoopId,
+		
+		    NVL(ck.play_count, 0) AS totalPlayCount,
+		    NVL(ck.win_count, 0) AS totalWinCount,
+		    NVL(ck.lose_count, 0) AS totalLoseCount,
+		
+		    CASE
+		        WHEN NVL(ck.play_count, 0) = 0 THEN 0
+		        ELSE ROUND(ck.win_count / ck.play_count * 100, 1)
+		    END AS totalWinRate
+		
+		FROM favorite_streamer fs
+		JOIN streamer s
+		    ON s.streamer_no = fs.bookmark_target
+		LEFT OUTER JOIN ck_summary ck
+		    ON ck.ck_streamer = fs.bookmark_target
+	</select>
+	
+	<!-- 메인: 즐겨찾기 스트리머별 최근 CK 10경기 -->
+	<select id="selectHomeBookmarkStreamerRecentCkList"
+	        resultType="HomeBookmarkCkResultVO">
+	
+	    WITH favorite_streamer AS (
+	        SELECT bookmark_target
+	        FROM (
+	            SELECT bookmark_target
+	            FROM bookmark
+	            WHERE bookmark_member = #{memberId}
+	              AND bookmark_type = 'streamer'
+	            ORDER BY bookmark_time DESC
+	        )
+	        WHERE ROWNUM &lt;= 10
+	    ),
+	    ranked_ck AS (
+	        SELECT
+	            cl.ck_streamer AS streamer_no,
+	            CASE
+	                WHEN cl.ck_result = '승리' THEN 'W'
+	                ELSE 'L'
+	            END AS result,
+	            ROW_NUMBER() OVER (
+	                PARTITION BY cl.ck_streamer
+	                ORDER BY cl.ck_date DESC, cl.ck_id DESC
+	            ) AS rn
+	        FROM ck_list cl
+	        JOIN favorite_streamer fs
+	            ON fs.bookmark_target = cl.ck_streamer
+	    )
+	    SELECT
+	        streamer_no AS streamerNo,
+	        result
+	    FROM ranked_ck
+	    WHERE rn &lt;= 10
+	    ORDER BY streamer_no, rn
+	</select>
 	
 </mapper>

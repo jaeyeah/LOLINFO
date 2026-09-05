@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.BookmarkDto;
 import com.lol.lolinfo.vo.BookmarkStreamerVO;
+import com.lol.lolinfo.vo.HomeBookmarkCkResultVO;
+import com.lol.lolinfo.vo.HomeBookmarkStreamerVO;
 import com.lol.lolinfo.vo.TournamentListVO;
 
 @Repository
@@ -33,5 +35,15 @@ public class BookmarkDao {
 	public List<TournamentListVO> selectTournamentList(String memberId){
 		return sqlSession.selectList("bookmark.selectTournamentList",memberId);
 	}
+	
+	//메인페이지용
+	public List<HomeBookmarkStreamerVO> selectHomeBookmarkStreamerList(String memberId) {
+        return sqlSession.selectList("bookmark.selectHomeBookmarkStreamerList", memberId);
+    }
+
+    public List<HomeBookmarkCkResultVO> selectHomeBookmarkStreamerRecentCkList(String memberId) {
+        return sqlSession.selectList("bookmark.selectHomeBookmarkStreamerRecentCkList", memberId);
+    }
+	
 	
 }
