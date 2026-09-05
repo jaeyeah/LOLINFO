@@ -15,6 +15,7 @@ import com.lol.lolinfo.dao.BookmarkDao;
 import com.lol.lolinfo.service.BookmarkService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.BookmarkStreamerVO;
+import com.lol.lolinfo.vo.HomeBookmarkStreamerVO;
 import com.lol.lolinfo.vo.TokenVO;
 import com.lol.lolinfo.vo.TournamentListVO;
 
@@ -53,5 +54,14 @@ public class BookmarkRestController {
         String memberId = tokenVO.getLoginId();
 		return bookmarkDao.selectTournamentList(memberId);
 	}
+	
+	// 홈(메인)페이지 북마크 목록 (로그인 유저)
+	@GetMapping("/streamer/home")
+	public List<HomeBookmarkStreamerVO> selectHomeStreamerList(
+			@RequestHeader("Authorization") String bearerToken
+			){
+		return bookmarkService.selectHomeStreamerList(bearerToken);
+	}
+	
 
 }
