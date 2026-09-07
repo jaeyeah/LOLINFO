@@ -59,6 +59,15 @@
 	</select>
 	
 	
+	<!-- 목록, 건수, 상대전적에 동일한 경기 날짜 조건을 적용한다. 종료일 포함. -->
+	<sql id="streamerPeriodCondition">
+		ck_streamer = #{streamerNo}
+		<if test="startDate != null">
+			and ck_date &gt;= to_date(#{startDate}, 'YYYY-MM-DD')
+			and ck_date &lt; to_date(#{endDate}, 'YYYY-MM-DD') + 1
+		</if>
+	</sql>
+
 	<!--스트리머별 참여CK 조회-->
 	<select id="selectListByStreamer" resultType="cklistVO">
 		select * from (
@@ -67,7 +76,7 @@
 			 		ck_id, ck_date, ck_memo, ck_created_by,
 			 		ck_result, vs_streamer_no, vs_streamer_name
 			 	 	from ck_list
-			 	where ck_streamer = #{keyword}
+				where <include refid="streamerPeriodCondition" />
 			 	order by ck_date desc, ck_id desc
 			) TMP
 		) where rn between #{begin} and #{end}
@@ -75,7 +84,7 @@
 	<!--count-->
 	<select id="countByStreamer" resultType="int">
 		select count(*) from ck_list
-		where ck_streamer = #{streamerNo}
+		where <include refid="streamerPeriodCondition" />
 	</select>
 
 	<!-- 조회 - 맞라인 전적 -->
@@ -84,7 +93,7 @@
 			sum (case when ck_result = '승리' then 1 else 0 end) as winCount,
 			sum (case when ck_result = '패배' then 1 else 0 end) as loseCount
 		from ck_list
-			where ck_streamer = #{streamerNo}
+			where <include refid="streamerPeriodCondition" />
 		group by vs_streamer_no, vs_streamer_name, ck_position
 		order by vs_streamer_name, case ck_position when 'TOP' then 1
 				when 'JUG' then 2 when 'MID' then 3 when 'AD' then 4 when 'SUP' then 5
