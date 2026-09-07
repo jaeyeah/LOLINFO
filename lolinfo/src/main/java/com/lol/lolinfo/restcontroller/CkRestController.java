@@ -1,8 +1,12 @@
 package com.lol.lolinfo.restcontroller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,7 @@ import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
+import com.lol.lolinfo.vo.CkPeriodVO;
 import com.lol.lolinfo.vo.CkRankingVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
@@ -76,15 +81,25 @@ public class CkRestController {
 	// 상세조회 - 스트리머별 CK 목록
 	@GetMapping("/streamer/{streamerNo}")
 	public PageResponseVO<CkListVO> selectListByStreamer (
-			@PathVariable int streamerNo, @RequestParam(defaultValue = "1") int page){
+			@PathVariable int streamerNo, @RequestParam(defaultValue = "1") int page,
+			@RequestParam(required = false) String startDate,
+			@RequestParam(required = false) String endDate){
+		CkPeriodVO query = new CkPeriodVO(streamerNo, page, startDate, endDate);
 			visitUseDao.increase("ck_streamer");
-		return ckService.selectListByStreamer(streamerNo, page);
+		return ckService.selectListByStreamer(query);
 	}
 	
 	// 상세조회 - 스트리머별 맞라인 상대전적 (+포지션별 전적)
 	@GetMapping("/{streamerNo}/vs")
-	public List<CkVsVO> selectVsList (@PathVariable int streamerNo){
-		return ckService.selectVsList(streamerNo);
+	public List<CkVsVO> selectVsList (@PathVariable int streamerNo,
+			@RequestParam(required = false) String startDate,
+			@RequestParam(required = false) String endDate){
+		return ckService.selectVsList(new CkPeriodVO(streamerNo, 1, startDate, endDate));
+	}
+
+	@ExceptionHandler({CkPeriodVO.InvalidPeriodException.class, MethodArgumentTypeMismatchException.class})
+	public ResponseEntity<Map<String, String>> invalidQuery(RuntimeException e) {
+		return ResponseEntity.badRequest().body(Map.of("message", "조회 기간과 페이지를 확인해주세요."));
 	}
 	
 	/// --- 수정 ---

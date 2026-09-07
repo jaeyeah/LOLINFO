@@ -11,10 +11,10 @@ import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkPeriodVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
 import com.lol.lolinfo.vo.PageResponseVO;
-import com.lol.lolinfo.vo.PageVO;
 
 @Service
 public class CkService {
@@ -37,17 +37,22 @@ public class CkService {
 	}
 	
 	public PageResponseVO<CkListVO> selectListByStreamer(int streamerNo, int page){
-		int totalCount = ckDao.countByStreamer(streamerNo);
-		PageVO pageVO = new PageVO();
-		pageVO.setPage(page);
-		pageVO.setTotalCount(totalCount);
-		pageVO.setKeyword(String.valueOf(streamerNo));
-		List<CkListVO> list = ckDao.selectListByStreamer(pageVO);
-		return new PageResponseVO<>(list, pageVO);
+		return selectListByStreamer(new CkPeriodVO(streamerNo, page, null, null));
+	}
+
+	public PageResponseVO<CkListVO> selectListByStreamer(CkPeriodVO query){
+		query.setTotalCount(ckDao.countByStreamer(query));
+		query.setPage(Math.min(query.getPage(), Math.max(1, query.getTotalPage())));
+		List<CkListVO> list = ckDao.selectListByStreamer(query);
+		return new PageResponseVO<>(list, query);
 	}
 	
 	public List<CkVsVO> selectVsList(int streamerNo){
-		return ckDao.selectVsList(streamerNo);
+		return selectVsList(new CkPeriodVO(streamerNo, 1, null, null));
+	}
+
+	public List<CkVsVO> selectVsList(CkPeriodVO query){
+		return ckDao.selectVsList(query);
 	}
 	
 	// Patch - 날짜와 메모(CK이름)만 수정
