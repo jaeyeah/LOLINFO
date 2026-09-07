@@ -91,8 +91,10 @@ public class CkRestController {
 	// 부분수정
 	@PatchMapping("/{ckId}")
 	public void updateUnit(@PathVariable int ckId,
-					@RequestBody CkDto ckDto) {
-		ckService.updateUnit(ckId, ckDto);
+					@RequestBody CkDto ckDto,
+					@RequestHeader("Authorization") String bearerToken
+			) {
+		ckService.updateUnit(ckId, ckDto, bearerToken);
 	}
 	
 	
@@ -100,8 +102,9 @@ public class CkRestController {
 	/// --- 삭제 ---
 	// 삭제
 	@DeleteMapping("/{ckId}")
-	public void delete(@PathVariable int ckId) {
-		ckDao.delete(ckId);
+	public void delete(@PathVariable int ckId,
+			@RequestHeader("Authorization") String bearerToken) {
+		ckService.delete(ckId, bearerToken);
 	}
 	
 	
