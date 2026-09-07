@@ -20,7 +20,6 @@ public class SitemapRestController {
 
     @GetMapping("/data")
     public Map<String, Object> sitemapData() {
-
         List<Integer> streamers = sitemapDao.selectStreamerList()
             .stream()
             .map(SitemapVO::getTargetNo)
@@ -31,9 +30,21 @@ public class SitemapRestController {
             .map(SitemapVO::getTargetNo)
             .toList();
 
+        List<Integer> tournamentStreamers = sitemapDao.selectTournamentStreamerList()
+            .stream()
+            .map(SitemapVO::getTargetNo)
+            .toList();
+
+        List<Integer> ckStreamers = sitemapDao.selectCkStreamerList()
+            .stream()
+            .map(SitemapVO::getTargetNo)
+            .toList();
+
         return Map.of(
-            "streamers", streamers,
-            "tournaments", tournaments
-        );
+        	    "streamers", streamers,
+        	    "tournaments", tournaments,
+        	    "tournamentStreamers", tournamentStreamers,
+        	    "ckStreamers", ckStreamers
+        	);
     }
 }

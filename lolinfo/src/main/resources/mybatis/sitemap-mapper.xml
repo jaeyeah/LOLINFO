@@ -23,6 +23,20 @@
 
     </select>
 
+	<!-- 대회 참가 이력이 있는 스트리머 -->
+	<select id="selectTournamentStreamerList" resultType="sitemapVO">
+	    SELECT DISTINCT
+	        tm.streamer_no AS target_no
+	    FROM team_member tm
+	    WHERE tm.streamer_no IS NOT NULL
+	</select>
 	
+	<!-- CK 기록이 있는 스트리머 -->
+	<select id="selectCkStreamerList" resultType="sitemapVO">
+	    SELECT DISTINCT
+	        cp.ck_streamer AS target_no
+	    FROM ck_participant cp
+	    WHERE cp.ck_streamer IS NOT NULL
+	</select>
 	
 </mapper>
