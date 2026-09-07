@@ -94,7 +94,7 @@
 	<select id="selectHomeStats" resultType="HomeStatsVO">
 		select(
 	            select count(DISTINCT visitor_id) from visitor
-	            where visit_date = TRUNC(SYSDATE) ) AS todayVisitors,
+	            where visit_date = TRUNC( CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul' AS DATE)) ) AS todayVisitors,
 	        	( select count(*) from streamer) AS streamerCount,
 				( select count(*) from tournament) AS tournamentCount,
 	       		( select count(*) from ck) AS ckCount

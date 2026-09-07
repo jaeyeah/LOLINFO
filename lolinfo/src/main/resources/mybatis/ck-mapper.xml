@@ -157,7 +157,15 @@
 	</select>
 			 	 
 			 	
+<select id="selectStreamerNos"
+        parameterType="int"
+        resultType="int">
 
+    select ck_streamer
+    from ck_participant
+    where ck_id = #{value}
+
+</select>
 
 
 	
