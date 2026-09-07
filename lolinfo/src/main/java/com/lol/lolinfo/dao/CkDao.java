@@ -11,6 +11,7 @@ import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkMyPageVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
+import com.lol.lolinfo.vo.CkPeriodVO;
 import com.lol.lolinfo.vo.CkRankingVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
@@ -53,11 +54,11 @@ public class CkDao {
 	}
 	
 	/// 상세 조회
-	public List<CkListVO> selectListByStreamer(PageVO pageVO){
-		return sqlSession.selectList("ck.selectListByStreamer",pageVO);
+	public List<CkListVO> selectListByStreamer(CkPeriodVO query){
+		return sqlSession.selectList("ck.selectListByStreamer", query);
 	}
-	public int countByStreamer(int stremaerNo) {
-		return sqlSession.selectOne("ck.countByStreamer", stremaerNo);
+	public int countByStreamer(CkPeriodVO query) {
+		return sqlSession.selectOne("ck.countByStreamer", query);
 	}
 	/// 검색
 //	public List<CkListVO> selectSearchListByStreamer(PageVO pageVO){
@@ -68,8 +69,8 @@ public class CkDao {
 //	}
 	
 	// 조회 맞라인 상대 전적
-	public List<CkVsVO> selectVsList(int streamerNo){
-		return sqlSession.selectList("ck.selectVsList", streamerNo);
+	public List<CkVsVO> selectVsList(CkPeriodVO query){
+		return sqlSession.selectList("ck.selectVsList", query);
 	}
 	
 	/// ----- 수정 -----
