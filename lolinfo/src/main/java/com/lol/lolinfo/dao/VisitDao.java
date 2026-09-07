@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.VisitDto;
+import com.lol.lolinfo.vo.HomeStatsVO;
 import com.lol.lolinfo.vo.VisitListVO;
 
 @Repository
@@ -32,7 +33,10 @@ public class VisitDao {
 		return sqlSession.selectList("visit.selectYear",year);
 	}
 
-
+	// 홈화면 조회용
+	public HomeStatsVO selectHomeStats() {
+	    return sqlSession.selectOne("visit.selectHomeStats");
+	}
 
 
 }
