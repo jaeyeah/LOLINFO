@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ckStreak">
+
+	<select id="selectOne"
+            parameterType="int"
+            resultType="CkStreakDto">
+
+        select
+            streamer_no,
+            current_result,
+            current_streak,
+            max_win_streak,
+            max_win_start,
+            max_win_end,
+            max_lose_streak,
+            max_lose_start,
+            max_lose_end,
+            streak_updated_at
+        from ck_streak
+        where streamer_no = #{streamerNo}
+
+    </select>
+
+    <select id="selectList"
+            resultType="CkStreakDto">
+
+        select
+            streamer_no,
+            current_result,
+            current_streak,
+            max_win_streak,
+            max_win_start,
+            max_win_end,
+            max_lose_streak,
+            max_lose_start,
+            max_lose_end,
+            streak_updated_at
+        from ck_streak
+
+    </select>
+
+    <select id="selectCurrentWinRanking"
+            resultType="CkStreakDto">
+
+        select *
+        from ck_streak
+        where current_result = 'W'
+        order by current_streak desc, max_win_streak desc
+
+    </select>
+
+    <select id="selectMaxWinRanking"
+            resultType="CkStreakDto">
+
+        select *
+        from ck_streak
+        order by max_win_streak desc
+
+    </select>
+
+    <select id="selectCkStreamerNos"
+            resultType="int">
+
+        select distinct ck_streamer
+        from ck_participant
+        order by ck_streamer
+
+    </select>
+
+    <select id="countCk"
+            parameterType="int"
+            resultType="int">
+
+        select count(*)
+        from ck_participant
+        where ck_streamer = #{streamerNo}
+
+    </select>
+
+    <delete id="delete"
+            parameterType="int">
+
+        delete from ck_streak
+        where streamer_no = #{streamerNo}
+
+    </delete>
+    
+    <delete id="deleteAll">
+	    delete from ck_streak
+	</delete>
+    
+    <!-- refresh -->
+    <update id="refresh">
+	    MERGE INTO ck_streak target
+	
+	    USING (
+	        WITH result_list AS (
+	            SELECT
+	                cp.ck_streamer AS streamer_no,
+	                c.ck_id,
+	                c.ck_date,
+	                CASE
+	                    WHEN c.ck_winner = cp.ck_side THEN 'W'
+	                    ELSE 'L'
+	                END AS result
+	            FROM ck c
+	            JOIN ck_participant cp
+	                ON c.ck_id = cp.ck_id
+	            WHERE cp.ck_streamer = #{streamerNo}
+	        ),
+	
+	        change_flag AS (
+	            SELECT
+	                r.*,
+	                CASE
+	                    WHEN LAG(result) OVER (
+	                        ORDER BY ck_date, ck_id
+	                    ) = result
+	                    THEN 0
+	                    ELSE 1
+	                END AS changed
+	            FROM result_list r
+	        ),
+	
+	        grouped AS (
+	            SELECT
+	                c.*,
+	                SUM(changed) OVER (
+	                    ORDER BY ck_date, ck_id
+	                ) AS streak_group
+	            FROM change_flag c
+	        ),
+	
+	        streak_groups AS (
+	            SELECT
+	                streamer_no,
+	                result,
+	                streak_group,
+	                COUNT(*) AS streak_count,
+	                MIN(ck_date) AS streak_start,
+	                MAX(ck_date) AS streak_end,
+	
+	                ROW_NUMBER() OVER (
+	                    PARTITION BY streamer_no, result
+	                    ORDER BY
+	                        COUNT(*) DESC,
+	                        MAX(ck_date) DESC
+	                ) AS result_rank
+	            FROM grouped
+	            GROUP BY
+	                streamer_no,
+	                result,
+	                streak_group
+	        ),
+	
+	        current_data AS (
+	            SELECT
+	                streamer_no,
+	                result AS current_result,
+	                COUNT(*) AS current_streak
+	            FROM (
+	                SELECT
+	                    g.*,
+	                    MAX(streak_group) OVER () AS last_group
+	                FROM grouped g
+	            )
+	            WHERE streak_group = last_group
+	            GROUP BY streamer_no, result
+	        ),
+	
+	        max_win AS (
+	            SELECT
+	                streamer_no,
+	                streak_count AS max_win_streak,
+	                streak_start AS max_win_start,
+	                streak_end AS max_win_end
+	            FROM streak_groups
+	            WHERE result = 'W'
+	              AND result_rank = 1
+	        ),
+	
+	        max_lose AS (
+	            SELECT
+	                streamer_no,
+	                streak_count AS max_lose_streak,
+	                streak_start AS max_lose_start,
+	                streak_end AS max_lose_end
+	            FROM streak_groups
+	            WHERE result = 'L'
+	              AND result_rank = 1
+	        )
+	
+	        SELECT
+	            cd.streamer_no,
+	            cd.current_result,
+	            cd.current_streak,
+	
+	            NVL(mw.max_win_streak, 0) AS max_win_streak,
+	            mw.max_win_start,
+	            mw.max_win_end,
+	
+	            NVL(ml.max_lose_streak, 0) AS max_lose_streak,
+	            ml.max_lose_start,
+	            ml.max_lose_end
+	
+	        FROM current_data cd
+	
+	        LEFT JOIN max_win mw
+	            ON cd.streamer_no = mw.streamer_no
+	
+	        LEFT JOIN max_lose ml
+	            ON cd.streamer_no = ml.streamer_no
+	
+	    ) source
+	
+	    ON (
+	        target.streamer_no = source.streamer_no
+	    )
+	
+	    WHEN MATCHED THEN
+	        UPDATE SET
+	            target.current_result = source.current_result,
+	            target.current_streak = source.current_streak,
+	
+	            target.max_win_streak = source.max_win_streak,
+	            target.max_win_start = source.max_win_start,
+	            target.max_win_end = source.max_win_end,
+	
+	            target.max_lose_streak = source.max_lose_streak,
+	            target.max_lose_start = source.max_lose_start,
+	            target.max_lose_end = source.max_lose_end,
+	
+	            target.streak_updated_at = SYSDATE
+	
+	    WHEN NOT MATCHED THEN
+	        INSERT (
+	            streamer_no,
+	
+	            current_result,
+	            current_streak,
+	
+	            max_win_streak,
+	            max_win_start,
+	            max_win_end,
+	
+	            max_lose_streak,
+	            max_lose_start,
+	            max_lose_end,
+	
+	            streak_updated_at
+	        )
+	        VALUES (
+	            source.streamer_no,
+	
+	            source.current_result,
+	            source.current_streak,
+	
+	            source.max_win_streak,
+	            source.max_win_start,
+	            source.max_win_end,
+	
+	            source.max_lose_streak,
+	            source.max_lose_start,
+	            source.max_lose_end,
+	
+	            SYSDATE
+	        )
+	
+	</update>
+
+</mapper>

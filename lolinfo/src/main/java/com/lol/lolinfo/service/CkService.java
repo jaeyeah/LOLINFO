@@ -1,12 +1,15 @@
 package com.lol.lolinfo.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lol.lolinfo.dao.CkDao;
+import com.lol.lolinfo.dao.CkParticipantDao;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.error.NeedPermissionException;
@@ -29,19 +32,36 @@ public class CkService {
 	private CkDao ckDao;
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private CkStreakService ckStreakService;
+	@Autowired
+	private CkParticipantDao ckParticipantDao;
 	
 	@Transactional
-	//CK+참여자 등록
 	public void insert(CkVO ckVO) {
-		int ckId = ckDao.sequence();
-		ckVO.setCkId(ckId);
-		ckDao.insert(ckVO); // CK등록
-		if(ckVO.getParticipants() != null) {
-			for(CkParticipantDto participant : ckVO.getParticipants()) {
-				participant.setCkId(ckId);
-				ckDao.insertParticipant(participant);
-			}
-		}
+
+	    int ckId = ckDao.sequence();
+	    ckVO.setCkId(ckId);
+
+	    ckDao.insert(ckVO);
+
+	    if (ckVO.getParticipants() != null) {
+
+	        Set<Integer> streamerNos = new HashSet<>();
+
+	        for (CkParticipantDto participant : ckVO.getParticipants()) {
+
+	            participant.setCkId(ckId);
+	            ckDao.insertParticipant(participant);
+
+	            streamerNos.add(participant.getCkStreamer());
+	        }
+
+	        // 연승 통계 갱신
+	        for (Integer streamerNo : streamerNos) {
+	            ckStreakService.refresh(streamerNo);
+	        }
+	    }
 	}
 	
 	public PageResponseVO<CkListVO> selectListByStreamer(int streamerNo, int page){
@@ -102,24 +122,41 @@ public class CkService {
 	    return originDto;
 	}
 
-	// 부분 수정
+	//부분 수정
 	@Transactional
-	public CkDto updateUnit(int ckId,CkDto ckDto,String bearerToken) {
-	    CkDto originDto = requireManagePermission(ckId, bearerToken);
+	public CkDto updateUnit(
+	        int ckId,
+	        CkDto ckDto,
+	        String bearerToken) {
+
+	    CkDto originDto =
+	            requireManagePermission(ckId, bearerToken);
 
 	    // 수정 가능한 항목만 반영
 	    if (ckDto.getCkDate() != null) {
 	        originDto.setCkDate(ckDto.getCkDate());
 	    }
+
 	    if (ckDto.getCkMemo() != null) {
 	        originDto.setCkMemo(ckDto.getCkMemo());
 	    }
+
 	    if (ckDto.getCkWinner() != null) {
 	        originDto.setCkWinner(ckDto.getCkWinner());
 	    }
+
 	    if (!ckDao.updateUnit(originDto)) {
 	        throw new TargetNotfoundException();
 	    }
+
+	    // 이 CK에 참여한 스트리머 전부 재계산
+	    List<Integer> streamerNos =
+	            ckParticipantDao.selectStreamerNos(ckId);
+
+	    for (Integer streamerNo : streamerNos) {
+	        ckStreakService.refresh(streamerNo);
+	    }
+
 	    return originDto;
 	}
 
@@ -127,7 +164,15 @@ public class CkService {
 	@Transactional
 	public void delete(int ckId, String bearerToken) {
 	    CkDto originDto = requireManagePermission(ckId, bearerToken);
+	 // 삭제 전에 참가자 기억
+	    List<Integer> streamerNos =
+	            ckParticipantDao.selectStreamerNos(ckId);
+
 	    ckDao.delete(originDto.getCkId());
+	    // 영향받은 스트리머 재계산
+	    for (Integer streamerNo : streamerNos) {
+	        ckStreakService.refresh(streamerNo);
+	    }
 	}
 
 
