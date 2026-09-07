@@ -24,4 +24,11 @@ public class SitemapDao {
         return sqlSession.selectList("sitemap.selectTournamentList");
     }
 	
+    public List<SitemapVO> selectTournamentStreamerList() {
+        return sqlSession.selectList("sitemap.selectTournamentStreamerList");
+    }
+
+    public List<SitemapVO> selectCkStreamerList() {
+        return sqlSession.selectList("sitemap.selectCkStreamerList");
+    }
 }
