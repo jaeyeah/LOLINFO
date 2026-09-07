@@ -89,5 +89,16 @@
 	    group by to_char(use_date, 'YYYY-MM')
 	    order by useDate asc
 	</select>
+	
+	<!-- 홈 화면 조회용 (count)-->
+	<select id="selectHomeStats" resultType="HomeStatsVO">
+		select(
+	            select count(DISTINCT visitor_id) from visitor
+	            where visit_date = TRUNC(SYSDATE) ) AS todayVisitors,
+	        	( select count(*) from streamer) AS streamerCount,
+				( select count(*) from tournament) AS tournamentCount,
+	       		( select count(*) from ck) AS ckCount
+	    from dual
+	</select>
 
 </mapper>

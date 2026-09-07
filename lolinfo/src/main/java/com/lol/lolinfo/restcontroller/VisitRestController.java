@@ -15,6 +15,7 @@ import com.lol.lolinfo.dao.VisitDao;
 import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.VisitDto;
 import com.lol.lolinfo.service.VisitService;
+import com.lol.lolinfo.vo.HomeStatsVO;
 import com.lol.lolinfo.vo.VisitListVO;
 import com.lol.lolinfo.vo.VisitUseListVO;
 
@@ -65,5 +66,11 @@ public class VisitRestController {
 	public List<VisitUseListVO> selectUseYear(@RequestParam String year){
 		System.out.println("실행 : 연간기능통계");
 		return visitUseDao.selectYear(year);
+	}
+	
+	// 홈화면 로딩용
+	@GetMapping("/home")
+	public HomeStatsVO selectHomeStats() {
+	    return visitDao.selectHomeStats();
 	}
 }
