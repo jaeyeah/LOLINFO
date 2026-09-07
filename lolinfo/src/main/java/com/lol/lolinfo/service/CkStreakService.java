@@ -16,21 +16,6 @@ public class CkStreakService {
     private CkStreakDao ckStreakDao;
 
 
-    public CkStreakDto selectOne(Integer streamerNo) {
-        return ckStreakDao.selectOne(streamerNo);
-    }
-
-
-    public List<CkStreakDto> selectCurrentWinRanking() {
-        return ckStreakDao.selectCurrentWinRanking();
-    }
-
-
-    public List<CkStreakDto> selectMaxWinRanking() {
-        return ckStreakDao.selectMaxWinRanking();
-    }
-
-
     @Transactional
     public void refresh(Integer streamerNo) {
 

@@ -4,61 +4,34 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ckStreak">
 
-	<select id="selectOne"
-            parameterType="int"
-            resultType="CkStreakDto">
-
+	<select id="selectOne" parameterType="int" resultType="CkStreakDto">
         select
-            streamer_no,
-            current_result,
-            current_streak,
-            max_win_streak,
-            max_win_start,
-            max_win_end,
-            max_lose_streak,
-            max_lose_start,
-            max_lose_end,
+            streamer_no, current_result,current_streak,
+            max_win_streak, max_win_start, max_win_end,
+            max_lose_streak, max_lose_start, max_lose_end,
             streak_updated_at
         from ck_streak
-        where streamer_no = #{streamerNo}
-
+        where streamer_no = #{value}
     </select>
 
-    <select id="selectList"
-            resultType="CkStreakDto">
-
+    <select id="selectList" resultType="CkStreakDto">
         select
-            streamer_no,
-            current_result,
-            current_streak,
-            max_win_streak,
-            max_win_start,
-            max_win_end,
-            max_lose_streak,
-            max_lose_start,
-            max_lose_end,
+            streamer_no, current_result, current_streak,
+            max_win_streak, max_win_start, max_win_end,
+            max_lose_streak, max_lose_start, max_lose_end,
             streak_updated_at
         from ck_streak
-
     </select>
 
     <select id="selectCurrentWinRanking"
             resultType="CkStreakDto">
-
-        select *
-        from ck_streak
+        select * from ck_streak
         where current_result = 'W'
         order by current_streak desc, max_win_streak desc
-
     </select>
 
-    <select id="selectMaxWinRanking"
-            resultType="CkStreakDto">
-
-        select *
-        from ck_streak
-        order by max_win_streak desc
-
+    <select id="selectMaxWinRanking" resultType="CkStreakDto">
+        select * from ck_streak order by max_win_streak desc
     </select>
 
     <select id="selectCkStreamerNos"
@@ -70,22 +43,14 @@
 
     </select>
 
-    <select id="countCk"
-            parameterType="int"
-            resultType="int">
-
-        select count(*)
-        from ck_participant
-        where ck_streamer = #{streamerNo}
-
+    <select id="countCk" parameterType="int" resultType="int">
+        select count(*) from ck_participant
+        where ck_streamer = #{value}
     </select>
 
-    <delete id="delete"
-            parameterType="int">
-
+    <delete id="delete"  parameterType="int">
         delete from ck_streak
-        where streamer_no = #{streamerNo}
-
+        where streamer_no = #{value}
     </delete>
     
     <delete id="deleteAll">
@@ -109,7 +74,7 @@
 	            FROM ck c
 	            JOIN ck_participant cp
 	                ON c.ck_id = cp.ck_id
-	            WHERE cp.ck_streamer = #{streamerNo}
+	            WHERE cp.ck_streamer = #{value}
 	        ),
 	
 	        change_flag AS (
