@@ -49,7 +49,8 @@ public class CkService {
 	    ckVO.setCkId(ckId);
 	    ckDao.insert(ckVO);
 
-	    if (ckVO.getParticipants() != null) {
+	    
+	    if (ckVO.getParticipants() != null && !ckVO.getParticipants().isEmpty()) {
 
 	        Set<Integer> streamerNos = new HashSet<>();
 	        for (CkParticipantDto participant : ckVO.getParticipants()) {
