@@ -66,6 +66,7 @@
 	            	round(sum(case when c.ck_winner = cp.ck_side THEN 1 ELSE 0 END)/ NULLIF(COUNT(*), 0)* 100,1) as ck_win_rate
 		        from ck_participant cp
 		        join ck c on c.ck_id = cp.ck_id
+		        where cp.ck_streamer = #{streamerNo}
 			    group by cp.ck_streamer) ck_stat ON ck_stat.streamer_no = ssl.streamer_no
 		left join ck_streak cs on cs.streamer_no = ssl.streamer_no
 	    where ssl.streamer_no = #{streamerNo}
