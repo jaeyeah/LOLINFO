@@ -1,5 +1,7 @@
 package com.lol.lolinfo.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lol.lolinfo.dao.CkStreakDao;
-import com.lol.lolinfo.dto.CkStreakDto;
 
 @Service
 public class CkStreakService {
@@ -17,18 +18,11 @@ public class CkStreakService {
 
 
     @Transactional
-    public void refresh(Integer streamerNo) {
-
-        int count = ckStreakDao.countCk(streamerNo);
-
-        // CK 기록이 전부 사라진 경우
-        if (count == 0) {
-            ckStreakDao.delete(streamerNo);
+    public void refreshAll(Collection<Integer> streamerNos) {
+        if (streamerNos == null || streamerNos.isEmpty()) {
             return;
         }
-
-        // 현재 / 최고 연승·연패 전체 재계산
-        ckStreakDao.refresh(streamerNo);
+        ckStreakDao.refreshAll(new ArrayList<>(streamerNos));
     }
 
 
@@ -43,8 +37,8 @@ public class CkStreakService {
                 ckStreakDao.selectCkStreamerNos();
 
         // 전체 재생성
-        for (Integer streamerNo : streamerNos) {
-            ckStreakDao.refresh(streamerNo);
+        if (streamerNos != null && !streamerNos.isEmpty()) {
+            ckStreakDao.refreshAll(streamerNos);
         }
     }
 }
