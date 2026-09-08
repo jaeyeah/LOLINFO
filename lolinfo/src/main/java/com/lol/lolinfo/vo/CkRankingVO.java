@@ -1,11 +1,6 @@
 package com.lol.lolinfo.vo;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.lol.lolinfo.dto.CkParticipantDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

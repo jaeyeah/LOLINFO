@@ -22,14 +22,6 @@ public class CkStreakDao {
         return sqlSession.selectList("ckStreak.selectList");
     }
 
-    public List<CkStreakDto> selectCurrentWinRanking() {
-        return sqlSession.selectList("ckStreak.selectCurrentWinRanking");
-    }
-
-    public List<CkStreakDto> selectMaxWinRanking() {
-        return sqlSession.selectList("ckStreak.selectMaxWinRanking");
-    }
-
     public List<Integer> selectCkStreamerNos() {
         return sqlSession.selectList("ckStreak.selectCkStreamerNos");
     }

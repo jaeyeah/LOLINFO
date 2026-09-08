@@ -32,18 +32,6 @@ public class CkStreakRestController {
         return ckStreakDao.selectOne(streamerNo);
     }
 
-    // 현재 연승 랭킹
-    @GetMapping("/ranking/current")
-    public List<CkStreakDto> currentRanking() {
-        return ckStreakDao.selectCurrentWinRanking();
-    }
-
-    // 역대 최고 연승 랭킹
-    @GetMapping("/ranking/max")
-    public List<CkStreakDto> maxRanking() {
-        return ckStreakDao.selectMaxWinRanking();
-    }
-    
     @PostMapping("/rebuild")
     public void rebuild() {
         ckStreakService.rebuildAll();

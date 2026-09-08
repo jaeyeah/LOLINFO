@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ckRank">
+
+	<!-- =========================================================
+         현재 연승 / 연패 랭킹
+         - 각 스트리머의 가장 최근 연속 기록 계산
+         - W / L 각각 TOP N
+         ========================================================= -->
+    <select id="selectCurrentStreakRanking"
+            parameterType="int"
+            resultType="CkStreakRankingVO">
+
+        WITH match_result AS (
+            SELECT
+                cp.ck_streamer AS streamer_no,
+                s.streamer_name,
+                s.streamer_soop_id,
+                c.ck_id,
+                c.ck_date,
+                CASE
+                    WHEN cp.ck_side = c.ck_winner THEN 'W'
+                    ELSE 'L'
+                END AS result
+            FROM ck c
+            JOIN ck_participant cp
+                ON c.ck_id = cp.ck_id
+            JOIN streamer s
+                ON cp.ck_streamer = s.streamer_no
+            WHERE c.ck_winner IN ('red', 'blue')
+              AND cp.ck_side IN ('red', 'blue')
+        ),
+
+        result_lag AS (
+            SELECT
+                mr.*,
+                LAG(result) OVER (
+                    PARTITION BY streamer_no
+                    ORDER BY ck_date DESC, ck_id DESC
+                ) AS prev_result
+            FROM match_result mr
+        ),
+
+        streak_grouped AS (
+            SELECT
+                rl.*,
+                SUM(
+                    CASE
+                        WHEN prev_result IS NULL
+                          OR prev_result != result
+                        THEN 1
+                        ELSE 0
+                    END
+                ) OVER (
+                    PARTITION BY streamer_no
+                    ORDER BY ck_date DESC, ck_id DESC
+                    ROWS UNBOUNDED PRECEDING
+                ) AS streak_group
+            FROM result_lag rl
+        ),
+
+        current_streak AS (
+            SELECT
+                streamer_no,
+                streamer_name,
+                streamer_soop_id,
+                result,
+                COUNT(*) AS streak_count,
+                MIN(ck_date) AS streak_start_date,
+                MAX(ck_date) AS streak_end_date
+            FROM streak_grouped
+            WHERE streak_group = 1
+            GROUP BY
+                streamer_no,
+                streamer_name,
+                streamer_soop_id,
+                result
+        ),
+
+        ranked AS (
+            SELECT
+                ROW_NUMBER() OVER (
+                    PARTITION BY result
+                    ORDER BY
+                        streak_count DESC,
+                        streak_end_date DESC,
+                        streamer_no
+                ) AS rank,
+                streamer_no,
+                streamer_name,
+                streamer_soop_id,
+                result,
+                streak_count,
+                streak_start_date,
+                streak_end_date
+            FROM current_streak
+        )
+
+        SELECT
+            rank,
+            streamer_no,
+            streamer_name,
+            streamer_soop_id,
+            result,
+            streak_count,
+            streak_start_date,
+            streak_end_date
+        FROM ranked
+        WHERE rank &lt;= #{value}
+        ORDER BY
+            CASE result
+                WHEN 'W' THEN 1
+                ELSE 2
+            END,
+            rank
+
+    </select>
+
+
+    <!-- =========================================================
+         역대 최고 연승 / 연패 랭킹
+         - 모든 연속 구간 계산
+         - 스트리머별 W/L 최고 기록 선택
+         - W/L 각각 TOP N
+         ========================================================= -->
+    <select id="selectMaxStreakRanking"
+            parameterType="int"
+            resultType="CkStreakRankingVO">
+
+        WITH match_result AS (
+            SELECT
+                cp.ck_streamer AS streamer_no,
+                s.streamer_name,
+                s.streamer_soop_id,
+                c.ck_id,
+                c.ck_date,
+                CASE
+                    WHEN cp.ck_side = c.ck_winner THEN 'W'
+                    ELSE 'L'
+                END AS result
+            FROM ck c
+            JOIN ck_participant cp
+                ON c.ck_id = cp.ck_id
+            JOIN streamer s
+                ON cp.ck_streamer = s.streamer_no
+            WHERE c.ck_winner IN ('red', 'blue')
+              AND cp.ck_side IN ('red', 'blue')
+        ),
+
+        result_lag AS (
+            SELECT
+                mr.*,
+                LAG(result) OVER (
+                    PARTITION BY streamer_no
+                    ORDER BY ck_date, ck_id
+                ) AS prev_result
+            FROM match_result mr
+        ),
+
+        streak_grouped AS (
+            SELECT
+                rl.*,
+                SUM(
+                    CASE
+                        WHEN prev_result IS NULL
+                          OR prev_result != result
+                        THEN 1
+                        ELSE 0
+                    END
+                ) OVER (
+                    PARTITION BY streamer_no
+                    ORDER BY ck_date, ck_id
+                    ROWS UNBOUNDED PRECEDING
+                ) AS streak_group
+            FROM result_lag rl
+        ),
+
+        streak_segment AS (
+            SELECT
+                streamer_no,
+                streamer_name,
+                streamer_soop_id,
+                result,
+                streak_group,
+                COUNT(*) AS streak_count,
+                MIN(ck_date) AS streak_start_date,
+                MAX(ck_date) AS streak_end_date
+            FROM streak_grouped
+            GROUP BY
+                streamer_no,
+                streamer_name,
+                streamer_soop_id,
+                result,
+                streak_group
+        ),
+
+        streamer_best AS (
+            SELECT
+                ss.*,
+                ROW_NUMBER() OVER (
+                    PARTITION BY streamer_no, result
+                    ORDER BY
+                        streak_count DESC,
+                        streak_end_date DESC
+                ) AS streak_rank
+            FROM streak_segment ss
+        ),
+
+        best_streak AS (
+            SELECT
+                *
+            FROM streamer_best
+            WHERE streak_rank = 1
+        ),
+
+        ranked AS (
+            SELECT
+                ROW_NUMBER() OVER (
+                    PARTITION BY result
+                    ORDER BY
+                        streak_count DESC,
+                        streak_end_date DESC,
+                        streamer_no
+                ) AS rank,
+                streamer_no,
+                streamer_name,
+                streamer_soop_id,
+                result,
+                streak_count,
+                streak_start_date,
+                streak_end_date
+            FROM best_streak
+        )
+
+        SELECT
+            rank,
+            streamer_no,
+            streamer_name,
+            streamer_soop_id,
+            result,
+            streak_count,
+            streak_start_date,
+            streak_end_date
+        FROM ranked
+        WHERE rank &lt;= #{value}
+        ORDER BY
+            CASE result
+                WHEN 'W' THEN 1
+                ELSE 2
+            END,
+            rank
+
+    </select>
+
+
+    <!-- =========================================================
+         CK 다승 랭킹
+
+         period = all
+             → 역대
+
+         period = year
+             → 해당 연도
+         ========================================================= -->
+    <select id="selectWinRanking"
+            parameterType="map"
+            resultType="CkRankingVO">
+
+        WITH ranking_base AS (
+            SELECT
+                cp.ck_streamer AS streamer_no,
+                s.streamer_name,
+                s.streamer_soop_id,
+
+                COUNT(*) AS play_count,
+
+                SUM(
+                    CASE
+                        WHEN cp.ck_side = c.ck_winner THEN 1
+                        ELSE 0
+                    END
+                ) AS win_count,
+
+                SUM(
+                    CASE
+                        WHEN cp.ck_side != c.ck_winner THEN 1
+                        ELSE 0
+                    END
+                ) AS lose_count
+
+            FROM ck c
+
+            JOIN ck_participant cp
+                ON c.ck_id = cp.ck_id
+
+            JOIN streamer s
+                ON cp.ck_streamer = s.streamer_no
+
+            WHERE c.ck_winner IN ('red', 'blue')
+              AND cp.ck_side IN ('red', 'blue')
+
+            <if test="period == 'year'">
+
+                AND c.ck_date &gt;=
+                    TO_DATE(
+                        #{year} || '-01-01',
+                        'YYYY-MM-DD'
+                    )
+
+                AND c.ck_date &lt;
+                    ADD_MONTHS(
+                        TO_DATE(
+                            #{year} || '-01-01',
+                            'YYYY-MM-DD'
+                        ),
+                        12
+                    )
+
+            </if>
+
+            GROUP BY
+                cp.ck_streamer,
+                s.streamer_name,
+                s.streamer_soop_id
+        ),
+
+        ranked AS (
+            SELECT
+                ROW_NUMBER() OVER (
+                    ORDER BY
+                        win_count DESC,
+                        play_count DESC,
+                        streamer_no
+                ) AS rank,
+
+                streamer_no,
+                streamer_name,
+                streamer_soop_id,
+
+                play_count,
+                win_count,
+                lose_count,
+
+                ROUND(
+                    win_count
+                    / NULLIF(play_count, 0)
+                    * 100,
+                    1
+                ) AS win_rate
+
+            FROM ranking_base
+        )
+
+        SELECT
+            rank,
+            streamer_no,
+            streamer_name,
+            streamer_soop_id,
+            play_count,
+            win_count,
+            lose_count,
+            win_rate
+        FROM ranked
+        WHERE rank &lt;= #{limit}
+        ORDER BY rank
+
+    </select>
+
+
+    <!-- =========================================================
+         역대 CK 승률 랭킹
+         - 최소 경기수 이상만 포함
+         - 실제 승률로 정렬
+         - 화면 표시용 승률은 소수점 1자리
+         ========================================================= -->
+    <select id="selectWinRateRanking"
+            parameterType="map"
+            resultType="CkRankingVO">
+
+        WITH ranking_base AS (
+            SELECT
+                cp.ck_streamer AS streamer_no,
+                s.streamer_name,
+                s.streamer_soop_id,
+
+                COUNT(*) AS play_count,
+
+                SUM(
+                    CASE
+                        WHEN cp.ck_side = c.ck_winner THEN 1
+                        ELSE 0
+                    END
+                ) AS win_count,
+
+                SUM(
+                    CASE
+                        WHEN cp.ck_side != c.ck_winner THEN 1
+                        ELSE 0
+                    END
+                ) AS lose_count
+
+            FROM ck c
+
+            JOIN ck_participant cp
+                ON c.ck_id = cp.ck_id
+
+            JOIN streamer s
+                ON cp.ck_streamer = s.streamer_no
+
+            WHERE c.ck_winner IN ('red', 'blue')
+              AND cp.ck_side IN ('red', 'blue')
+
+            GROUP BY
+                cp.ck_streamer,
+                s.streamer_name,
+                s.streamer_soop_id
+
+            HAVING COUNT(*) &gt;= #{minPlayCount}
+        ),
+
+        ranked AS (
+            SELECT
+                ROW_NUMBER() OVER (
+                    ORDER BY
+                        (
+                            win_count
+                            / NULLIF(play_count, 0)
+                        ) DESC,
+                        play_count DESC,
+                        win_count DESC,
+                        streamer_no
+                ) AS rank,
+
+                streamer_no,
+                streamer_name,
+                streamer_soop_id,
+
+                play_count,
+                win_count,
+                lose_count,
+
+                ROUND(
+                    win_count
+                    / NULLIF(play_count, 0)
+                    * 100,
+                    1
+                ) AS win_rate
+
+            FROM ranking_base
+        )
+
+        SELECT
+            rank,
+            streamer_no,
+            streamer_name,
+            streamer_soop_id,
+            play_count,
+            win_count,
+            lose_count,
+            win_rate
+        FROM ranked
+        WHERE rank &lt;= #{limit}
+        ORDER BY rank
+
+    </select>
+
+
+</mapper>

@@ -23,16 +23,6 @@
         from ck_streak
     </select>
 
-    <select id="selectCurrentWinRanking"
-            resultType="CkStreakDto">
-        select * from ck_streak
-        where current_result = 'W'
-        order by current_streak desc, max_win_streak desc
-    </select>
-
-    <select id="selectMaxWinRanking" resultType="CkStreakDto">
-        select * from ck_streak order by max_win_streak desc
-    </select>
 
     <select id="selectCkStreamerNos"
             resultType="int">
