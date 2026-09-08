@@ -12,7 +12,7 @@ public class SchedulerComponent {
 	@Autowired
 	private CkStreakService ckStreakService;
 	
-	@Scheduled(cron = "0 0 6 * * *")
+	@Scheduled(cron = "0 0 11 * * *")
     public void rebuildCkStreak() {
         ckStreakService.rebuildAll();
     }

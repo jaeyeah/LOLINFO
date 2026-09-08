@@ -149,13 +149,16 @@
 			count(*) as play_count,
 			sum(case when c.ck_winner = p.ck_side then 1 else 0 end) as win_count,
 			sum(case when c.ck_winner != p.ck_side then 1 else 0 end) as lose_count,
-			round(sum(case when c.ck_winner = p.ck_side THEN 1 ELSE 0 END) / count(*) * 100, 1) as win_rate
+			round(sum(case when c.ck_winner = p.ck_side THEN 1 ELSE 0 END) / count(*) * 100, 1) as win_rate,
+			cs.current_result, cs.current_streak			
 		from ck c
 		join ck_participant p on c.ck_id = p.ck_id
 		join streamer s on p.ck_streamer = s.streamer_no
+		left join ck_streak cs on p.ck_streamer = cs.streamer_no
 		where ck_date &gt;= to_date(#{value},'YYYY-MM')
 			and ck_date &lt; add_months(to_date(#{value},'YYYY-MM'),1)
-		group by p.ck_streamer, s.streamer_name, s.streamer_soop_id
+		group by p.ck_streamer, s.streamer_name, s.streamer_soop_id,
+        		cs.current_result,cs.current_streak
 		order by win_count desc, play_count desc,  win_rate desc 
 	) where ROWNUM &lt;= 10
 	</select>
