@@ -37,25 +37,23 @@ public class CkService {
 	@Autowired
 	private CkParticipantDao ckParticipantDao;
 	
+	//CK 등록
 	@Transactional
 	public void insert(CkVO ckVO) {
-
+		// CK 등록
 	    int ckId = ckDao.sequence();
 	    ckVO.setCkId(ckId);
-
 	    ckDao.insert(ckVO);
 
 	    if (ckVO.getParticipants() != null) {
 
 	        Set<Integer> streamerNos = new HashSet<>();
-
 	        for (CkParticipantDto participant : ckVO.getParticipants()) {
-
-	            participant.setCkId(ckId);
-	            ckDao.insertParticipant(participant);
-
-	            streamerNos.add(participant.getCkStreamer());
+	            participant.setCkId(ckId); // CK참가자에 CKID 부여
+	            streamerNos.add(participant.getCkStreamer()); // refresh를 위한 참가자id set저장
 	        }
+	        // ckid 저장
+	        ckDao.insertParticipantAll(ckVO.getParticipants());
 
 	        // 연승 통계 갱신
 	        for (Integer streamerNo : streamerNos) {
