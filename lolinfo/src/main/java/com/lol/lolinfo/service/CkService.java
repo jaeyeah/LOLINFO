@@ -1,5 +1,6 @@
 package com.lol.lolinfo.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lol.lolinfo.dao.CkDao;
 import com.lol.lolinfo.dao.CkParticipantDao;
+import com.lol.lolinfo.dao.CkStreakDao;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.error.NeedPermissionException;
@@ -31,36 +33,33 @@ public class CkService {
 	@Autowired
 	private CkDao ckDao;
 	@Autowired
+	private CkStreakDao ckStreakDao;
+	@Autowired
 	private TokenService tokenService;
 	@Autowired
 	private CkStreakService ckStreakService;
 	@Autowired
 	private CkParticipantDao ckParticipantDao;
 	
+	//CK 등록
 	@Transactional
 	public void insert(CkVO ckVO) {
-
+		// CK 등록
 	    int ckId = ckDao.sequence();
 	    ckVO.setCkId(ckId);
-
 	    ckDao.insert(ckVO);
 
 	    if (ckVO.getParticipants() != null) {
 
 	        Set<Integer> streamerNos = new HashSet<>();
-
 	        for (CkParticipantDto participant : ckVO.getParticipants()) {
-
-	            participant.setCkId(ckId);
-	            ckDao.insertParticipant(participant);
-
-	            streamerNos.add(participant.getCkStreamer());
+	            participant.setCkId(ckId); // CK참가자에 CKID 부여
+	            streamerNos.add(participant.getCkStreamer()); // refresh를 위한 참가자id set저장
 	        }
-
+	        // ckid 저장
+	        ckDao.insertParticipantAll(ckVO.getParticipants());
 	        // 연승 통계 갱신
-	        for (Integer streamerNo : streamerNos) {
-	            ckStreakService.refresh(streamerNo);
-	        }
+	        ckStreakService.refreshAll(streamerNos);
 	    }
 	}
 	
@@ -132,6 +131,10 @@ public class CkService {
 	    CkDto originDto =
 	            requireManagePermission(ckId, bearerToken);
 
+	    boolean streakChanged =
+	            ckDto.getCkDate() != null
+	            || ckDto.getCkWinner() != null;
+	    
 	    // 수정 가능한 항목만 반영
 	    if (ckDto.getCkDate() != null) {
 	        originDto.setCkDate(ckDto.getCkDate());
@@ -149,32 +152,35 @@ public class CkService {
 	        throw new TargetNotfoundException();
 	    }
 
-	    // 이 CK에 참여한 스트리머 전부 재계산
-	    List<Integer> streamerNos =
-	            ckParticipantDao.selectStreamerNos(ckId);
-
-	    for (Integer streamerNo : streamerNos) {
-	        ckStreakService.refresh(streamerNo);
+	    // 이 CK에 참여한 스트리머 전부 재계산(전체 수정일때만)
+	    if(streakChanged) {
+	    	List<Integer> streamerNos = ckParticipantDao.selectStreamerNos(ckId);
+	    	ckStreakService.refreshAll(streamerNos);
 	    }
-
+	    
 	    return originDto;
 	}
 
-	// 삭제
 	@Transactional
 	public void delete(int ckId, String bearerToken) {
-	    CkDto originDto = requireManagePermission(ckId, bearerToken);
-	 // 삭제 전에 참가자 기억
+
+	    CkDto originDto =
+	            requireManagePermission(ckId, bearerToken);
+
+	    // 삭제 전에 영향받는 스트리머 저장
 	    List<Integer> streamerNos =
 	            ckParticipantDao.selectStreamerNos(ckId);
 
+	    // CK 삭제
 	    ckDao.delete(originDto.getCkId());
-	    // 영향받은 스트리머 재계산
-	    for (Integer streamerNo : streamerNos) {
-	        ckStreakService.refresh(streamerNo);
+
+	    if (!streamerNos.isEmpty()) {
+	        // CK가 하나도 남지 않은 스트리머의 streak 삭제
+	        ckStreakDao.deleteNoHistory(streamerNos);
+	        // CK가 남은 스트리머는 MERGE 재계산
+	        ckStreakService.refreshAll(streamerNos);
 	    }
 	}
-
-
+	
 	
 }

@@ -30,8 +30,8 @@ public class CkDao {
 	public void insert(CkVO ckVO) {
 		sqlSession.insert("ck.insert",ckVO);
 	}
-	public void insertParticipant(CkParticipantDto participantDto) {
-		sqlSession.insert("ck.insertParticipant", participantDto);
+	public void insertParticipantAll(List<CkParticipantDto> participants) {
+		sqlSession.insert("ck.insertParticipantAll", participants);
 	}
 	
 	/// ----- 목록 조회 -----

@@ -38,8 +38,8 @@ public class CkStreakDao {
         return sqlSession.selectOne("ckStreak.countCk", streamerNo);
     }
 
-    public int refresh(Integer streamerNo) {
-        return sqlSession.update("ckStreak.refresh", streamerNo);
+    public int refreshAll(List<Integer> streamerNos) {
+        return sqlSession.update("ckStreak.refreshAll", streamerNos);
     }
 
     public int delete(Integer streamerNo) {
@@ -47,5 +47,8 @@ public class CkStreakDao {
     }
     public int deleteAll() {
         return sqlSession.delete("ckStreak.deleteAll");
+    }
+    public int deleteNoHistory(List<Integer> streamerNos) {
+        return sqlSession.delete("ckStreak.deleteNoHistory",streamerNos);
     }
 }

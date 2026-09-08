@@ -36,10 +36,10 @@
 	        sum(visit_count) as visit_count,
 	        sum(visit_login) as visit_login
 	    from visit_daily
-	    where visit_date >= to_date(#{year}, 'YYYY')
-	      and visit_date &lt; add_months(to_date(#{year}, 'YYYY'), 12)
+	    where visit_date >= to_date(#{year} || '-01-01', 'YYYY-MM-DD')
+	      and visit_date &lt; add_months(to_date(#{year} || '-01-01', 'YYYY-MM-DD'), 12)
 	    group by to_char(visit_date, 'YYYY-MM')
-	    order by visit_date desc
+	    order by visit_date asc
 	</select>
 
 	<!-- 기능별 이용횟수 증가 -->
@@ -84,8 +84,8 @@
 	        sum(case when use_type = 'ck_list' then use_count else 0 end) as ckList,
 	        sum(case when use_type = 'teammate' then use_count else 0 end) as teammate
 	    from visit_use
-	    where use_date >= to_date(#{year}, 'YYYY')
-	      and use_date &lt; add_months(to_date(#{year}, 'YYYY'), 12)
+	    where use_date >= to_date(#{year} || '-01-01', 'YYYY-MM-DD')
+	      and use_date &lt; add_months(to_date(#{year} || '-01-01', 'YYYY-MM-DD'), 12)
 	    group by to_char(use_date, 'YYYY-MM')
 	    order by useDate asc
 	</select>

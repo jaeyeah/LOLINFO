@@ -23,5 +23,9 @@ public class CkRankingVO {
 	private int winCount;
 	private int loseCount;
 	private double winRate;
+	//연승,연패기록 추가
+	private String currentResult;
+	private Integer currentStreak;
+	
 	
 }

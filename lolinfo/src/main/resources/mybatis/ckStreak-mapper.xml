@@ -58,30 +58,35 @@
 	</delete>
     
     <!-- refresh -->
-    <update id="refresh">
+    <update id="refreshAll">
 	    MERGE INTO ck_streak target
-	
 	    USING (
 	        WITH result_list AS (
-	            SELECT
+	            select
 	                cp.ck_streamer AS streamer_no,
-	                c.ck_id,
-	                c.ck_date,
+	                c.ck_id, c.ck_date,
 	                CASE
 	                    WHEN c.ck_winner = cp.ck_side THEN 'W'
 	                    ELSE 'L'
 	                END AS result
 	            FROM ck c
-	            JOIN ck_participant cp
-	                ON c.ck_id = cp.ck_id
-	            WHERE cp.ck_streamer = #{value}
+	            JOIN ck_participant cp ON c.ck_id = cp.ck_id
+	            WHERE cp.ck_streamer IN
+	            <foreach collection="list"
+	                     item="streamerNo"
+	                     open="("
+	                     separator=","
+	                     close=")">
+	                #{streamerNo}
+	            </foreach>
 	        ),
 	
 	        change_flag AS (
-	            SELECT
+	            select
 	                r.*,
 	                CASE
 	                    WHEN LAG(result) OVER (
+	                    	PARTITION BY streamer_no
 	                        ORDER BY ck_date, ck_id
 	                    ) = result
 	                    THEN 0
@@ -94,6 +99,7 @@
 	            SELECT
 	                c.*,
 	                SUM(changed) OVER (
+	                	PARTITION BY streamer_no
 	                    ORDER BY ck_date, ck_id
 	                ) AS streak_group
 	            FROM change_flag c
@@ -129,7 +135,7 @@
 	            FROM (
 	                SELECT
 	                    g.*,
-	                    MAX(streak_group) OVER () AS last_group
+	                    MAX(streak_group) OVER (PARTITION BY streamer_no) AS last_group
 	                FROM grouped g
 	            )
 	            WHERE streak_group = last_group
@@ -235,5 +241,24 @@
 	        )
 	
 	</update>
+	
+	<!-- 삭제시 DB정합성을 위한 쿼리
+		: CK 0회를 삭제 -->
+	<delete id="deleteNoHistory">
+	    DELETE FROM ck_streak cs
+	    WHERE cs.streamer_no IN
+	    <foreach collection="list"
+	             item="streamerNo"
+	             open="("
+	             separator=","
+	             close=")">
+	        #{streamerNo}
+	    </foreach>
+	    AND NOT EXISTS (
+	        SELECT 1
+	        FROM ck_participant cp
+	        WHERE cp.ck_streamer = cs.streamer_no
+	    )
+	</delete>
 
 </mapper>
