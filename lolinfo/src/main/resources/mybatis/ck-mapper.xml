@@ -16,20 +16,33 @@
 		) 
 	</insert>
 	
-	<!--참여스트리머 등록-->
+	<!-- 참여스트리머 등록 -->
 	<insert id="insertParticipantAll">
-		insert all
-		<foreach collection="list" item="participant">
-			into ck_participant(
-				ck_participant_id, ck_id, ck_streamer, ck_side, ck_position
-			) values(
-				ck_participant_seq.nextval,
-				#{participant.ckId}, #{participant.ckStreamer}, #{participant.ckSide}, #{participant.ckPosition}
-			)
-		</foreach>
-		select 1 from dual
+	    INSERT INTO ck_participant (
+	        ck_participant_id,
+	        ck_id,
+	        ck_streamer,
+	        ck_side,
+	        ck_position
+	    )
+	    SELECT
+	        ck_participant_seq.NEXTVAL,
+	        participant_data.ck_id,
+	        participant_data.ck_streamer,
+	        participant_data.ck_side,
+	        participant_data.ck_position
+	    FROM (
+	        <foreach collection="list" item="participant" separator=" UNION ALL ">
+	            SELECT
+	                #{participant.ckId} AS ck_id,
+	                #{participant.ckStreamer} AS ck_streamer,
+	                #{participant.ckSide} AS ck_side,
+	                #{participant.ckPosition} AS ck_position
+	            FROM dual
+	        </foreach>
+	    ) participant_data
 	</insert>
-	
+		
 	
 	<!-- 조회 -->
 	<!-- 확인용 조회 -->
