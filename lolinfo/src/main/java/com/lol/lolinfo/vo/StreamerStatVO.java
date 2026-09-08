@@ -25,12 +25,6 @@ public class StreamerStatVO {
 	private int totalRanking2; // 전체 준우승
 	private int totalRanking3; // 전체 4강
 	
-    // CK 기록
-    private int ckPlayCount;
-    private int ckWinCount;
-    private int ckLoseCount;
-    private double ckWinRate;
-
     // 현재 연승 / 연패
     private int currentStreak;
     private String currentResult; // WIN / LOSE / NONE	

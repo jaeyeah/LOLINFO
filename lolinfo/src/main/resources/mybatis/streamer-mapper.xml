@@ -52,23 +52,10 @@
 	<!-- 상세조회 -->
 	<select id="selectOnePlusStat" resultType="StreamerStatVO">
 	    select ssl.*,
-	        NVL(ck_stat.ck_play_count, 0) as ck_play_count,
-	        NVL(ck_stat.ck_win_count, 0) as ck_win_count,
-	        NVL(ck_stat.ck_lose_count, 0) as ck_lose_count,
-	        NVL(ck_stat.ck_win_rate, 0) as ck_win_rate,
 	        NVL(cs.current_streak, 0) as current_streak,
         	cs.current_result as current_result
 	    from streamer_stat_list ssl
-	    left join (select  cp.ck_streamer as streamer_no,
-					count(*) as ck_play_count,
-					sum(case when c.ck_winner = cp.ck_side THEN 1 ELSE 0 END) as ck_win_count,
-					sum(case when c.ck_winner &lt;&gt; cp.ck_side THEN 1 ELSE 0 END) as ck_lose_count,
-	            	round(sum(case when c.ck_winner = cp.ck_side THEN 1 ELSE 0 END)/ NULLIF(COUNT(*), 0)* 100,1) as ck_win_rate
-		        from ck_participant cp
-		        join ck c on c.ck_id = cp.ck_id
-		        where cp.ck_streamer = #{streamerNo}
-			    group by cp.ck_streamer) ck_stat ON ck_stat.streamer_no = ssl.streamer_no
-		left join ck_streak cs on cs.streamer_no = ssl.streamer_no
+	    left join ck_streak cs on cs.streamer_no = ssl.streamer_no
 	    where ssl.streamer_no = #{streamerNo}
 	</select>
 	
