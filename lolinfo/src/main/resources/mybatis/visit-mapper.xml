@@ -82,7 +82,8 @@
 	        sum(case when use_type = 'streamer_detail' then use_count else 0 end) as streamerDetail,
 	        sum(case when use_type = 'ck_streamer' then use_count else 0 end) as ckStreamer,
 	        sum(case when use_type = 'ck_list' then use_count else 0 end) as ckList,
-	        sum(case when use_type = 'teammate' then use_count else 0 end) as teammate
+	        sum(case when use_type = 'teammate' then use_count else 0 end) as teammate,
+	        sum(case when use_type = 'ranking' then use_count else 0 end) as ranking
 	    from visit_use
 	    where use_date >= to_date(#{year} || '-01-01', 'YYYY-MM-DD')
 	      and use_date &lt; add_months(to_date(#{year} || '-01-01', 'YYYY-MM-DD'), 12)
