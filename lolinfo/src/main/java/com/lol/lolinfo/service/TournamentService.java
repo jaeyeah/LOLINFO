@@ -3,6 +3,7 @@ package com.lol.lolinfo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ public class TournamentService {
     private HostDao hostDao;
 
     @Transactional
+    @CacheEvict(value = {"tournamentList"}, allEntries = true)
     public void insertTournament(TournamentRequestVO request) {
     	// 대회 등록
     	tournamentDao.insert(request.getTournamentDto());
@@ -36,6 +38,7 @@ public class TournamentService {
     }
 
     @Transactional
+    @CacheEvict(value = {"tournamentList"}, allEntries = true)
     public void updateTournament(TournamentRequestVO request) {
     	// 대회 수정
     	tournamentDao.update(request.getTournamentDto());

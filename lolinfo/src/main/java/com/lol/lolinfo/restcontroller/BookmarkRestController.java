@@ -58,7 +58,7 @@ public class BookmarkRestController {
 	// 홈(메인)페이지 북마크 목록 (로그인 유저)
 	@GetMapping("/streamer/home")
 	public List<HomeBookmarkStreamerVO> selectHomeStreamerList(
-			@RequestHeader("Authorization") String bearerToken
+			@RequestHeader(value="Authorization", required = false) String bearerToken
 			){
 		return bookmarkService.selectHomeStreamerList(bearerToken);
 	}
