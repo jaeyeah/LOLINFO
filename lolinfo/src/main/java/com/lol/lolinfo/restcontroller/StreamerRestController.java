@@ -3,6 +3,7 @@ package com.lol.lolinfo.restcontroller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class StreamerRestController {
 	
 	//등록
 	@PostMapping("/")
+	@CacheEvict(value = {"streamerList", "streamerSearch"},allEntries = true)
 	public void insert(@RequestBody StreamerDto streamerDto) {
 		streamerDao.insert(streamerDto);
 		System.out.println("스트리머 등록 실행");
@@ -108,12 +110,14 @@ public class StreamerRestController {
 
 	//수정
 	@PutMapping("/")
+	@CacheEvict(value = {"streamerList", "streamerSearch"},allEntries = true)
 	public void update(@RequestBody StreamerDto streamerDto) {
 		streamerDao.update(streamerDto);
 		System.out.println("스트리머 수정 실행");
 	}
 	//삭제
 	@DeleteMapping("/{streamerNo}")
+	@CacheEvict(value = {"streamerList", "streamerSearch"},allEntries = true)
 	public void delete(@PathVariable int streamerNo) {
 		streamerDao.delete(streamerNo);
 	}

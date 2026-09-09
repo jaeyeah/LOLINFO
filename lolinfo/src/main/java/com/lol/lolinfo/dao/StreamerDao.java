@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.StreamerDto;
@@ -26,6 +27,7 @@ public class StreamerDao {
 	}
 	
 	//조회
+	@Cacheable(value = "streamerList",key = "#pageVO.page")
 	public List<StreamerStatVO> selectList(PageVO pageVO){
 		return sqlSession.selectList("streamer.selectList", pageVO);
 	}
@@ -37,6 +39,7 @@ public class StreamerDao {
 		return sqlSession.selectOne("streamer.count");
 	}
 	//검색
+	@Cacheable(value = "streamerSearch",key = "#pageVO.page + ':' + #pageVO.keyword + ':' + #pageVO.sort")
 	public List<StreamerStatVO> searchStreamer(PageVO pageVO) {
 		return sqlSession.selectList("streamer.searchStreamer",pageVO);
 	}
