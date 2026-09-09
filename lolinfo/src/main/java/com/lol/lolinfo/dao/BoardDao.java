@@ -34,4 +34,15 @@ public class BoardDao {
 	public BoardDto selectOne(int boardId) {
 		return sqlSession.selectOne("board.selectOne",boardId);
 	}
+	
+	//수정
+	public void update(BoardDto boardDto) {
+		sqlSession.update("board.update",boardDto);	
+	}
+	
+	//삭제
+	public void delete(int boardId) {
+		sqlSession.delete("board.delete",boardId);
+	}
+	
 }

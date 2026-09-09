@@ -5,10 +5,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.lol.lolinfo.dao.CkDao;
 import com.lol.lolinfo.dao.VisitUseDao;
@@ -25,6 +25,7 @@ import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkMonthlyCountVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
 import com.lol.lolinfo.vo.CkRankingVO;
@@ -127,6 +128,12 @@ public class CkRestController {
 	@GetMapping("/rank/{month}")
 	public List<CkRankingVO> selectMonthRank(@PathVariable String month){
 		return ckDao.selectRanking(month);
+	}
+	// 월별 count
+	@GetMapping("/monthlyCount")
+	public List<CkMonthlyCountVO> monthlyCount(
+	        @RequestParam(defaultValue = "2026") int year) {
+	    return ckDao.selectMonthlyCount(year);
 	}
 	
 	

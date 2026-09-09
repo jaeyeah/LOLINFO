@@ -10,9 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.vo.CkRankingVO;
 import com.lol.lolinfo.vo.CkStreakRankingVO;
+import com.lol.lolinfo.vo.MyeolmangRankingVO;
 
 @Repository
-public class CkRankDao {
+public class RankDao {
 
     @Autowired
     private SqlSession sqlSession;
@@ -21,7 +22,7 @@ public class CkRankDao {
     public List<CkStreakRankingVO> selectCurrentStreakRanking(int limit) {
 
         return sqlSession.selectList(
-                "ckRank.selectCurrentStreakRanking",
+                "rank.selectCurrentStreakRanking",
                 limit
         );
     }
@@ -30,7 +31,7 @@ public class CkRankDao {
     public List<CkStreakRankingVO> selectMaxStreakRanking(int limit) {
 
         return sqlSession.selectList(
-                "ckRank.selectMaxStreakRanking",
+                "rank.selectMaxStreakRanking",
                 limit
         );
     }
@@ -48,7 +49,7 @@ public class CkRankDao {
         params.put("limit", limit);
 
         return sqlSession.selectList(
-                "ckRank.selectWinRanking",
+                "rank.selectWinRanking",
                 params
         );
     }
@@ -64,8 +65,27 @@ public class CkRankDao {
         params.put("limit", limit);
 
         return sqlSession.selectList(
-                "ckRank.selectWinRateRanking",
+                "rank.selectWinRateRanking",
                 params
         );
     }
+    
+    // 멸망전 랭킹
+    public List<MyeolmangRankingVO> selectMyeolmangRanking(
+            String period,
+            int startYear,
+            int limit) {
+
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("period", period);
+        params.put("startYear", startYear);
+        params.put("limit", limit);
+
+        return sqlSession.selectList(
+                "rank.selectMyeolmangRanking",
+                params
+        );
+    }
+    
 }

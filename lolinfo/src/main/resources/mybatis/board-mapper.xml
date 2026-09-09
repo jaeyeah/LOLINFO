@@ -19,6 +19,7 @@
 	</insert>
 	<select id="selectList" resultType="boardDto">
 		select * from board
+		ORDER BY board_wtime DESC, board_id DESC
 	</select>
 	
 	<select id="selectBoardList" resultType="boardlistVO">
@@ -27,6 +28,7 @@
 			m.member_nickname
 			from board b
 		left outer join member m on board_writer = member_id
+		ORDER BY board_wtime DESC, board_id DESC
 	</select>
 	
 	
@@ -35,4 +37,17 @@
 		where board_id = #{boardId}
 	</select>	
 	
+	<!-- 수정 -->
+	<update id="update" parameterType="BoardDto">
+	    update board set
+	        board_category = #{boardCategory},
+	        board_title = #{boardTitle},
+	        board_content = #{boardContent}
+	    where board_id = #{boardId}
+	</update>
+
+	<!-- 삭제 -->
+	<delete id="delete">
+    	delete from board where board_id = #{value}
+	</delete>
 </mapper>

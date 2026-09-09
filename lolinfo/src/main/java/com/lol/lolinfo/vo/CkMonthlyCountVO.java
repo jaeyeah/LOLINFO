@@ -7,15 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class MemberLoginResponseVO {
-	
-	private String loginId;
-	private String loginLevel;
-	private String loginNickname;
-	private String accessToken;
-	private String refreshToken;
-
+public class CkMonthlyCountVO {
+	private Integer ckMonth;
+	private Integer ckCount;
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkMonthlyCountVO;
 import com.lol.lolinfo.vo.CkMyPageVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
@@ -93,5 +94,9 @@ public class CkDao {
 	// 월별 랭킹용 조회
 	public List<CkRankingVO> selectRanking(String month){
 		return sqlSession.selectList("ck.selectMonthRanking",month);
+	}
+	// 월별 카운트 조회
+	public List<CkMonthlyCountVO> selectMonthlyCount(int year){
+		return sqlSession.selectList("ck.selectMonthlyCount",year);
 	}
 }
