@@ -183,9 +183,16 @@
 	</select>
 
 	<!-- 월별 CK수 조회 -->
-	<select id="monthlyCount">
-		select count(*) from ck
-		<!-- where ck_date -->
+	<select id="selectMonthlyCount" resultType="ckMonthlyCountVO">
+	    select
+	        extract(month from ck_date) as "ckMonth",
+	        count(*) as "ckCount"
+	    from ck
+	    where ck_date >= TO_DATE(#{year} || '-01-01', 'YYYY-MM-DD')
+	      and ck_date &lt; ADD_MONTHS(
+	            TO_DATE(#{year} || '-01-01', 'YYYY-MM-DD'),12)
+	    group by extract(month from ck_date)
+	    order by extract(month from ck_date)
 	</select>
 
 	
