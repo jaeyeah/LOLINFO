@@ -176,17 +176,17 @@
 	) where ROWNUM &lt;= 10
 	</select>
 			 	 
-			 	
-<select id="selectStreamerNos"
-        parameterType="int"
-        resultType="int">
+	<!-- CK 참여자 확인 -->
+	<select id="selectStreamerNos" parameterType="int" resultType="int">
+	    select ck_streamer from ck_participant
+	    where ck_id = #{value}
+	</select>
 
-    select ck_streamer
-    from ck_participant
-    where ck_id = #{value}
-
-</select>
-
+	<!-- 월별 CK수 조회 -->
+	<select id="monthlyCount">
+		select count(*) from ck
+		<!-- where ck_date -->
+	</select>
 
 	
 </mapper>
