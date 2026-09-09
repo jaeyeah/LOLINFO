@@ -7,13 +7,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lol.lolinfo.dao.CkRankDao;
+import com.lol.lolinfo.dao.RankDao;
 import com.lol.lolinfo.vo.CkRankingVO;
 import com.lol.lolinfo.vo.CkStreakRankingResponseVO;
 import com.lol.lolinfo.vo.CkStreakRankingVO;
+import com.lol.lolinfo.vo.MyeolmangRankingVO;
 
 @Service
-public class CkRankService {
+public class RankService {
 
     private static final int DEFAULT_LIMIT = 10;
     private static final int MAX_LIMIT = 50;
@@ -22,7 +23,7 @@ public class CkRankService {
     private static final ZoneId KOREA_ZONE = ZoneId.of("Asia/Seoul");
 
     @Autowired
-    private CkRankDao ckRankDao;
+    private RankDao rankDao;
 
 
     /**
@@ -41,10 +42,10 @@ public class CkRankService {
         List<CkStreakRankingVO> rankingList;
 
         if ("max".equalsIgnoreCase(type)) {
-            rankingList = ckRankDao.selectMaxStreakRanking(safeLimit);
+            rankingList = rankDao.selectMaxStreakRanking(safeLimit);
         }
         else {
-            rankingList = ckRankDao.selectCurrentStreakRanking(safeLimit);
+            rankingList = rankDao.selectCurrentStreakRanking(safeLimit);
         }
 
         List<CkStreakRankingVO> winList = rankingList.stream()
@@ -95,7 +96,7 @@ public class CkRankService {
             safeYear = LocalDate.now(KOREA_ZONE).getYear();
         }
 
-        return ckRankDao.selectWinRanking(
+        return rankDao.selectWinRanking(
                 safePeriod,
                 safeYear,
                 safeLimit
@@ -117,7 +118,7 @@ public class CkRankService {
                         ? DEFAULT_MIN_PLAY_COUNT
                         : minPlayCount;
 
-        return ckRankDao.selectWinRateRanking(
+        return rankDao.selectWinRateRanking(
                 safeMinPlayCount,
                 safeLimit
         );
@@ -134,5 +135,36 @@ public class CkRankService {
         }
 
         return Math.min(limit, MAX_LIMIT);
+    }
+    
+    /**
+     * 멸망전 입상 랭킹
+     *
+     * period
+     * - all    : 역대 전체
+     * - recent : 최근 3개 연도
+     */
+    public List<MyeolmangRankingVO> getMyeolmangRanking(
+            String period,
+            Integer limit) {
+
+        int safeLimit = normalizeLimit(limit);
+
+        String safePeriod =
+                "recent".equalsIgnoreCase(period)
+                        ? "recent"
+                        : "all";
+
+        int currentYear =
+                LocalDate.now(KOREA_ZONE).getYear();
+
+        // 2026년 기준 → 2024, 2025, 2026
+        int startYear = currentYear - 2;
+
+        return rankDao.selectMyeolmangRanking(
+                safePeriod,
+                startYear,
+                safeLimit
+        );
     }
 }

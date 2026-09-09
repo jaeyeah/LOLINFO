@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ckRank">
+<mapper namespace="rank">
 
 	<!-- =========================================================
          현재 연승 / 연패 랭킹
@@ -465,6 +465,177 @@
         ORDER BY rank
 
     </select>
+	<!-- =========================================================
+	     멸망전 입상 랭킹
+	
+	     period = all
+	         → 역대 전체
+	
+	     period = recent
+	         → 최근 3개 연도
+	
+	     정렬
+	         1. 우승
+	         2. 준우승
+	         3. 4강
+	     ========================================================= -->
+	<!-- =========================================================
+     멸망전 입상 랭킹
+
+     period = all
+         → 역대 전체
+
+     period = recent
+         → 최근 3개 연도
+
+     정렬 기준
+         1. 우승
+         2. 준우승
+         3. 4강
+     ========================================================= -->
+<select id="selectMyeolmangRanking"
+        parameterType="map"
+        resultType="com.lol.lolinfo.vo.MyeolmangRankingVO">
+
+    WITH team_member AS (
+
+        SELECT
+            t.tournament_id,
+            t.team_ranking,
+            t.team_top AS streamer_no
+        FROM team t
+        WHERE t.team_top IS NOT NULL
+
+        UNION ALL
+
+        SELECT
+            t.tournament_id,
+            t.team_ranking,
+            t.team_jug AS streamer_no
+        FROM team t
+        WHERE t.team_jug IS NOT NULL
+
+        UNION ALL
+
+        SELECT
+            t.tournament_id,
+            t.team_ranking,
+            t.team_mid AS streamer_no
+        FROM team t
+        WHERE t.team_mid IS NOT NULL
+
+        UNION ALL
+
+        SELECT
+            t.tournament_id,
+            t.team_ranking,
+            t.team_ad AS streamer_no
+        FROM team t
+        WHERE t.team_ad IS NOT NULL
+
+        UNION ALL
+
+        SELECT
+            t.tournament_id,
+            t.team_ranking,
+            t.team_sup AS streamer_no
+        FROM team t
+        WHERE t.team_sup IS NOT NULL
+    ),
+
+    ranking_base AS (
+
+        SELECT
+            tm.streamer_no,
+
+            SUM(
+                CASE
+                    WHEN tm.team_ranking = '우승'
+                    THEN 1
+                    ELSE 0
+                END
+            ) AS champion_count,
+
+            SUM(
+                CASE
+                    WHEN tm.team_ranking = '준우승'
+                    THEN 1
+                    ELSE 0
+                END
+            ) AS runner_up_count,
+
+            SUM(
+                CASE
+                    WHEN tm.team_ranking = '4강'
+                    THEN 1
+                    ELSE 0
+                END
+            ) AS semifinal_count
+
+        FROM team_member tm
+
+        JOIN tournament t
+            ON tm.tournament_id = t.tournament_id
+
+        WHERE t.tournament_name LIKE '%멸망전%'
+
+          AND tm.team_ranking IN (
+              '우승',
+              '준우승',
+              '4강'
+          )
+
+        <if test="period == 'recent'">
+            AND t.tournament_year >= #{startYear}
+        </if>
+
+        GROUP BY
+            tm.streamer_no
+    ),
+
+    ranked AS (
+
+        SELECT
+            RANK() OVER (
+                ORDER BY
+                    rb.champion_count DESC,
+                    rb.runner_up_count DESC,
+                    rb.semifinal_count DESC
+            ) AS rank,
+
+            s.streamer_no,
+            s.streamer_name,
+            s.streamer_soop_id,
+
+            rb.champion_count,
+            rb.runner_up_count,
+            rb.semifinal_count
+
+        FROM ranking_base rb
+
+        JOIN streamer s
+            ON rb.streamer_no = s.streamer_no
+    )
+
+    SELECT
+        rank,
+        streamer_no,
+        streamer_name,
+        streamer_soop_id,
+        champion_count,
+        runner_up_count,
+        semifinal_count
+
+    FROM ranked
+
+    WHERE rank &lt;= #{limit}
+
+    ORDER BY
+        rank,
+        streamer_no
+
+</select>
+
 
 
 </mapper>
