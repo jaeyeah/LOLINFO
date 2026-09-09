@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.vo.CkRankingVO;
@@ -18,30 +19,25 @@ public class RankDao {
     @Autowired
     private SqlSession sqlSession;
 
-
+    @Cacheable(value = "ckRanking",key = "'currentStreak:' + #limit")
     public List<CkStreakRankingVO> selectCurrentStreakRanking(int limit) {
-
         return sqlSession.selectList(
-                "rank.selectCurrentStreakRanking",
-                limit
+                "rank.selectCurrentStreakRanking",limit
         );
     }
 
-
+    @Cacheable(value = "ckRanking",key = "'maxStreak:' + #limit")
     public List<CkStreakRankingVO> selectMaxStreakRanking(int limit) {
-
         return sqlSession.selectList(
-                "rank.selectMaxStreakRanking",
-                limit
+                "rank.selectMaxStreakRanking",limit
         );
     }
 
-
+    @Cacheable(value = "ckRanking",key = "'win:' + #period + ':' + #year + ':' + #limit")
     public List<CkRankingVO> selectWinRanking(
             String period,
             int year,
             int limit) {
-
         Map<String, Object> params = new HashMap<>();
 
         params.put("period", period);
@@ -49,16 +45,14 @@ public class RankDao {
         params.put("limit", limit);
 
         return sqlSession.selectList(
-                "rank.selectWinRanking",
-                params
+                "rank.selectWinRanking",params
         );
     }
 
-
+    @Cacheable(value = "ckRanking",key = "'winRate:' + #minPlayCount + ':' + #limit")
     public List<CkRankingVO> selectWinRateRanking(
             int minPlayCount,
             int limit) {
-
         Map<String, Object> params = new HashMap<>();
 
         params.put("minPlayCount", minPlayCount);

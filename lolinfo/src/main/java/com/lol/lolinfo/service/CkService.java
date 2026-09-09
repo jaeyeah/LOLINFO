@@ -1,11 +1,11 @@
 package com.lol.lolinfo.service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +43,7 @@ public class CkService {
 	
 	//CK 등록
 	@Transactional
+	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount"},allEntries = true)
 	public void insert(CkVO ckVO) {
 		// CK 등록
 	    int ckId = ckDao.sequence();
@@ -124,6 +125,7 @@ public class CkService {
 
 	//부분 수정
 	@Transactional
+	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount"},allEntries = true)
 	public CkDto updateUnit(
 	        int ckId,
 	        CkDto ckDto,
@@ -162,7 +164,9 @@ public class CkService {
 	    return originDto;
 	}
 
+	// 삭제
 	@Transactional
+	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount"},allEntries = true)
 	public void delete(int ckId, String bearerToken) {
 
 	    CkDto originDto =

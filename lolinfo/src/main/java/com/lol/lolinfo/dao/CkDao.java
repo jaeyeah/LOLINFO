@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.CkDto;
@@ -92,10 +93,12 @@ public class CkDao {
 	}
 	
 	// 월별 랭킹용 조회
+	@Cacheable(value = "ckMonthlyRanking",key = "#month")
 	public List<CkRankingVO> selectRanking(String month){
 		return sqlSession.selectList("ck.selectMonthRanking",month);
 	}
 	// 월별 카운트 조회
+	@Cacheable(value = "ckMonthlyCount",key = "#year")
 	public List<CkMonthlyCountVO> selectMonthlyCount(int year){
 		return sqlSession.selectList("ck.selectMonthlyCount",year);
 	}
