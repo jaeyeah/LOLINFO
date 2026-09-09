@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.TournamentDto;
@@ -24,7 +25,9 @@ public class TournamentDao {
 	}
 	
 	//조회
+	 @Cacheable(value = "tournamentList",key = "#pageVO.page")
 	public List<TournamentListVO> selectList(PageVO pageVO){
+		 System.out.println("대회 목록 DB 조회/캐시확인");
 		return sqlSession.selectList("tournament.selectList",pageVO);
 	}
 	//검색

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.StreamerDto;
@@ -19,6 +20,7 @@ public class TeamDao {
 	private SqlSession sqlSession;
 	
 	// 등록
+	@CacheEvict(value = "streamerDetail",allEntries = true)
 	public void insert(TeamDto teamDto) {
 		int teamId = sqlSession.selectOne("team.sequence");
 		teamDto.setTeamId(teamId);
@@ -52,12 +54,14 @@ public class TeamDao {
 	}
 	
 	// 수정
+	@CacheEvict(value = "streamerDetail",allEntries = true)
 	public void update(TeamDto teamDto) {
 		System.out.println("---------"+teamDto);
 		sqlSession.update("team.update", teamDto);
 	}
 	
 	// 삭제
+	@CacheEvict(value = "streamerDetail",allEntries = true)
 	public void delete(int teamId) {
 		sqlSession.delete("team.delete",teamId);
 	}
