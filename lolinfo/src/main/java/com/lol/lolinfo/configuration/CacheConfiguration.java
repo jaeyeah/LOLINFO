@@ -34,7 +34,7 @@ public class CacheConfiguration {
                         createCache("ckMonthlyCount", 10, Duration.ofHours(1)),
 
                         // 메인
-                        createCache("homeStats", 5, Duration.ofMinutes(10)),
+                        createCache("homeStats", 1, Duration.ofMinutes(1)),
 
                         // 스트리머 상세
                         createCache("streamerDetail", 300, Duration.ofMinutes(30))

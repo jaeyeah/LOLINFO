@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 
 import com.lol.lolinfo.dao.CkDao;
 import com.lol.lolinfo.dao.CkParticipantDao;
@@ -40,6 +43,8 @@ public class CkService {
 	private CkStreakService ckStreakService;
 	@Autowired
 	private CkParticipantDao ckParticipantDao;
+	@Autowired
+	private CacheManager cacheManager;
 	
 	//CK 등록
 	@Transactional
@@ -62,6 +67,9 @@ public class CkService {
 	        ckDao.insertParticipantAll(ckVO.getParticipants());
 	        // 연승 통계 갱신
 	        ckStreakService.refreshAll(streamerNos);
+	        
+	        // 참가 스트리머 상세 통계 캐시 제거
+	        evictStreamerDetailCache(streamerNos);
 	    }
 	}
 	
@@ -155,10 +163,11 @@ public class CkService {
 	        throw new TargetNotfoundException();
 	    }
 
-	    // 이 CK에 참여한 스트리머 전부 재계산(전체 수정일때만)
+	    // 이 CK에 참여한 스트리머 전부 재계산+캐시삭제(전체 수정일때만)
 	    if(streakChanged) {
 	    	List<Integer> streamerNos = ckParticipantDao.selectStreamerNos(ckId);
 	    	ckStreakService.refreshAll(streamerNos);
+	    	evictStreamerDetailCache(streamerNos);
 	    }
 	    
 	    return originDto;
@@ -184,8 +193,19 @@ public class CkService {
 	        ckStreakDao.deleteNoHistory(streamerNos);
 	        // CK가 남은 스트리머는 MERGE 재계산
 	        ckStreakService.refreshAll(streamerNos);
+	        // 스트리머 상세 통계캐시 제거
+	        evictStreamerDetailCache(streamerNos);
 	    }
 	}
 	
+	
+	// CK정보변경시 참여스트리머 상세캐시 초기화
+	private void evictStreamerDetailCache(Iterable<Integer> streamerNos) {
+	    Cache cache = cacheManager.getCache("streamerDetail");
+	    if (cache == null) return;
+	    for (Integer streamerNo : streamerNos) {
+	        cache.evict(streamerNo);
+	    }
+	}
 	
 }

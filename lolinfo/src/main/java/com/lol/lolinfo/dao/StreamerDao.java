@@ -56,7 +56,8 @@ public class StreamerDao {
 	public StreamerDto selectOne(int streamerNo) {
 		return sqlSession.selectOne("streamer.selectOne",streamerNo);
 	}
-	//상세조회
+	//상세조회(detail)
+	@Cacheable(value = "streamerDetail",key = "#streamerNo")
 	public StreamerStatVO selectOnePlusStat(int streamerNo) {
 		return sqlSession.selectOne("streamer.selectOnePlusStat",streamerNo);
 	}

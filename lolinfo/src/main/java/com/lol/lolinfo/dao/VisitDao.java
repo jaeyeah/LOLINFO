@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.VisitDto;
@@ -34,6 +35,7 @@ public class VisitDao {
 	}
 
 	// 홈화면 조회용
+	@Cacheable("homeStats")
 	public HomeStatsVO selectHomeStats() {
 	    return sqlSession.selectOne("visit.selectHomeStats");
 	}
