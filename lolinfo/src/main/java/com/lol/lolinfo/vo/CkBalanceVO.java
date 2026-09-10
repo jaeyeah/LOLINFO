@@ -16,6 +16,22 @@ public class CkBalanceVO {
 	private String opponentName;
 	private String opponentSoopId;
 	private String position;
-	private Long matchCount;
 	private Date lastMatchDate;
+	private Integer winCount;
+	private Integer loseCount;
+	
+	public int getMatchCount() {
+	    return nvl(winCount) + nvl(loseCount);
+	}
+	
+	public double getWinRate() {
+		int total = getMatchCount();
+		if(total==0) return 0.0;
+		return Math.round(((double) nvl(winCount)/total*100)*10)/10.0;
+	}
+	
+	private int nvl(Integer value) {
+		return value == null ? 0 : value;
+	}
+	
 }
