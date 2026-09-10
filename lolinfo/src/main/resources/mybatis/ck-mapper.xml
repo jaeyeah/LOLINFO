@@ -118,6 +118,34 @@
 	</select>
 	
 	
+	<!-- 밸런스 찾기: 전체 기록 집계, 최신 경기 날짜/ID 우선. 기간 제한은 추후 WHERE에 확장. -->
+	<select id="selectBalanceList" resultType="CkBalanceVO">
+		select opponent.ck_streamer as opponent_no,
+			s.streamer_name as opponent_name,
+			p.ck_position as position,
+			count(*) as match_count,
+			max(c.ck_date) as last_match_date
+		from ck_participant p
+		join ck_participant opponent
+			on opponent.ck_id = p.ck_id
+			and opponent.ck_side != p.ck_side
+			and opponent.ck_position = p.ck_position
+		join ck c on c.ck_id = p.ck_id
+		join streamer s on s.streamer_no = opponent.ck_streamer
+		where p.ck_streamer = #{streamerNo}
+			<if test="position != null and position != ''">
+				and p.ck_position = #{position}
+			</if>
+			and opponent.ck_streamer != #{streamerNo}
+			<if test="baseStreamerNo != null">
+				and opponent.ck_streamer != #{baseStreamerNo}
+			</if>
+		group by opponent.ck_streamer, s.streamer_name, p.ck_position
+		order by max(c.ck_date) desc nulls last,
+			max(c.ck_id) keep (dense_rank last order by c.ck_date nulls first) desc,
+			opponent.ck_streamer asc, p.ck_position asc
+	</select>
+
 	<!--부분 수정(Patch)-->
 	<update id="updateUnit">
 		update ck

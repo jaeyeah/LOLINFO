@@ -21,6 +21,7 @@ import com.lol.lolinfo.error.NeedPermissionException;
 import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.error.UnauthorizationException;
 import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkBalanceVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
@@ -93,6 +94,22 @@ public class CkService {
 	}
 	
 	
+	// 경기 수 제한 없이 전체 맞라인 기록을 최근 경기 순으로 조회한다.
+	public List<CkBalanceVO> selectBalanceList(Integer streamerNo, String position, Integer baseStreamerNo) {
+		if (streamerNo == null || streamerNo <= 0
+				|| (baseStreamerNo != null && baseStreamerNo <= 0)
+				|| (position != null && !Set.of("TOP", "JUG", "MID", "AD", "SUP").contains(position))) {
+			throw new InvalidBalanceQueryException();
+		}
+		return ckDao.selectBalanceList(streamerNo, position, baseStreamerNo);
+	}
+
+	public static class InvalidBalanceQueryException extends IllegalArgumentException {
+		public InvalidBalanceQueryException() {
+			super("streamerNo와 baseStreamerNo는 양수, position은 생략하거나 TOP/JUG/MID/AD/SUP이어야 합니다.");
+		}
+	}
+
 	// 로그인 검사
 	private TokenVO requireLogin(String bearerToken) {
 	    if (bearerToken == null || bearerToken.isBlank()) throw new UnauthorizationException();

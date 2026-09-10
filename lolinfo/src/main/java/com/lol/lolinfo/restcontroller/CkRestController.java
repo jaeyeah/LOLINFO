@@ -25,6 +25,7 @@ import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkBalanceVO;
 import com.lol.lolinfo.vo.CkMonthlyCountVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
@@ -61,6 +62,20 @@ public class CkRestController {
 	}
 	
 	/// --- 조회 ---
+	// 밸런스 찾기: 2단계 조회에서는 최초 기준 스트리머를 제외한다.
+	@GetMapping("/balance")
+	public List<CkBalanceVO> selectBalanceList(
+			@RequestParam(required = false) Integer streamerNo,
+			@RequestParam(required = false) String position,
+			@RequestParam(required = false) Integer baseStreamerNo) {
+		return ckService.selectBalanceList(streamerNo, position, baseStreamerNo);
+	}
+
+	@ExceptionHandler(CkService.InvalidBalanceQueryException.class)
+	public ResponseEntity<Map<String, String>> invalidBalanceQuery(RuntimeException e) {
+		return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+	}
+
 	// 조회 - 전체 CK (페이지네이션)
 	@GetMapping("/")
 	public PageResponseVO<CkDto> selectList(@RequestParam(defaultValue = "1") int page){

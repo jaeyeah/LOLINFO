@@ -1,6 +1,8 @@
 package com.lol.lolinfo.dao;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkBalanceVO;
 import com.lol.lolinfo.vo.CkMonthlyCountVO;
 import com.lol.lolinfo.vo.CkMyPageVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
@@ -75,6 +78,15 @@ public class CkDao {
 		return sqlSession.selectList("ck.selectVsList", query);
 	}
 	
+	// 밸런스 찾기 - 상대 이름과 집계를 한 번의 쿼리로 조회
+	public List<CkBalanceVO> selectBalanceList(int streamerNo, String position, Integer baseStreamerNo) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("streamerNo", streamerNo);
+		params.put("position", position);
+		params.put("baseStreamerNo", baseStreamerNo);
+		return sqlSession.selectList("ck.selectBalanceList", params);
+	}
+
 	/// ----- 수정 -----
 	// 부분수정
 	public boolean updateUnit(CkDto ckDto) {
