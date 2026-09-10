@@ -33,6 +33,9 @@ public class CacheConfiguration {
                         createCache("ckMonthlyRanking", 20, Duration.ofMinutes(30)),
                         createCache("ckMonthlyCount", 10, Duration.ofHours(1)),
 
+                        // 멸망전 종합 / 포지션 랭킹
+                        createCache("myeolmangRanking", 6, Duration.ofMinutes(30)),
+
                         // 메인
                         createCache("homeStats", 1, Duration.ofMinutes(1)),
 

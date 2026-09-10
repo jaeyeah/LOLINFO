@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.StreamerDto;
 import com.lol.lolinfo.dto.TeamDto;
+import com.lol.lolinfo.service.MyeolmangRankingCacheService;
 import com.lol.lolinfo.vo.StreamerTeamListVO;
 import com.lol.lolinfo.vo.TeamListVO;
 import com.lol.lolinfo.vo.TeamResponseVO;
@@ -18,6 +19,8 @@ public class TeamDao {
 
 	@Autowired
 	private SqlSession sqlSession;
+	@Autowired
+	private MyeolmangRankingCacheService myeolmangRankingCacheService;
 	
 	// 등록
 	@CacheEvict(value = "streamerDetail",allEntries = true)
@@ -25,6 +28,7 @@ public class TeamDao {
 		int teamId = sqlSession.selectOne("team.sequence");
 		teamDto.setTeamId(teamId);
 		sqlSession.insert("team.insert", teamDto);
+		myeolmangRankingCacheService.evictAfterCommit();
 	}
 	// 등록시 check -> 스트리머 이름 조회해서 중복확인 + streamerNo 같이 반환
 	public TeamResponseVO checkAndConvert(String streamerName) {
@@ -58,12 +62,14 @@ public class TeamDao {
 	public void update(TeamDto teamDto) {
 		System.out.println("---------"+teamDto);
 		sqlSession.update("team.update", teamDto);
+		myeolmangRankingCacheService.evictAfterCommit();
 	}
 	
 	// 삭제
 	@CacheEvict(value = "streamerDetail",allEntries = true)
 	public void delete(int teamId) {
 		sqlSession.delete("team.delete",teamId);
+		myeolmangRankingCacheService.evictAfterCommit();
 	}
 	
 	

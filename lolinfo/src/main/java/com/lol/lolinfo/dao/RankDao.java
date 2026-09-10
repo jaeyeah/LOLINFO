@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.lol.lolinfo.vo.CkRankingVO;
 import com.lol.lolinfo.vo.CkStreakRankingVO;
 import com.lol.lolinfo.vo.MyeolmangRankingVO;
+import com.lol.lolinfo.vo.MyeolmangPositionRankingVO;
 
 @Repository
 public class RankDao {
@@ -65,6 +66,11 @@ public class RankDao {
     }
     
     // 멸망전 랭킹
+    @Cacheable(value = "myeolmangRanking", key = "#position", sync = true)
+    public List<MyeolmangPositionRankingVO> selectMyeolmangPositionRanking(String position) {
+        return sqlSession.selectList("rank.selectMyeolmangPositionRanking", Map.of("position", position));
+    }
+
     public List<MyeolmangRankingVO> selectMyeolmangRanking(
             String period,
             int startYear,

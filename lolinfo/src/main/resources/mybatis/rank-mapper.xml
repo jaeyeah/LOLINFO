@@ -638,4 +638,49 @@
 
 
 
+    <!-- 실제 출전 포지션 기준. 종합은 모든 포지션을 합산한다. -->
+    <select id="selectMyeolmangPositionRanking" parameterType="map"
+            resultType="com.lol.lolinfo.vo.MyeolmangPositionRankingVO">
+        WITH team_member AS (
+            SELECT tournament_id, team_ranking, team_top AS streamer_no, 'TOP' AS position
+            FROM team
+            WHERE team_top IS NOT NULL AND #{position} IN ('ALL', 'TOP')
+            UNION ALL
+            SELECT tournament_id, team_ranking, team_jug AS streamer_no, 'JUNGLE' AS position
+            FROM team
+            WHERE team_jug IS NOT NULL AND #{position} IN ('ALL', 'JUNGLE')
+            UNION ALL
+            SELECT tournament_id, team_ranking, team_mid AS streamer_no, 'MID' AS position
+            FROM team
+            WHERE team_mid IS NOT NULL AND #{position} IN ('ALL', 'MID')
+            UNION ALL
+            SELECT tournament_id, team_ranking, team_ad AS streamer_no, 'ADC' AS position
+            FROM team
+            WHERE team_ad IS NOT NULL AND #{position} IN ('ALL', 'ADC')
+            UNION ALL
+            SELECT tournament_id, team_ranking, team_sup AS streamer_no, 'SUPPORT' AS position
+            FROM team
+            WHERE team_sup IS NOT NULL AND #{position} IN ('ALL', 'SUPPORT')
+        ),
+        ranking_base AS (
+            SELECT tm.streamer_no,
+                SUM(CASE WHEN tm.team_ranking = '우승' THEN 1 ELSE 0 END) AS win_count,
+                SUM(CASE WHEN tm.team_ranking = '준우승' THEN 1 ELSE 0 END) AS runner_up_count,
+                SUM(CASE WHEN tm.team_ranking = '4강' THEN 1 ELSE 0 END) AS semifinal_count,
+                COUNT(DISTINCT tm.tournament_id) AS tournament_count
+            FROM team_member tm
+            JOIN tournament t ON t.tournament_id = tm.tournament_id
+            WHERE t.tournament_name LIKE '%멸망전%'
+            GROUP BY tm.streamer_no
+        )
+        SELECT s.streamer_no, s.streamer_name, s.streamer_soop_id,
+            #{position} AS position,
+            rb.win_count, rb.runner_up_count, rb.semifinal_count, rb.tournament_count,
+            RANK() OVER (
+                ORDER BY rb.win_count DESC, rb.runner_up_count DESC, rb.semifinal_count DESC
+            ) AS ranking
+        FROM ranking_base rb
+        JOIN streamer s ON s.streamer_no = rb.streamer_no
+        ORDER BY ranking, s.streamer_no
+    </select>
 </mapper>

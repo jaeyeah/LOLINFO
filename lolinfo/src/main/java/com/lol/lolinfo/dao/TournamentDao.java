@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.TournamentDto;
+import com.lol.lolinfo.service.MyeolmangRankingCacheService;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.TournamentListVO;
 
@@ -16,12 +17,15 @@ public class TournamentDao {
 
 	@Autowired
 	private SqlSession sqlSession;
+	@Autowired
+	private MyeolmangRankingCacheService myeolmangRankingCacheService;
 	
 	//등록
 	public void insert(TournamentDto tournamentDto) {
 		int tournamentId = sqlSession.selectOne("tournament.sequence");
 		tournamentDto.setTournamentId(tournamentId);
 		sqlSession.insert("tournament.insert", tournamentDto);
+		myeolmangRankingCacheService.evictAfterCommit();
 	}
 	
 	//조회
@@ -44,6 +48,7 @@ public class TournamentDao {
 	//수정
 	public void update(TournamentDto tournamentDto) {
 		sqlSession.update("tournament.update", tournamentDto);
+		myeolmangRankingCacheService.evictAfterCommit();
 	}
 	
 }

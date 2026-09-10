@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.StreamerDto;
 import com.lol.lolinfo.dto.StreamerTierDto;
+import com.lol.lolinfo.service.MyeolmangRankingCacheService;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.StreamerStatVO;
 import com.lol.lolinfo.vo.StreamerTierVO;
@@ -18,12 +19,15 @@ public class StreamerDao {
 
 	@Autowired
 	private SqlSession sqlSession;
+	@Autowired
+	private MyeolmangRankingCacheService myeolmangRankingCacheService;
 	
 	//등록
 	public void insert(StreamerDto streamerDto) {
 		int streamerNo = sqlSession.selectOne("streamer.sequence");
 		streamerDto.setStreamerNo(streamerNo);
 		sqlSession.insert("streamer.insert", streamerDto);
+		myeolmangRankingCacheService.evictAfterCommit();
 	}
 	
 	//조회
@@ -65,12 +69,15 @@ public class StreamerDao {
 	//수정
 	public void update(StreamerDto streamerDto) {
 		sqlSession.update("streamer.update", streamerDto);
+		myeolmangRankingCacheService.evictAfterCommit();
 	}
 	
 	
 	//삭제
 	public boolean delete(int streamerNo) {
-		return sqlSession.delete("streamer.delete",streamerNo)>0;
+		boolean deleted = sqlSession.delete("streamer.delete",streamerNo)>0;
+		if (deleted) myeolmangRankingCacheService.evictAfterCommit();
+		return deleted;
 	}
 	
 	///-- 스트리머 티어표--------------------------

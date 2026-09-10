@@ -3,6 +3,7 @@ package com.lol.lolinfo.restcontroller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import com.lol.lolinfo.service.RankService;
 import com.lol.lolinfo.vo.CkRankingVO;
 import com.lol.lolinfo.vo.CkStreakRankingResponseVO;
 import com.lol.lolinfo.vo.MyeolmangRankingVO;
+import com.lol.lolinfo.vo.MyeolmangPositionRankingVO;
 
 @CrossOrigin
 @RestController
@@ -49,6 +51,17 @@ public class RankRestController {
     }
     
     //멸망전 랭킹
+    @GetMapping("/myeolmang")
+    public ResponseEntity<List<MyeolmangPositionRankingVO>> myeolmangPositionRanking(
+            @RequestParam(required = false) String position) {
+        try {
+            return ResponseEntity.ok(rankService.getMyeolmangPositionRanking(position));
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/myeolmang/result")
     public List<MyeolmangRankingVO> myeolmangRanking(
             @RequestParam(defaultValue = "all") String period,

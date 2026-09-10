@@ -3,6 +3,8 @@ package com.lol.lolinfo.service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import com.lol.lolinfo.vo.CkRankingVO;
 import com.lol.lolinfo.vo.CkStreakRankingResponseVO;
 import com.lol.lolinfo.vo.CkStreakRankingVO;
 import com.lol.lolinfo.vo.MyeolmangRankingVO;
+import com.lol.lolinfo.vo.MyeolmangPositionRankingVO;
 
 @Service
 public class RankService {
@@ -19,11 +22,22 @@ public class RankService {
     private static final int DEFAULT_LIMIT = 10;
     private static final int MAX_LIMIT = 50;
     private static final int DEFAULT_MIN_PLAY_COUNT = 30;
+    private static final Set<String> MYEOLMANG_POSITIONS =
+            Set.of("ALL", "TOP", "JUNGLE", "MID", "ADC", "SUPPORT");
 
     private static final ZoneId KOREA_ZONE = ZoneId.of("Asia/Seoul");
 
     @Autowired
     private RankDao rankDao;
+
+    public List<MyeolmangPositionRankingVO> getMyeolmangPositionRanking(String position) {
+        String safePosition = position == null || position.isBlank()
+                ? "ALL" : position.trim().toUpperCase(Locale.ROOT);
+        if (!MYEOLMANG_POSITIONS.contains(safePosition)) {
+            throw new IllegalArgumentException("지원하지 않는 멸망전 포지션입니다.");
+        }
+        return rankDao.selectMyeolmangPositionRanking(safePosition);
+    }
 
 
     /**
