@@ -191,10 +191,13 @@
 	<select id="selectMonthRanking" resultType="CkRankingVO">
 	select * from(
 		select p.ck_streamer as streamer_no, s.streamer_name, s.streamer_soop_id,
-			count(*) as play_count,
+			sum(case when c.ck_winner in ('red', 'blue') then 1
+                    else 0 end) as play_count,
 			sum(case when c.ck_winner = p.ck_side then 1 else 0 end) as win_count,
-			sum(case when c.ck_winner != p.ck_side then 1 else 0 end) as lose_count,
-			round(sum(case when c.ck_winner = p.ck_side THEN 1 ELSE 0 END) / count(*) * 100, 1) as win_rate,
+			sum(case  when p.ck_side = 'red' and c.ck_winner = 'blue' then 1
+                      when p.ck_side = 'blue' and c.ck_winner = 'red' then 1 else 0 end) as lose_count,
+			round(sum(case when c.ck_winner = p.ck_side THEN 1 ELSE 0 END) / 
+	 			nullif(sum(case when c.ck_winner in ('red', 'blue') then 1else 0 end),0) * 100, 1) as win_rate,
 			cs.current_result, cs.current_streak			
 		from ck c
 		join ck_participant p on c.ck_id = p.ck_id
