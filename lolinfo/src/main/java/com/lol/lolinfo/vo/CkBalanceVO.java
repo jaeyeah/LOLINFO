@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class CkBalanceVO {
 	private Integer opponentNo;
 	private String opponentName;
+	private String opponentSoopId;
 	private String position;
 	private Long matchCount;
 	private Date lastMatchDate;

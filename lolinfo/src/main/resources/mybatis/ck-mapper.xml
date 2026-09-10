@@ -122,6 +122,7 @@
 	<select id="selectBalanceList" resultType="CkBalanceVO">
 		select opponent.ck_streamer as opponent_no,
 			s.streamer_name as opponent_name,
+			s.streamer_soop_id as opponent_soop_id,
 			p.ck_position as position,
 			count(*) as match_count,
 			max(c.ck_date) as last_match_date
@@ -140,7 +141,7 @@
 			<if test="baseStreamerNo != null">
 				and opponent.ck_streamer != #{baseStreamerNo}
 			</if>
-		group by opponent.ck_streamer, s.streamer_name, p.ck_position
+		group by opponent.ck_streamer, s.streamer_name, s.streamer_soop_id, p.ck_position
 		order by max(c.ck_date) desc nulls last,
 			max(c.ck_id) keep (dense_rank last order by c.ck_date nulls first) desc,
 			opponent.ck_streamer asc, p.ck_position asc

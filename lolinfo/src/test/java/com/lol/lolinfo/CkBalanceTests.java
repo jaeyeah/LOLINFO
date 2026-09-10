@@ -35,7 +35,7 @@ class CkBalanceTests {
                     assertEquals("ck.selectBalanceList", args[0]);
                     calls.add(new HashMap<>((Map<?, ?>) args[1]));
                     return calls.size() == 1
-                            ? List.of(new CkBalanceVO(2, "상대B", "MID", 12L, Date.valueOf("2026-09-10")))
+                            ? List.of(new CkBalanceVO(2, "상대B", "opponent-b", "MID", 12L, Date.valueOf("2026-09-10")))
                             : List.of();
                 });
         CkDao dao = new CkDao();
@@ -51,6 +51,7 @@ class CkBalanceTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].opponentNo").value(2))
                 .andExpect(jsonPath("$[0].opponentName").value("상대B"))
+                .andExpect(jsonPath("$[0].opponentSoopId").value("opponent-b"))
                 .andExpect(jsonPath("$[0].position").value("MID"))
                 .andExpect(jsonPath("$[0].matchCount").value(12))
                 .andExpect(jsonPath("$[0].lastMatchDate").value("2026-09-10"));
@@ -94,7 +95,7 @@ class CkBalanceTests {
         String allSql = allPositions.getSql().replaceAll("\\s+", " ");
         assertFalse(allSql.contains("p.ck_position = ?"));
         assertTrue(allSql.contains("p.ck_position as position"));
-        assertTrue(allSql.contains("group by opponent.ck_streamer, s.streamer_name, p.ck_position"));
+        assertTrue(allSql.contains("group by opponent.ck_streamer, s.streamer_name, s.streamer_soop_id, p.ck_position"));
         assertEquals(List.of("streamerNo", "streamerNo"),
                 allPositions.getParameterMappings().stream().map(p -> p.getProperty()).toList());
         query.put("position", "MID");
