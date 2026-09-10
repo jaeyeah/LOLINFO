@@ -672,15 +672,26 @@
             JOIN tournament t ON t.tournament_id = tm.tournament_id
             WHERE t.tournament_name LIKE '%멸망전%'
             GROUP BY tm.streamer_no
+        ),
+        ranked AS (
+            SELECT s.streamer_no, s.streamer_name, s.streamer_soop_id,
+                #{position} AS position,
+                rb.win_count, rb.runner_up_count, rb.semifinal_count, rb.tournament_count,
+                RANK() OVER (
+                    ORDER BY rb.win_count DESC, rb.runner_up_count DESC, rb.semifinal_count DESC
+                ) AS ranking,
+                ROW_NUMBER() OVER (
+                    ORDER BY rb.win_count DESC, rb.runner_up_count DESC, rb.semifinal_count DESC,
+                        s.streamer_no
+                ) AS row_num
+            FROM ranking_base rb
+            JOIN streamer s ON s.streamer_no = rb.streamer_no
         )
-        SELECT s.streamer_no, s.streamer_name, s.streamer_soop_id,
-            #{position} AS position,
-            rb.win_count, rb.runner_up_count, rb.semifinal_count, rb.tournament_count,
-            RANK() OVER (
-                ORDER BY rb.win_count DESC, rb.runner_up_count DESC, rb.semifinal_count DESC
-            ) AS ranking
-        FROM ranking_base rb
-        JOIN streamer s ON s.streamer_no = rb.streamer_no
-        ORDER BY ranking, s.streamer_no
+        SELECT streamer_no, streamer_name, streamer_soop_id, position,
+            win_count, runner_up_count, semifinal_count, tournament_count, ranking
+        FROM ranked
+        <!-- 공동 순위와 별개로 실제 반환 인원을 최대 20명으로 제한한다. -->
+        WHERE row_num &lt;= 20
+        ORDER BY row_num
     </select>
 </mapper>
