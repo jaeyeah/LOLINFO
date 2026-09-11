@@ -43,7 +43,7 @@ public class StreamerDao {
 		return sqlSession.selectOne("streamer.count");
 	}
 	//검색
-	@Cacheable(value = "streamerSearch",key = "#pageVO.page + ':' + #pageVO.keyword + ':' + #pageVO.sort")
+	@Cacheable(value = "streamerSearch",key = "#pageVO.keyword + ':' + #pageVO.page")
 	public List<StreamerStatVO> searchStreamer(PageVO pageVO) {
 		return sqlSession.selectList("streamer.searchStreamer",pageVO);
 	}
