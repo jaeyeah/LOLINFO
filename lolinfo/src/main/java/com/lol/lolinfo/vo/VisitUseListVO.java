@@ -20,5 +20,5 @@ public class VisitUseListVO {
     private int ckList;
     private int teammate;
     private int ranking;
-    
+    private int balance;
 }
