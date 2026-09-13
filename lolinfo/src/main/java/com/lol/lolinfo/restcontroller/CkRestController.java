@@ -68,6 +68,9 @@ public class CkRestController {
 			@RequestParam(required = false) Integer streamerNo,
 			@RequestParam(required = false) String position,
 			@RequestParam(required = false) Integer baseStreamerNo) {
+		if(baseStreamerNo == null) {
+			visitUseDao.increase("balance");
+		}
 		return ckService.selectBalanceList(streamerNo, position, baseStreamerNo);
 	}
 
