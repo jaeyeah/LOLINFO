@@ -23,11 +23,14 @@ public class FeedbackDao {
 	}
 	
 	// 목록조회
+	public int count() {
+		return sqlSession.selectOne("feedback.count");
+	}
 	public List<FeedbackDto> selectList(PageVO pageVO){
 		return sqlSession.selectList("feedback.selectList",pageVO);
 	}
-	public int count() {
-		return sqlSession.selectOne("feedback.count");
+	public List<FeedbackDto> selectPublicList(PageVO pageVO){
+		return sqlSession.selectList("feedback.selectPublicList",pageVO);
 	}
 	
 	//관리자 - 피드백상태 수정
