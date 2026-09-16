@@ -43,6 +43,21 @@ public class FeedbackRestcontroller {
 		List<FeedbackDto> list = feedbackDao.selectList(pageVO);
 		return new PageResponseVO<>(list, pageVO);
     }
+    // 공개목록조회 (페이지네이션)
+    @GetMapping("/public")
+    public PageResponseVO<FeedbackDto> selectPublicList(@RequestParam(defaultValue = "1") int page){
+    	int totalCount = feedbackDao.count();
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(page);
+		pageVO.setTotalCount(totalCount);
+		List<FeedbackDto> list = feedbackDao.selectPublicList(pageVO);
+		return new PageResponseVO<>(list, pageVO);
+    }
+    
+    
+    
+    
+    
 	// 상태수정
     @PatchMapping("/")
     public void updateStatus(@RequestBody FeedbackRequestVO feedbackRequestVO) {
