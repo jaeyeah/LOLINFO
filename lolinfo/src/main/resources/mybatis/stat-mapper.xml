@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="stat">
+
+    <resultMap id="monthlyStatMap"
+               type="com.lol.lolinfo.vo.stat.StatMonthlyVO$Month">
+
+        <id property="month" column="MONTH_NO"/>
+
+        <result property="ckCount" column="CK_COUNT"/>
+        <result property="participantCount" column="PARTICIPANT_COUNT"/>
+        <result property="tournamentCount" column="TOURNAMENT_COUNT"/>
+
+        <collection property="tournaments"
+                    ofType="com.lol.lolinfo.vo.stat.StatTournamentVO"
+                    notNullColumn="TOURNAMENT_ID">
+
+            <id property="id" column="TOURNAMENT_ID"/>
+            <result property="name" column="TOURNAMENT_NAME"/>
+
+        </collection>
+
+    </resultMap>
+
+
+    <select id="selectMonthlyStat" resultMap="monthlyStatMap">
+
+        WITH months AS (
+            SELECT LEVEL AS month_no
+            FROM dual
+            CONNECT BY LEVEL &lt;= 12
+        ),
+
+        ck_stats AS (
+            SELECT
+                EXTRACT(MONTH FROM c.ck_date) AS month_no,
+                COUNT(*) AS ck_count
+            FROM ck c
+            WHERE c.ck_date >= TO_DATE(
+                #{year} || '-01-01',
+                'YYYY-MM-DD'
+            )
+              AND c.ck_date &lt; ADD_MONTHS(
+                TO_DATE(#{year} || '-01-01', 'YYYY-MM-DD'),
+                12
+            )
+            GROUP BY EXTRACT(MONTH FROM c.ck_date)
+        ),
+
+        participant_stats AS (
+            SELECT
+                EXTRACT(MONTH FROM c.ck_date) AS month_no,
+                COUNT(DISTINCT cp.ck_streamer) AS participant_count
+            FROM ck c
+            JOIN ck_participant cp
+                ON cp.ck_id = c.ck_id
+            WHERE c.ck_date >= TO_DATE(
+                #{year} || '-01-01',
+                'YYYY-MM-DD'
+            )
+              AND c.ck_date &lt; ADD_MONTHS(
+                TO_DATE(#{year} || '-01-01', 'YYYY-MM-DD'),
+                12
+            )
+            GROUP BY EXTRACT(MONTH FROM c.ck_date)
+        ),
+
+        tournament_stats AS (
+            SELECT
+                EXTRACT(MONTH FROM t.TOURNAMENT_START) AS month_no,
+                COUNT(*) AS tournament_count
+            FROM tournament t
+            WHERE t.TOURNAMENT_START >= TO_DATE(
+                #{year} || '-01-01',
+                'YYYY-MM-DD'
+            )
+              AND t.TOURNAMENT_START &lt; ADD_MONTHS(
+                TO_DATE(#{year} || '-01-01', 'YYYY-MM-DD'),
+                12
+            )
+            GROUP BY EXTRACT(MONTH FROM t.TOURNAMENT_START)
+        )
+
+        SELECT
+            m.month_no AS MONTH_NO,
+
+            NVL(cs.ck_count, 0) AS CK_COUNT,
+
+            NVL(ps.participant_count, 0) AS PARTICIPANT_COUNT,
+
+            NVL(ts.tournament_count, 0) AS TOURNAMENT_COUNT,
+
+            t.id AS TOURNAMENT_ID,
+
+            t.TOURNAMENT_NAME AS TOURNAMENT_NAME
+
+        FROM months m
+
+        LEFT JOIN ck_stats cs
+            ON cs.month_no = m.month_no
+
+        LEFT JOIN participant_stats ps
+            ON ps.month_no = m.month_no
+
+        LEFT JOIN tournament_stats ts
+            ON ts.month_no = m.month_no
+
+        LEFT JOIN tournament t
+            ON EXTRACT(MONTH FROM t.TOURNAMENT_START) = m.month_no
+           AND t.TOURNAMENT_START >= TO_DATE(
+                #{year} || '-01-01',
+                'YYYY-MM-DD'
+           )
+           AND t.TOURNAMENT_START &lt; ADD_MONTHS(
+                TO_DATE(#{year} || '-01-01', 'YYYY-MM-DD'),
+                12
+           )
+
+        ORDER BY
+            m.month_no,
+            t.TOURNAMENT_START,
+            t.id
+
+    </select>
+
+</mapper>
