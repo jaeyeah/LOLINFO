@@ -92,7 +92,7 @@
 
             NVL(ts.tournament_count, 0) AS TOURNAMENT_COUNT,
 
-            t.id AS TOURNAMENT_ID,
+            t.TOURNAMENT_id AS TOURNAMENT_ID,
 
             t.TOURNAMENT_NAME AS TOURNAMENT_NAME
 
@@ -121,7 +121,7 @@
         ORDER BY
             m.month_no,
             t.TOURNAMENT_START,
-            t.id
+            t.tournament_id
 
     </select>
 
