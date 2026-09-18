@@ -14,6 +14,7 @@ import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkBalanceVO;
 import com.lol.lolinfo.vo.CkMonthlyCountVO;
+import com.lol.lolinfo.vo.CkDailyCountVO;
 import com.lol.lolinfo.vo.CkMyPageVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
@@ -110,6 +111,10 @@ public class CkDao {
 		return sqlSession.selectList("ck.selectMonthRanking",month);
 	}
 	// 월별 카운트 조회
+	public List<CkDailyCountVO> selectDailyCount(String startDate, String endDate) {
+		return sqlSession.selectList("ck.selectDailyCount", Map.of("startDate", startDate, "endDate", endDate));
+	}
+
 	@Cacheable(value = "ckMonthlyCount",key = "#year")
 	public List<CkMonthlyCountVO> selectMonthlyCount(int year){
 		return sqlSession.selectList("ck.selectMonthlyCount",year);

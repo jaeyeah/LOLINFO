@@ -217,6 +217,17 @@
 	    where ck_id = #{value}
 	</select>
 
+	<!-- 캘린더: 선택 월만 조회하며 시간 값은 날짜별로 묶는다. -->
+	<select id="selectDailyCount" resultType="com.lol.lolinfo.vo.CkDailyCountVO">
+		select to_char(trunc(ck_date), 'YYYY-MM-DD') as "ckDate",
+		       count(*) as "ckCount"
+		from ck
+		where ck_date &gt;= to_date(#{startDate}, 'YYYY-MM-DD')
+		  and ck_date &lt; to_date(#{endDate}, 'YYYY-MM-DD')
+		group by trunc(ck_date)
+		order by trunc(ck_date)
+	</select>
+
 	<!-- 월별 CK수 조회 -->
 	<select id="selectMonthlyCount" resultType="ckMonthlyCountVO">
 	    select
