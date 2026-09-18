@@ -40,7 +40,11 @@ public class CacheConfiguration {
                         createCache("homeStats", 1, Duration.ofMinutes(1)),
 
                         // 스트리머 상세
-                        createCache("streamerDetail", 300, Duration.ofMinutes(30))
+                        createCache("streamerDetail", 300, Duration.ofMinutes(30)),
+                        
+                        //통계
+                        createCache("monthlyStat", 10, Duration.ofHours(12)) //10개 연도 저장
+                        
                         
                 )
         );
