@@ -6,11 +6,10 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 
 import com.lol.lolinfo.dao.CkDao;
 import com.lol.lolinfo.dao.CkParticipantDao;
@@ -20,8 +19,8 @@ import com.lol.lolinfo.dto.CkParticipantDto;
 import com.lol.lolinfo.error.NeedPermissionException;
 import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.error.UnauthorizationException;
-import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkBalanceVO;
+import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
@@ -49,7 +48,7 @@ public class CkService {
 	
 	//CK 등록
 	@Transactional
-	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount"},allEntries = true)
+	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount", "monthlyStat"},allEntries = true)
 	public void insert(CkVO ckVO) {
 		// CK 등록
 	    int ckId = ckDao.sequence();
@@ -150,7 +149,7 @@ public class CkService {
 
 	//부분 수정
 	@Transactional
-	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount"},allEntries = true)
+	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount", "monthlyStat"},allEntries = true)
 	public CkDto updateUnit(
 	        int ckId,
 	        CkDto ckDto,
@@ -192,7 +191,7 @@ public class CkService {
 
 	// 삭제
 	@Transactional
-	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount"},allEntries = true)
+	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount", "monthlyStat"},allEntries = true)
 	public void delete(int ckId, String bearerToken) {
 
 	    CkDto originDto =
