@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="streamerStat">
+    <!-- Deduplicate the selected participant before either aggregate. -->
+    <sql id="base">
+        select distinct c.ck_id, c.ck_date, c.ck_winner, p.ck_side, p.ck_position
+        from ck c join ck_participant p on p.ck_id = c.ck_id
+        where p.ck_streamer = #{streamerNo}
+          and c.ck_date &gt;= #{start, jdbcType=TIMESTAMP}
+          and c.ck_date &lt; #{end, jdbcType=TIMESTAMP}
+    </sql>
+    <sql id="wins">case when ck_winner in ('red', 'blue') and ck_winner = ck_side then 1 else 0 end</sql>
+    <sql id="losses">case when (ck_side = 'red' and ck_winner = 'blue') or (ck_side = 'blue' and ck_winner = 'red') then 1 else 0 end</sql>
+    <select id="selectMonths" resultType="com.lol.lolinfo.vo.stat.StreamerMonthlyStatVO$PositionRow">
+        with base as (<include refid="base"/>)
+        select extract(month from ck_date) as month, ck_position as position,
+               count(*) as participation_count,
+               sum(<include refid="wins"/>) as win_count,
+               sum(<include refid="losses"/>) as lose_count
+        from base group by extract(month from ck_date), ck_position
+        order by month
+    </select>
+    <select id="selectOpponents" resultType="com.lol.lolinfo.vo.stat.StreamerMonthlyStatVO$Opponent">
+        with base as (<include refid="base"/>), meetings as (
+            select distinct b.ck_id, b.ck_date, b.ck_winner, b.ck_side, o.ck_streamer
+            from base b join ck_participant o on o.ck_id = b.ck_id
+                and o.ck_side != b.ck_side and o.ck_position = b.ck_position
+                and o.ck_streamer != #{streamerNo}
+        ), totals as (
+            select ck_streamer, count(*) as match_count,
+                sum(<include refid="wins"/>) as win_count,
+                sum(<include refid="losses"/>) as lose_count,
+                max(ck_date) as last_match_date
+            from meetings group by ck_streamer
+        )
+        select * from (
+            select t.ck_streamer as streamer_no, s.streamer_name, s.streamer_soop_id,
+                   t.match_count, t.win_count, t.lose_count, t.last_match_date
+            from totals t join streamer s on s.streamer_no = t.ck_streamer
+            order by t.match_count desc, t.win_count desc, t.last_match_date desc, t.ck_streamer asc
+        ) where rownum &lt;= 5
+    </select>
+</mapper>
