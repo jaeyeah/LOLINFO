@@ -21,4 +21,5 @@ public class VisitUseListVO {
     private int teammate;
     private int ranking;
     private int balance;
+    private int monthlyStat;
 }

@@ -4,20 +4,30 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
 import com.lol.lolinfo.dao.StreamerDao;
 import com.lol.lolinfo.dao.StreamerStatDao;
+import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.vo.stat.StreamerMonthlyStatVO;
-import com.lol.lolinfo.vo.stat.StreamerMonthlyStatVO.*;
+import com.lol.lolinfo.vo.stat.StreamerMonthlyStatVO.Month;
+import com.lol.lolinfo.vo.stat.StreamerMonthlyStatVO.PositionRow;
+import com.lol.lolinfo.vo.stat.StreamerMonthlyStatVO.Summary;
 
 @Service
 public class StreamerStatService {
     private final StreamerDao streamerDao;
     private final StreamerStatDao statDao;
+    private VisitUseDao visitUseDao;
+    
     public StreamerStatService(StreamerDao streamerDao, StreamerStatDao statDao) {
         this.streamerDao = streamerDao;
         this.statDao = statDao;
@@ -41,6 +51,7 @@ public class StreamerStatService {
             opponent.setWinRate(rate(opponent.getWinCount(), opponent.getLoseCount()));
         }
         result.setOpponents(opponents);
+        visitUseDao.increase("monthlyStat");
         return result;
     }
     private static Map<String, Integer> emptyPositions() {

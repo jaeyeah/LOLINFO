@@ -48,7 +48,6 @@ public class StatRestController {
         int targetYear = year != null
             ? year
             : Year.now(ZoneId.of("Asia/Seoul")).getValue();
-
         return statService.getMonthlyStat(targetYear);
     }
 }
