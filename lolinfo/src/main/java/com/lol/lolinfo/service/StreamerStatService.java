@@ -26,11 +26,12 @@ import com.lol.lolinfo.vo.stat.StreamerMonthlyStatVO.Summary;
 public class StreamerStatService {
     private final StreamerDao streamerDao;
     private final StreamerStatDao statDao;
-    private VisitUseDao visitUseDao;
+    private final VisitUseDao visitUseDao;
     
-    public StreamerStatService(StreamerDao streamerDao, StreamerStatDao statDao) {
+    public StreamerStatService(StreamerDao streamerDao, StreamerStatDao statDao, VisitUseDao visitUseDao) {
         this.streamerDao = streamerDao;
         this.statDao = statDao;
+        this.visitUseDao = visitUseDao;
     }
     @Transactional(readOnly = true)
     public StreamerMonthlyStatVO getMonthlyStat(int streamerNo, int year) {
