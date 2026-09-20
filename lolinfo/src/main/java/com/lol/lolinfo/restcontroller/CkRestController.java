@@ -1,11 +1,12 @@
 package com.lol.lolinfo.restcontroller;
 
-import java.util.List;
-import java.util.Map;
 import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,10 +27,10 @@ import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
-import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkBalanceVO;
-import com.lol.lolinfo.vo.CkMonthlyCountVO;
 import com.lol.lolinfo.vo.CkDailyCountVO;
+import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkMonthlyCountVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
 import com.lol.lolinfo.vo.CkRankingVO;
@@ -152,6 +153,7 @@ public class CkRestController {
 	}
 	// 월별 count
 	// 캘린더 전용: 경기 목록과 독립적으로 날짜별 집계만 반환한다.
+	@Cacheable(cacheNames="ckCalendar",key="#month")
 	@GetMapping("/dailyCount")
 	public ResponseEntity<?> dailyCount(@RequestParam String month) {
 		if (!month.matches("[0-9]{4}-[0-9]{2}")) {

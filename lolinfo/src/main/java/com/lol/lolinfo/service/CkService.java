@@ -48,7 +48,7 @@ public class CkService {
 	
 	//CK 등록
 	@Transactional
-	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount", "monthlyStat"},allEntries = true)
+	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount", "monthlyStat","ckCalendar"},allEntries = true)
 	public void insert(CkVO ckVO) {
 		// CK 등록
 	    int ckId = ckDao.sequence();
@@ -149,7 +149,7 @@ public class CkService {
 
 	//부분 수정
 	@Transactional
-	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount", "monthlyStat"},allEntries = true)
+	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount", "monthlyStat","ckCalendar"},allEntries = true)
 	public CkDto updateUnit(
 	        int ckId,
 	        CkDto ckDto,
@@ -191,7 +191,7 @@ public class CkService {
 
 	// 삭제
 	@Transactional
-	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount", "monthlyStat"},allEntries = true)
+	@CacheEvict(value = {"ckRanking","ckMonthlyRanking","ckMonthlyCount", "monthlyStat","ckCalendar"},allEntries = true)
 	public void delete(int ckId, String bearerToken) {
 
 	    CkDto originDto =
