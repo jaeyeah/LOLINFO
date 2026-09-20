@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +27,13 @@ import com.lol.lolinfo.vo.stat.StreamerMonthlyStatVO.Summary;
 public class StreamerStatService {
     private final StreamerDao streamerDao;
     private final StreamerStatDao statDao;
-    private final VisitUseDao visitUseDao;
     
-    public StreamerStatService(StreamerDao streamerDao, StreamerStatDao statDao, VisitUseDao visitUseDao) {
+    public StreamerStatService(StreamerDao streamerDao, StreamerStatDao statDao) {
         this.streamerDao = streamerDao;
         this.statDao = statDao;
-        this.visitUseDao = visitUseDao;
     }
+    
+    @Cacheable(cacheNames = "streamerStat", key="#streamerNo+':'+#year")
     @Transactional(readOnly = true)
     public StreamerMonthlyStatVO getMonthlyStat(int streamerNo, int year) {
         if (streamerNo < 1 || year < 1 || year > 9998)
@@ -52,7 +53,6 @@ public class StreamerStatService {
             opponent.setWinRate(rate(opponent.getWinCount(), opponent.getLoseCount()));
         }
         result.setOpponents(opponents);
-        visitUseDao.increase("monthlyStat");
         return result;
     }
     private static Map<String, Integer> emptyPositions() {
