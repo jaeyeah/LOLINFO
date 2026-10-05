@@ -18,7 +18,6 @@ import com.lol.lolinfo.dao.BoardDao;
 import com.lol.lolinfo.dto.BoardDto;
 import com.lol.lolinfo.service.BoardService;
 import com.lol.lolinfo.vo.BoardListVO;
-import com.lol.lolinfo.vo.ScrimUpdateVO;
 
 @CrossOrigin
 @RestController

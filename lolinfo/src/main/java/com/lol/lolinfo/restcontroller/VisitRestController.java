@@ -19,6 +19,7 @@ import com.lol.lolinfo.vo.HomeStatsVO;
 import com.lol.lolinfo.vo.VisitListVO;
 import com.lol.lolinfo.vo.VisitUseListVO;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -37,9 +38,24 @@ public class VisitRestController {
 	
 	//등록
 	@PostMapping("/")
-	public void insert(@RequestBody VisitDto visitDto) {
-		visitService.insert(visitDto);
+	public void insert(@RequestBody VisitDto visitDto, HttpServletRequest request) {
+		// 봇인지 판별
+		String userAgent = request.getHeader("User-Agent");
+	    if (isBot(userAgent)) return;
+		// 방문자 등록
+	    visitService.insert(visitDto);
 	}
+	private boolean isBot(String userAgent) {
+	    if (userAgent == null) return false;
+	    String ua = userAgent.toLowerCase();
+	    return ua.contains("bot")
+	            || ua.contains("crawler")
+	            || ua.contains("spider")
+	            || ua.contains("google-inspectiontool");
+	}
+	
+	
+	
 	
 	//로그인시 상태변경 ->member컨트롤러에서 진행
 	
