@@ -1,7 +1,7 @@
 package com.lol.lolinfo.dao;
 
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -11,14 +11,16 @@ import org.springframework.stereotype.Repository;
 
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
-import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.dto.CkScheduleDto;
 import com.lol.lolinfo.vo.CkBalanceVO;
-import com.lol.lolinfo.vo.CkMonthlyCountVO;
 import com.lol.lolinfo.vo.CkDailyCountVO;
+import com.lol.lolinfo.vo.CkListVO;
+import com.lol.lolinfo.vo.CkMonthlyCountVO;
 import com.lol.lolinfo.vo.CkMyPageVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
 import com.lol.lolinfo.vo.CkRankingVO;
+import com.lol.lolinfo.vo.CkScheduleHomeVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
 import com.lol.lolinfo.vo.PageVO;
@@ -119,4 +121,31 @@ public class CkDao {
 	public List<CkMonthlyCountVO> selectMonthlyCount(int year){
 		return sqlSession.selectList("ck.selectMonthlyCount",year);
 	}
+	
+	// 예정 CK 등록
+	public void insertSchedule(CkScheduleDto ckScheduleVO) {
+	    sqlSession.insert("ck.insertSchedule", ckScheduleVO);
+	}
+
+	// 예정 CK 수정
+	public void updateSchedule(CkScheduleDto ckScheduleVO) {
+	    sqlSession.update("ck.updateSchedule", ckScheduleVO);
+	}
+
+	// 예정 CK 삭제
+	public void deleteSchedule(int boardId) {
+	    sqlSession.delete("ck.deleteSchedule", boardId);
+	}
+	
+	// 게시글 상세용 예정 CK 정보 조회
+	public CkScheduleDto selectOneSchedule(int boardId) {
+	    return sqlSession.selectOne("ck.selectOneSchedule", boardId);
+	}
+
+	// 메인 예정 CK 3개 조회
+	public List<CkScheduleHomeVO> selectHomeScheduleList() {
+	    return sqlSession.selectList("ck.selectHomeScheduleList");
+	}
+	
+	
 }

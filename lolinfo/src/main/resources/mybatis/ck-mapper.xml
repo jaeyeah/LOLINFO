@@ -240,6 +240,64 @@
 	    group by extract(month from ck_date)
 	    order by extract(month from ck_date)
 	</select>
+	
+	<!-- 예정 CK -->
+	<!-- 예정 CK 등록 -->
+    <insert id="insertSchedule" parameterType="CkScheduleVO">
+		insert into ck_schedule(board_id, ck_Date, ck_url)
+			values(#{boardId},#{ckDate},#{ckUrl})
+    </insert>
+
+    <!-- 예정 CK 수정 -->
+    <update id="updateSchedule" parameterType="CkScheduleVO">
+		update ck_schedule
+			set ck_Date = #{ckDate}, ck_url = #{ckUrl}
+        where board_id = #{boardId}
+    </update>
+
+
+    <!-- 예정 CK 삭제 -->
+    <delete id="deleteSchedule">
+        delete from ck_schedule where board_id = #{boardId}
+    </delete>
+
+
+    <!-- 게시글 상세용 예정 CK 정보 -->
+    <select id="selectOneSchedule"
+            resultType="CkScheduleVO">
+        SELECT
+            BOARD_ID AS boardId,
+            CK_DATE AS ckDate,
+            CK_URL AS ckUrl
+        FROM CK_SCHEDULE
+        WHERE BOARD_ID = #{boardId}
+    </select>
+
+
+    <!-- 메인 예정 CK 3개 -->
+    <select id="selectHomeScheduleList"
+            resultType="CkScheduleHomeVO">
+        SELECT
+            BOARD_ID AS boardId,
+            BOARD_TITLE AS boardTitle,
+            board_content as boardContent,
+            CK_DATE AS ckDate,
+            CK_URL AS ckUrl
+        FROM (
+            SELECT
+                B.BOARD_ID,
+                B.BOARD_TITLE,
+                b.board_content,
+                S.CK_DATE,
+                S.CK_URL
+            FROM BOARD B
+            INNER JOIN CK_SCHEDULE S
+                ON S.BOARD_ID = B.BOARD_ID
+            WHERE S.CK_DATE >= TRUNC(SYSDATE)
+            ORDER BY S.CK_DATE ASC
+        )
+        WHERE ROWNUM &lt;= 3
+    </select>
 
 	
 </mapper>
