@@ -293,7 +293,9 @@
             FROM BOARD B
             INNER JOIN CK_SCHEDULE S
                 ON S.BOARD_ID = B.BOARD_ID
-            WHERE S.CK_DATE >= TRUNC(SYSDATE)
+            WHERE S.CK_DATE >= to_date(to_char(
+            	systimestamp at time zone 'Asia/Seoul','YYYY-MM-DD'
+            	),'YYYY-MM-DD')
             ORDER BY S.CK_DATE ASC
         )
         WHERE ROWNUM &lt;= 3
