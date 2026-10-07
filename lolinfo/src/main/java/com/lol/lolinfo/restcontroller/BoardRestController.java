@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.lolinfo.dao.BoardDao;
 import com.lol.lolinfo.dto.BoardDto;
+import com.lol.lolinfo.dto.CkScheduleDto;
 import com.lol.lolinfo.service.BoardService;
 import com.lol.lolinfo.vo.BoardListVO;
+import com.lol.lolinfo.vo.BoardRequestVO;
 
 @CrossOrigin
 @RestController
@@ -31,9 +33,9 @@ public class BoardRestController {
 	
 	//등록
 	@PostMapping("/")
-	public void insert(@RequestBody BoardDto boardDto,
+	public void insert(@RequestBody BoardRequestVO requestVO,
 			@RequestHeader("Authorization") String bearerToken) {
-		boardService.insert(boardDto, bearerToken);
+		boardService.insert(requestVO.getBoard(), requestVO.getSchedule(),bearerToken);
 	}
 	
 	//목록
@@ -48,9 +50,9 @@ public class BoardRestController {
 	
 	//수정
 	@PutMapping("/")
-	public void edit(@RequestBody BoardDto boardDto,
+	public void edit(@RequestBody BoardRequestVO requestVO,
 	        @RequestHeader("Authorization") String bearerToken) {
-	    boardService.edit(boardDto, bearerToken);
+	    boardService.edit(requestVO.getBoard(), requestVO.getSchedule(), bearerToken);
 	    System.out.println("게시글 수정 실행");
 	}
 	//삭제

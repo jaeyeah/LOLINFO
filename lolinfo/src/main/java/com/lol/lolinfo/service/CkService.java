@@ -16,12 +16,14 @@ import com.lol.lolinfo.dao.CkParticipantDao;
 import com.lol.lolinfo.dao.CkStreakDao;
 import com.lol.lolinfo.dto.CkDto;
 import com.lol.lolinfo.dto.CkParticipantDto;
+import com.lol.lolinfo.dto.CkScheduleDto;
 import com.lol.lolinfo.error.NeedPermissionException;
 import com.lol.lolinfo.error.TargetNotfoundException;
 import com.lol.lolinfo.error.UnauthorizationException;
 import com.lol.lolinfo.vo.CkBalanceVO;
 import com.lol.lolinfo.vo.CkListVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
+import com.lol.lolinfo.vo.CkScheduleHomeVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
 import com.lol.lolinfo.vo.PageResponseVO;
@@ -224,4 +226,11 @@ public class CkService {
 	    }
 	}
 	
+	///-----------------------------
+	public List<CkScheduleHomeVO> selectHomeScheduleList() {
+	    return ckDao.selectHomeScheduleList();
+	}
+	public CkScheduleDto selectOneSchedule(int boardId) {
+	    return ckDao.selectOneSchedule(boardId);
+	}
 }

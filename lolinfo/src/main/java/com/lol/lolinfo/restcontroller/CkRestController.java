@@ -25,6 +25,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.lol.lolinfo.dao.CkDao;
 import com.lol.lolinfo.dao.VisitUseDao;
 import com.lol.lolinfo.dto.CkDto;
+import com.lol.lolinfo.dto.CkScheduleDto;
 import com.lol.lolinfo.service.CkService;
 import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.CkBalanceVO;
@@ -34,6 +35,7 @@ import com.lol.lolinfo.vo.CkMonthlyCountVO;
 import com.lol.lolinfo.vo.CkParticipantVO;
 import com.lol.lolinfo.vo.CkPeriodVO;
 import com.lol.lolinfo.vo.CkRankingVO;
+import com.lol.lolinfo.vo.CkScheduleHomeVO;
 import com.lol.lolinfo.vo.CkVO;
 import com.lol.lolinfo.vo.CkVsVO;
 import com.lol.lolinfo.vo.PageResponseVO;
@@ -178,6 +180,15 @@ public class CkRestController {
 	    return ckDao.selectMonthlyCount(year);
 	}
 	
-	
+	//ck예정경기 조회
+	@GetMapping("/schedule/home")
+	public List<CkScheduleHomeVO> selectHomeScheduleList() {
+	    return ckService.selectHomeScheduleList();
+	}
+
+	@GetMapping("/schedule/{boardId}")
+	public CkScheduleDto selectOneSchedule(@PathVariable int boardId) {
+	    return ckService.selectOneSchedule(boardId);
+	}
 	
 }
