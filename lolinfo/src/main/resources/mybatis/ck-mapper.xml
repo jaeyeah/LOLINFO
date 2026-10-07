@@ -243,13 +243,13 @@
 	
 	<!-- 예정 CK -->
 	<!-- 예정 CK 등록 -->
-    <insert id="insertSchedule" parameterType="CkScheduleVO">
+    <insert id="insertSchedule" parameterType="CkScheduleDto">
 		insert into ck_schedule(board_id, ck_Date, ck_url)
 			values(#{boardId},#{ckDate},#{ckUrl})
     </insert>
 
     <!-- 예정 CK 수정 -->
-    <update id="updateSchedule" parameterType="CkScheduleVO">
+    <update id="updateSchedule" parameterType="CkScheduleDto">
 		update ck_schedule
 			set ck_Date = #{ckDate}, ck_url = #{ckUrl}
         where board_id = #{boardId}
@@ -264,7 +264,7 @@
 
     <!-- 게시글 상세용 예정 CK 정보 -->
     <select id="selectOneSchedule"
-            resultType="CkScheduleVO">
+            resultType="CkScheduleDto">
         SELECT
             BOARD_ID AS boardId,
             CK_DATE AS ckDate,
