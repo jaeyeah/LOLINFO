@@ -91,7 +91,7 @@
 			select rownum rn, TMP.* from (
 			 	select 
 			 		ck_id, ck_date, ck_memo, ck_created_by,
-			 		ck_result, vs_streamer_no, vs_streamer_name
+					ck_result, ck_position, vs_streamer_no, vs_streamer_name
 			 	 	from ck_list
 				where <include refid="streamerPeriodCondition" />
 			 	order by ck_date desc, ck_id desc

@@ -21,6 +21,7 @@ public class CkListVO {
 	private String ckMemo;
 	private String ckCreatedBy;
 	private String ckResult;
+	private String ckPosition;
 	
 	private Integer vsStreamerNo;
 	private String vsStreamerName;
