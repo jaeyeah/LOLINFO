@@ -23,6 +23,7 @@ import com.lol.lolinfo.service.TokenService;
 import com.lol.lolinfo.vo.PageResponseVO;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.ScrimListVO;
+import com.lol.lolinfo.vo.ScrimDailyRecordVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
 import com.lol.lolinfo.vo.ScrimUpdateVO;
 import com.lol.lolinfo.vo.ScrimVsRecordVO;
@@ -77,6 +78,12 @@ public class ScrimRestController {
 	}
 	
 	
+    @GetMapping("/{scrimTournament}/{scrimTeam}/daily")
+    public List<ScrimDailyRecordVO> selectDailyRecordList(
+            @PathVariable int scrimTournament, @PathVariable int scrimTeam) {
+        return scrimDao.selectDailyRecordList(scrimTournament, scrimTeam);
+    }
+
 	//부분수정
 	@PatchMapping("/")
 	public void updateUnit(

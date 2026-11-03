@@ -47,6 +47,22 @@
 	</select>
 	
 	
+    <!-- 선택한 팀의 경기일별 세트 승패: 예정 경기(0:0)는 제외 -->
+    <select id="selectDailyRecordList" resultType="com.lol.lolinfo.vo.ScrimDailyRecordVO">
+        select to_char(scrim_date, 'YYYY-MM-DD') as scrim_date,
+            sum(case when scrim_red_team = #{scrimTeam}
+                then nvl(scrim_red_score, 0) else nvl(scrim_blue_score, 0) end) as win_count,
+            sum(case when scrim_red_team = #{scrimTeam}
+                then nvl(scrim_blue_score, 0) else nvl(scrim_red_score, 0) end) as lose_count
+        from scrim
+        where scrim_tournament = #{scrimTournament}
+            and (scrim_red_team = #{scrimTeam} or scrim_blue_team = #{scrimTeam})
+            and scrim_date is not null
+            and nvl(scrim_red_score, 0) + nvl(scrim_blue_score, 0) &gt; 0
+        group by to_char(scrim_date, 'YYYY-MM-DD')
+        order by scrim_date
+    </select>
+
 	<!-- 부분 수정 -->
 	<update id="updateUnit">
 		update scrim

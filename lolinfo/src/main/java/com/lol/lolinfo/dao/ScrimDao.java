@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.lol.lolinfo.dto.ScrimDto;
 import com.lol.lolinfo.vo.PageVO;
 import com.lol.lolinfo.vo.ScrimListVO;
+import com.lol.lolinfo.vo.ScrimDailyRecordVO;
 import com.lol.lolinfo.vo.ScrimMyPageVO;
 import com.lol.lolinfo.vo.ScrimRecordVO;
 import com.lol.lolinfo.vo.ScrimUpdateVO;
@@ -46,6 +47,11 @@ public class ScrimDao {
 	    param.put("scrimTeam", scrimTeam);
 	    return sqlSession.selectList("scrim.selectVsRecordList", param);
 	}
+    public List<ScrimDailyRecordVO> selectDailyRecordList(int scrimTournament, int scrimTeam) {
+        return sqlSession.selectList("scrim.selectDailyRecordList",
+                Map.of("scrimTournament", scrimTournament, "scrimTeam", scrimTeam));
+    }
+
 	/// ----- 수정 -----
 	// 부분수정
 	public boolean updateUnit(ScrimUpdateVO scrimUpdateVO) {
